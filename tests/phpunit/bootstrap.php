@@ -26,9 +26,15 @@ require_once APPLICATION_PATH . '/../vendor/autoload.php';
 require_once 'Zend/Loader/Autoloader.php';
 Zend_Loader_Autoloader::getInstance();
 
+//Ativando componente de log.
+$logfile = APPLICATION_PATH . '/../../../logs/payU_' . date('Y-m-d') . '.log';
+\Tbs\Log::getInstance()->setLogger(
+		new \Tbs\Log\File($logfile)
+);
+
 // Running the application bootstrap
 $application = new Zend_Application(
     APPLICATION_ENV,
-    APPLICATION_PATH . '/../configs/application.ini'
+    APPLICATION_PATH . '/configs/application.ini'
 );
 $application->bootstrap();

@@ -14,7 +14,7 @@ class external
 		opt_misc => ['number','nowrap'],
 	}
 	class {'php':
-		modules => ['apc'],
+		modules => ['apc','xdebug'],
 		extra   => [
 			's3cmd','composer','phing','phpunit','phpdoc',
 			'phpcs','phpdepend','phpmd','phpcpd','phpdcd',
