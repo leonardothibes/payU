@@ -26,18 +26,19 @@
     <!-- ENDS HELP TEXT -->
 
     <!-- ENV VARS -->
-    <property name="code-standard" value="PSR2"                                   />
-    <property name="bin"           value="${project.basedir}/bin"                 />
-    <property name="src"           value="${project.basedir}/src/payU"            />
-    <property name="docs"          value="${project.basedir}/docs"                />
-    <property name="logs"          value="${project.basedir}/logs"                />
-    <property name="build"         value="${project.basedir}/build"               />
-    <property name="tests"         value="${project.basedir}/tests/phpunit"       />
-    <property name="vendor"        value="${src}/vendor"                          />
-    <property name="phpunit"       value="phpunit -c ${tests}/phpunit.xml"        />
-	<property name="uri-namespace" value="leonardothibes/payU"                    />
-	<property name="documentup"    value="http://documentup.com/${uri-namespace}" />
-	<property name="github"        value="http://github.com/${uri-namespace}"     />
+    <property name="code-standard-application" value="Zend"                                   />
+    <property name="code-standard-library"     value="PSR2"                                   />
+    <property name="bin"                       value="${project.basedir}/bin"                 />
+    <property name="src"                       value="${project.basedir}/src/payU"            />
+    <property name="docs"                      value="${project.basedir}/docs"                />
+    <property name="logs"                      value="${project.basedir}/logs"                />
+    <property name="build"                     value="${project.basedir}/build"               />
+    <property name="tests"                     value="${project.basedir}/tests/phpunit"       />
+    <property name="vendor"                    value="${src}/vendor"                          />
+    <property name="phpunit"                   value="phpunit -c ${tests}/phpunit.xml"        />
+	<property name="uri-namespace"             value="leonardothibes/payU"                    />
+	<property name="documentup"                value="http://documentup.com/${uri-namespace}" />
+	<property name="github"                    value="http://github.com/${uri-namespace}"     />
     <!-- ENDS ENV VARS -->
 
     <!-- CLEAN -->
@@ -144,8 +145,13 @@
     <!-- CODE-SNIFFER -->
     <target name="code-sniffer">
         <echo>Running code standard violation tests...</echo>
-        <phpcodesniffer standard="${code-standard}" format="full" encoding="utf-8" haltonerror="true">
-            <fileset dir="${src}">
+        <phpcodesniffer standard="${code-standard-application}" format="full" encoding="utf-8" haltonerror="true">
+            <fileset dir="${src}/application">
+                <include name="**/*.php"  />
+            </fileset>
+        </phpcodesniffer>
+        <phpcodesniffer standard="${code-standard-library}" format="full" encoding="utf-8" haltonerror="true">
+            <fileset dir="${src}/library">
                 <include name="**/*.php"  />
             </fileset>
         </phpcodesniffer>
