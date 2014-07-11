@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="payU" basedir="." default="help">
+
+    <!-- HELP TEXT -->
+    <target name="help">
+    
+        <echo>========================= Outside of VM =========================</echo>
+        <echo>clean             Clean temporary files and logs.</echo>
+        <echo>clean-all         Clean temporary files and logs and vendor external libraries.</echo>
+        <echo>rw                Add write permission to log directory.</echo>
+        <echo>install           Install all dependencies.</echo>
+        <echo>========================= Outside of VM =========================</echo>
+        <echo></echo>
+        
+        <echo>======================== Inside of VM ========================</echo>
+        <echo>build             Execute build.</echo>
+        <echo>test              Run all unit tests.</echo>
+        <echo>test-analyze      Run all unit test generating reports.</echo>
+        <echo>code-sniffer      Run code-sniffer.</echo>
+        <echo>apidoc            Generates phpDocumentor api doc.</echo>
+		<echo>documentup        Update documentup site.</echo>
+		<echo>release           Generates a new release on GitHub.</echo>
+        <echo>======================== Inside of VM ========================</echo>
+        
+    </target>
+    <!-- ENDS HELP TEXT -->
+
+    <!-- ENV VARS -->
+    <property name="code-standard" value="PSR2"                                   />
+    <property name="bin"           value="${project.basedir}/bin"                 />
+    <property name="src"           value="${project.basedir}/src/payU"            />
+    <property name="docs"          value="${project.basedir}/docs"                />
+    <property name="logs"          value="${project.basedir}/logs"                />
+    <property name="build"         value="${project.basedir}/build"               />
+    <property name="tests"         value="${project.basedir}/tests/phpunit"       />
+    <property name="vendor"        value="${src}/vendor"                          />
+    <property name="phpunit"       value="phpunit -c ${tests}/phpunit.xml"        />
+	<property name="uri-namespace" value="leonardothibes/payU"                    />
+	<property name="documentup"    value="http://documentup.com/${uri-namespace}" />
+	<property name="github"        value="http://github.com/${uri-namespace}"     />
+    <!-- ENDS ENV VARS -->
+
+    <!-- CLEAN -->
+    <target name="clean">
+        <echo>Cleaning build and logs...</echo>
+        <exec command="rm -Rf ${logs}/*"                                       />
+        <exec command="rm -Rf ${build}/*"                                      />
+        <exec command="find ${project.basedir} | grep .DS_Store | xargs rm -f" />
+        <exec command="find ${project.basedir} | grep Thumbs.db | xargs rm -f" />
+    </target>
+    <!-- ENDS CLEAN -->
+
+    <!-- CLEAN-ALL -->
+    <target name="clean-all" depends="clean">
+        <echo>Cleaning all development stuff...</echo>
+        <exec command="rm -f  ${src}/composer.lock" />
+        <exec command="rm -Rf ${vendor}"            />
+        <exec command="rm -Rf ${build}"             />
+        <exec command="rm -Rf ${logs}"              />
+        <exec command="rm -Rf ${bin}"               />
+    </target>
+    <!-- ENDS CLEAN-ALL -->
+    
+    <!-- RW -->
+    <target name="rw" depends="clean">
+    
+        <!-- BUILD DIR -->
+        <mkdir dir="${build}" mode="755" />
+        
+        <!-- LOG DIR -->
+        <mkdir dir="${logs}" mode="777" />
+        
+        <!-- LOGS -->
+        <php function="date" returnProperty="data">
+            <param value="Y-m-d" />
+        </php>
+        <touch file="${logs}/payU_${data}.log" />
+        <!-- ENDS LOGS -->
+        
+        <!-- PERMISSION -->
+        <exec command="chmod -R 777 ${logs}" />
+        
+    </target>
+    <!-- ENDS RW -->
+    
+    <!-- INSTALL -->
+    <target name="check-composer">
+        <mkdir dir="${bin}" mode="755" />
+        <exec command="
+            [ -f ${bin}/composer.phar ] || curl -sS https://getcomposer.org/installer | php -- --install-dir=${bin}
+        " />
+    </target>
+    <target name="install" depends="rw, check-composer">
+        
+        <!-- COMPOSER -->
+        <exec command="rm -f ${src}/composer.lock" />
+        <composer composer="${bin}/composer.phar" command="install">
+            <arg value="--dev"                />
+            <arg value="--working-dir=${src}" />
+        </composer>
+        <!-- ENDS COMPOSER -->
+                
+    </target>
+    <!-- ENDS INSTALL -->
+    
+    <!-- BUILD -->
+    <target name="build" depends="rw, syntax, test-analyze, code-sniffer, pdepend, phpmd, phpcpd, phpdcd, apidoc, documentup">
+        <echo>BUILD SUCCESS!</echo>
+    </target>
+    <!-- ENDS BUILD -->
+    
+    <!-- LINT -->
+    <target name="syntax">
+        <echo>Running syntax tests...</echo>
+        <phplint haltonfailure="true">
+            <fileset dir="${src}">
+                <include name="**/*.php"   />
+                <include name="**/*.phtml" />
+            </fileset>
+        </phplint>
+        <echo>Syntax OK!</echo>
+    </target>
+    <!-- ENDS LINT -->
+
+    <!-- TEST -->
+    <target name="test">
+        <echo>Running all tests...</echo>
+        <exec command="${phpunit} --testdox ${tests}" checkreturn="true" />
+        <echo>All tests OK!</echo>
+    </target>
+    <!-- ENDS TEST -->
+    
+    <!-- TEST-ANALYZE -->
+    <target name="test-analyze">
+        <echo>Generating test reports...</echo>
+        <exec 
+            command="${phpunit} --testdox --testdox-html=${build}/testdox.html --coverage-html=${build}/coverage ${tests}" 
+            checkreturn="true"
+        />
+        <echo>Test reports generated!</echo>
+    </target>
+    <!-- ENDS TEST-ANALYZE -->
+    
+    <!-- CODE-SNIFFER -->
+    <target name="code-sniffer">
+        <echo>Running code standard violation tests...</echo>
+        <phpcodesniffer standard="${code-standard}" format="full" encoding="utf-8" haltonerror="true">
+            <fileset dir="${src}">
+                <include name="**/*.php"  />
+            </fileset>
+        </phpcodesniffer>
+        <echo>Code Standards OK!</echo>
+    </target>
+    <!-- ENDS CODE-SNIFFER -->
+    
+    <!-- PDEPEND -->
+    <target name="pdepend">
+        <echo>Calculating software metrics...</echo>
+        <mkdir dir="${build}/pdepend" mode="755" />
+		<exec executable="phpdepend">
+			<arg value="--jdepend-chart=${build}/pdepend/dependencies.svg" />
+			<arg value="--overview-pyramid=${build}/pdepend/overview-pyramid.svg" />
+			<arg path="${src}" />
+		</exec>
+		<echo>Calculated!</echo>
+	</target>
+    <!-- ENDS PDEPEND -->
+    
+    <!-- PHPMD -->
+    <target name="phpmd">
+        <phpmd>
+            <fileset dir="${src}">
+                <include name="**/*.php"  />
+            </fileset>
+            <formatter type="html" outfile="${build}/pmd.html"/>
+        </phpmd>
+    </target>
+    <!-- ENDS PHPMD -->
+    
+    <!-- PHPCPD -->
+    <target name="phpcpd">
+        <echo>Finding duplicate code...</echo>
+        <exec command="phpcpd --log-pmd=${build}/phpcpd.xml ${src}/application ${src}/library" />
+        <echo>Done!</echo>
+    </target>
+    <!-- ENDS PHPCPD -->
+    
+    <!-- PHPDCD -->
+    <target name="phpdcd">
+        <echo>Finding dead code...</echo>
+        <exec command="phpdcd ${src} > ${build}/phpdcd.txt" />
+        <echo>Done!</echo>
+    </target>
+    <!-- ENDS PHPDCD -->
+    
+    <!-- APIDOC -->
+    <target name="apidoc">
+        <echo>Generating API documentation...</echo>
+        <exec command="php /usr/bin/phpDocumentor.phar -d '${src}' -t ${build}/apidoc" />
+        <echo>API documentation generated!</echo>
+    </target>
+    <!-- ENDS APIDOC -->
+
+	<!-- DOCUMENT UP -->
+	<target name="documentup">
+		<echo message="Recompiling online documentation on ${documentup}" />
+		<exec command="curl -X GET ${documentup}/recompile"               />
+	</target>
+	<!-- ENDS DOCUMENT UP -->
+	
+	<!-- RELEASE -->
+	<target name="version-prompt">
+		<propertyprompt propertyName="version" defaultValue="" promptText="Version Number" />
+		<if>
+			<equals arg1="${version}" arg2="" />
+			<then>
+				<fail>Version number is required!</fail>
+			</then>
+		</if>
+	</target>
+	<target name="release" depends="version-prompt">
+		<phingcall target="test" />
+		<phingcall target="code-sniffer" />
+		<echo>Releasing version ${version} on ${github}/releases/tag/${version}</echo>
+		<exec command="git pull origin master"                           />
+		<exec command="echo ${version} > ${src}/.version"                />
+		<exec command="git commit -m 'updating version' ${src}/.version" />
+		<exec command="git push origin master"                           />
+		<exec command="git tag ${version}"                               />
+		<exec command="git push origin ${version}"                       />
+		<phingcall target="documentup" />
+	</target>
+	<!-- ENDS RELEASE -->
+
+</project>
