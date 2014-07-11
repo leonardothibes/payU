@@ -1,0 +1,14 @@
+Thumbs.db
+.DS_Store
+.buildpath
+.project
+.vagrant
+.settings
+*.db
+*.bak
+*.swp
+bin/*
+logs/*
+build/*
+src/App/vendor
+src/App/composer.lock
