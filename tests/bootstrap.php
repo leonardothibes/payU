@@ -6,7 +6,7 @@
  */
 
 // Path for api.
-define('LIBRARY_PATH', dirname(__FILE__) . '/../src/PayU');
+define('LIBRARY_PATH', dirname(__FILE__) . '/../src');
 
 // Path for test stuff.
 define('STUFF_PATH', dirname(__FILE__) . '/PayU/.stuff');
@@ -18,10 +18,10 @@ set_include_path(implode(PATH_SEPARATOR, array(
 )));
 
 // Composer autoload.
-require_once LIBRARY_PATH . '/../../vendor/autoload.php';
+require_once LIBRARY_PATH . '/../vendor/autoload.php';
 
 //Ativando componente de log.
-$logfile = LIBRARY_PATH . '/../../logs/payu_' . date('Y-m-d') . '.log';
+$logfile = LIBRARY_PATH . '/../logs/payu_' . date('Y-m-d') . '.log';
 \Tbs\Log::getInstance()->setLogger(
 	new \Tbs\Log\File($logfile)
 );
