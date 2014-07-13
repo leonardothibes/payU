@@ -192,7 +192,7 @@
     <!-- APIDOC -->
     <target name="apidoc">
         <echo>Generating API documentation...</echo>
-        <exec command="php /usr/bin/phpDocumentor.phar -d '${src}/application,${src}/library' -t ${build}/apidoc" />
+        <exec command="php /usr/bin/phpDocumentor.phar -d ${src} -t ${build}/apidoc" />
         <echo>API documentation generated!</echo>
     </target>
     <!-- ENDS APIDOC -->
