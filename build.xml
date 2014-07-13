@@ -28,7 +28,7 @@
     <!-- ENV VARS -->
     <property name="code-standard" value="PSR2"                                   />
     <property name="bin"           value="${project.basedir}/bin"                 />
-    <property name="src"           value="${project.basedir}/src/payU"            />
+    <property name="src"           value="${project.basedir}/src"                 />
     <property name="docs"          value="${project.basedir}/docs"                />
     <property name="logs"          value="${project.basedir}/logs"                />
     <property name="build"         value="${project.basedir}/build"               />
@@ -165,11 +165,8 @@
     <!-- PHPMD -->
     <target name="phpmd">
         <phpmd>
-            <fileset dir="${src}/application">
+            <fileset dir="${src}">
                 <include name="**/*.php" />
-            </fileset>
-            <fileset dir="${src}/library">
-                <include name="**/*.php"  />
             </fileset>
             <formatter type="html" outfile="${build}/pmd.html"/>
         </phpmd>
@@ -179,7 +176,7 @@
     <!-- PHPCPD -->
     <target name="phpcpd">
         <echo>Finding duplicate code...</echo>
-        <exec command="phpcpd --log-pmd=${build}/phpcpd.xml ${src}/application ${src}/library" />
+        <exec command="phpcpd --log-pmd=${build}/phpcpd.xml ${src}" />
         <echo>Done!</echo>
     </target>
     <!-- ENDS PHPCPD -->
