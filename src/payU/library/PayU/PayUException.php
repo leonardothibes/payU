@@ -15,8 +15,8 @@ namespace PayU;
  */
 class PayUException extends \Exception
 {
-    public function test()
+    public function oi()
     {
-
+		return 'olá';
     }
 }
