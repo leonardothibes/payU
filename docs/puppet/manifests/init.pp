@@ -4,7 +4,7 @@
 class external
 {
 	class {'env':
-		utils        => ['git','curl','wget'],
+		utils        => ['git'],
 		link_in_home => ['workspace=/vagrant'],
 		aliases      => ['phing=clear ; phing','phpunit=clear ; phpunit'],
 	}
@@ -20,23 +20,16 @@ class external
 			'phpcs','phpdepend','phpmd','phpcpd','phpdcd',
 		],
 	}
-	class {'zf':
-		version => 1,
-		zftool  => true,
-	}
 	class {'apache':
 		default_mods  => true,
 		default_vhost => false,
 		mpm_module    => 'prefork',
 	}
 	apache::mod {'php5':}
-	apache::mod {'rewrite':}
-	apache::vhost {'app':
+	apache::vhost {'selenium':
 		priority => '00',
 		port     => '80',
-		override => 'FileInfo',
-		docroot  => '/vagrant/src/payU/public',
-		setenv   => ['APPLICATION_ENV development'],
+		docroot  => '/vagrant/src/Selenium',
 	}
 }
 
