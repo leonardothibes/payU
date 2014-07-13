@@ -74,7 +74,7 @@
         <php function="date" returnProperty="data">
             <param value="Y-m-d" />
         </php>
-        <touch file="${logs}/payU_${data}.log" />
+        <touch file="${logs}/payu_${data}.log" />
         <!-- ENDS LOGS -->
         
         <!-- PERMISSION -->
