@@ -10,5 +10,5 @@ Thumbs.db
 bin/*
 logs/*
 build/*
-src/payU/vendor
-src/payU/composer.lock
+vendor/*
+composer.lock
