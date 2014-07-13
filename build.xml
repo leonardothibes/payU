@@ -111,8 +111,7 @@
         <echo>Running syntax tests...</echo>
         <phplint haltonfailure="true">
             <fileset dir="${src}">
-                <include name="**/*.php"   />
-                <include name="**/*.phtml" />
+                <include name="**/*.php" />
             </fileset>
         </phplint>
         <echo>Syntax OK!</echo>
@@ -141,13 +140,8 @@
     <!-- CODE-SNIFFER -->
     <target name="code-sniffer">
         <echo>Running code standard violation tests...</echo>
-        <phpcodesniffer standard="${code-standard-application}" format="full" encoding="utf-8" haltonerror="true">
-            <fileset dir="${src}/application">
-                <include name="**/*.php"  />
-            </fileset>
-        </phpcodesniffer>
-        <phpcodesniffer standard="${code-standard-library}" format="full" encoding="utf-8" haltonerror="true">
-            <fileset dir="${src}/library">
+        <phpcodesniffer standard="${code-standard}" format="full" encoding="utf-8" haltonerror="true">
+            <fileset dir="${src}">
                 <include name="**/*.php"  />
             </fileset>
         </phpcodesniffer>
