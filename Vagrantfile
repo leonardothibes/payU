@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network :forwarded_port, guest: 80, host: 8080
+  # config.vm.network :forwarded_port, guest: 80, host: 8080
 
   # Hostname
   config.vm.host_name = "PayU.dev"
@@ -79,11 +79,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   config.vm.provision "shell", inline: "
 	apt-get update > /dev/null
-	[ -d /etc/puppet/modules        ] || mkdir -p /etc/puppet/modules
-	[ -d /etc/puppet/modules/env    ] || puppet module install leonardothibes-env
-	[ -d /etc/puppet/modules/vim    ] || puppet module install leonardothibes-vim
-	[ -d /etc/puppet/modules/php    ] || puppet module install leonardothibes-php
-	[ -d /etc/puppet/modules/apache ] || puppet module install puppetlabs-apache
+	[ -d /etc/puppet/modules     ] || mkdir -p /etc/puppet/modules
+	[ -d /etc/puppet/modules/env ] || puppet module install leonardothibes-env
+	[ -d /etc/puppet/modules/vim ] || puppet module install leonardothibes-vim
+	[ -d /etc/puppet/modules/php ] || puppet module install leonardothibes-php
   "
   config.vm.provision :puppet do |puppet|
     puppet.module_path    = "docs/puppet/modules"

@@ -10,26 +10,14 @@ class external
 	}
 	class {'vim':
 		tabstop  => 4,
-		plugins  => ['puppet'],
 		opt_misc => ['number','nowrap'],
 	}
 	class {'php':
-		modules => ['apc','xdebug'],
+		modules => ['xdebug'],
 		extra   => [
 			's3cmd','composer','phing','phpunit','phpdoc',
 			'phpcs','phpdepend','phpmd','phpcpd','phpdcd',
 		],
-	}
-	class {'apache':
-		default_mods  => true,
-		default_vhost => false,
-		mpm_module    => 'prefork',
-	}
-	apache::mod {'php5':}
-	apache::vhost {'selenium':
-		priority => '00',
-		port     => '80',
-		docroot  => '/vagrant/src/Selenium',
 	}
 }
 
