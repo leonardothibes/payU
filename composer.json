@@ -1,0 +1,19 @@
+{
+    "name"   : "leonardothibes/payu",
+    "authors": [
+        {
+            "name" : "Leonardo Thibes",
+            "email": "leonardothibes@gmail.com"
+        }
+    ],
+    "require": {
+        "php"               : ">=5.3",
+        "leonardothibes/tbs": ">=1@stable"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    }
+}

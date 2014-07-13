@@ -26,19 +26,18 @@
     <!-- ENDS HELP TEXT -->
 
     <!-- ENV VARS -->
-    <property name="code-standard-application" value="Zend"                                   />
-    <property name="code-standard-library"     value="PSR2"                                   />
-    <property name="bin"                       value="${project.basedir}/bin"                 />
-    <property name="src"                       value="${project.basedir}/src/payU"            />
-    <property name="docs"                      value="${project.basedir}/docs"                />
-    <property name="logs"                      value="${project.basedir}/logs"                />
-    <property name="build"                     value="${project.basedir}/build"               />
-    <property name="tests"                     value="${project.basedir}/tests/phpunit"       />
-    <property name="vendor"                    value="${src}/vendor"                          />
-    <property name="phpunit"                   value="phpunit -c ${tests}/phpunit.xml"        />
-	<property name="uri-namespace"             value="leonardothibes/payU"                    />
-	<property name="documentup"                value="http://documentup.com/${uri-namespace}" />
-	<property name="github"                    value="http://github.com/${uri-namespace}"     />
+    <property name="code-standard" value="PSR2"                                   />
+    <property name="bin"           value="${project.basedir}/bin"                 />
+    <property name="src"           value="${project.basedir}/src/payU"            />
+    <property name="docs"          value="${project.basedir}/docs"                />
+    <property name="logs"          value="${project.basedir}/logs"                />
+    <property name="build"         value="${project.basedir}/build"               />
+    <property name="tests"         value="${project.basedir}/tests"               />
+    <property name="vendor"        value="${project.basedir}/vendor"              />
+    <property name="phpunit"       value="phpunit -c ${tests}/phpunit.xml"        />
+	<property name="uri-namespace" value="leonardothibes/payU"                    />
+	<property name="documentup"    value="http://documentup.com/${uri-namespace}" />
+	<property name="github"        value="http://github.com/${uri-namespace}"     />
     <!-- ENDS ENV VARS -->
 
     <!-- CLEAN -->
@@ -87,17 +86,14 @@
     <!-- INSTALL -->
     <target name="check-composer">
         <mkdir dir="${bin}" mode="755" />
-        <exec command="
-            [ -f ${bin}/composer.phar ] || curl -sS https://getcomposer.org/installer | php -- --install-dir=${bin}
-        " />
+        <exec command="[ -f ${bin}/composer.phar ] || curl -sS https://getcomposer.org/installer | php --" />
     </target>
     <target name="install" depends="rw, check-composer">
         
         <!-- COMPOSER -->
         <exec command="rm -f ${src}/composer.lock" />
         <composer composer="${bin}/composer.phar" command="install">
-            <arg value="--dev"                />
-            <arg value="--working-dir=${src}" />
+            <arg value="--dev" />
         </composer>
         <!-- ENDS COMPOSER -->
                 
