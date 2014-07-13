@@ -83,7 +83,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	[ -d /etc/puppet/modules/env    ] || puppet module install leonardothibes-env
 	[ -d /etc/puppet/modules/vim    ] || puppet module install leonardothibes-vim
 	[ -d /etc/puppet/modules/php    ] || puppet module install leonardothibes-php
-	[ -d /etc/puppet/modules/zf     ] || puppet module install leonardothibes-zf
 	[ -d /etc/puppet/modules/apache ] || puppet module install puppetlabs-apache
   "
   config.vm.provision :puppet do |puppet|
