@@ -102,11 +102,11 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function getApiUrl()
     {
-    	if ($this->isProduction()) {
-    		return sprintf($this->apiUrlProduction, $this->apiVer);
-    	} else {
-    		return sprintf($this->apiUrlStaging, $this->apiVer);
-    	}
+        if ($this->isProduction()) {
+            return sprintf($this->apiUrlProduction, $this->apiVer);
+        } else {
+            return sprintf($this->apiUrlStaging, $this->apiVer);
+        }
     }
 
     /**
@@ -117,9 +117,9 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function addTest($json)
     {
-    	$array         = json_decode($json, true);
-    	$array['test'] = $this->isStaging();
-    	return json_encode($array);
+        $array         = json_decode($json, true);
+        $array['test'] = $this->isStaging();
+        return json_encode($array);
     }
 
     /**
@@ -130,9 +130,9 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function addLanguage($json)
     {
-    	$array             = json_decode($json, true);
-    	$array['language'] = $this->language;
-    	return json_encode($array);
+        $array             = json_decode($json, true);
+        $array['language'] = $this->language;
+        return json_encode($array);
     }
 
     /**
@@ -143,13 +143,13 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function addMerchant($json)
     {
-    	$merchant = array(
-    		'apiLogin' => $this->credentials->getApiLogin(),
-    		'apiKey'   => $this->credentials->getApiKey(),
-    	);
-    	$array = json_decode($json, true);
-    	$array['merchant'] = $merchant;
-    	return json_encode($array);
+        $merchant = array(
+            'apiLogin' => $this->credentials->getApiLogin(),
+            'apiKey'   => $this->credentials->getApiKey(),
+        );
+        $array = json_decode($json, true);
+        $array['merchant'] = $merchant;
+        return json_encode($array);
     }
 
     /**
@@ -160,9 +160,9 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function addMetadata($json)
     {
-    	$json = $this->addTest($json);
-    	$json = $this->addLanguage($json);
-    	return $this->addMerchant($json);
+        $json = $this->addTest($json);
+        $json = $this->addLanguage($json);
+        return $this->addMerchant($json);
     }
 
     /**
@@ -174,42 +174,42 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function curlRequest($json)
     {
-    	//HTTP headers.
-    	$headers = array(
-    		'Content-Type: application/json',
-    		'Accept: application/json',
-    		'Content-Length: ' . strlen($json),
-    	);
-    	//HTTP headers.
+        //HTTP headers.
+        $headers = array(
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Content-Length: ' . strlen($json),
+        );
+        //HTTP headers.
 
-    	try {
-	    	//cUrl request.
-	    	$ch = curl_init($this->getApiUrl());
-	    	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-	    	curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-	    	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-	    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	    	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	    	$rs = curl_exec($ch);
-	    	$rs = json_decode($rs);
-	    	//cUrl request.
+        try {
+            //cUrl request.
+            $ch = curl_init($this->getApiUrl());
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $rs = curl_exec($ch);
+            $rs = json_decode($rs);
+            //cUrl request.
 
-	    	//Error treatment.
-    		$error = curl_error($ch);
-    		if (strlen($error)) {
-    			throw new PayUException($error);
-    		}
-    		//Error treatment.
+            //Error treatment.
+            $error = curl_error($ch);
+            if (strlen($error)) {
+                throw new PayUException($error);
+            }
+            //Error treatment.
 
-    		//Error treatment.
-    		if (strlen((string)$rs->error)) {
-    			throw new PayUException($rs->error);
-    		}
-    		//Error treatment.
-    	} catch (Exception $e) {
-    		throw new PayUException($e->getMessage(), $e->getCode());
-    	}
+            //Error treatment.
+            if (strlen((string)$rs->error)) {
+                throw new PayUException($rs->error);
+            }
+            //Error treatment.
+        } catch (Exception $e) {
+            throw new PayUException($e->getMessage(), $e->getCode());
+        }
 
-    	return $rs;
+        return $rs;
     }
 }

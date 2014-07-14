@@ -15,9 +15,9 @@ namespace PayU\Api;
  */
 interface ApiInterface
 {
-	/**
-	 * Ping request for service health.
-	 * @return bool
-	 */
-	public function ping();
+    /**
+     * Ping request for service health.
+     * @return bool
+     */
+    public function ping();
 }

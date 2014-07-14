@@ -17,15 +17,15 @@ use \PayU\Api\ApiAbstract;
  */
 class ReportApi extends ApiAbstract
 {
-	/**
-	 * Report api url for production.
-	 * @var string
-	 */
-	protected $apiUrlProduction = 'https://api.payulatam.com/reports-api/%s/service.cgi';
+    /**
+     * Report api url for production.
+     * @var string
+     */
+    protected $apiUrlProduction = 'https://api.payulatam.com/reports-api/%s/service.cgi';
 
-	/**
-	 * Report api url for staging.
-	 * @var string
-	 */
-	protected $apiUrlStaging = 'https://stg.api.payulatam.com/reports-api/%s/service.cgi';
+    /**
+     * Report api url for staging.
+     * @var string
+     */
+    protected $apiUrlStaging = 'https://stg.api.payulatam.com/reports-api/%s/service.cgi';
 }
