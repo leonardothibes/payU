@@ -30,6 +30,12 @@ abstract class ApiAbstract
     protected $isStaging = false;
 
     /**
+     * PayU api version.
+     * @var string
+     */
+    protected $apiVer = '4.0';
+
+    /**
      * Set the Merchant credentials on class contruction.
      *
      * @param  MerchantCredentials $credentials
@@ -85,6 +91,10 @@ abstract class ApiAbstract
      */
     protected function getApiUrl()
     {
-    	return (string)$this->apiUrl;
+    	if ($this->isProduction()) {
+    		return sprintf($this->apiUrlProduction, $this->apiVer);
+    	} else {
+    		return sprintf($this->apiUrlStaging, $this->apiVer);
+    	}
     }
 }
