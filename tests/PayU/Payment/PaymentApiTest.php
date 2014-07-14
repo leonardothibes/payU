@@ -57,4 +57,20 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     	$this->assertInternalType('bool', $rs);
     	$this->assertTrue($rs);
     }
+
+    /**
+     * @see PaymentApi::ping()
+     */
+    public function testPingWrongCredentials()
+    {
+    	try {
+    		$this->credentials->setApiLogin('wrong-login')
+    		                  ->setApiKey('wrong-key');
+    		$rs = $this->object->ping();
+    	} catch (\Exception $e) {
+    		$this->assertInstanceOf('\PayU\PayUException', $e);
+    		$this->assertEquals('Invalid credentials', $e->getMessage());
+    		$this->assertEquals(0, $e->getCode());
+    	}
+    }
 }
