@@ -44,7 +44,8 @@ class ApiAbstractTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-    	unset($this->object);
+    	$this->credentials->resetInstance();
+    	unset($this->object, $this->credentials);
     }
 
     /**
@@ -57,24 +58,63 @@ class ApiAbstractTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(PAYU_API_LOGIN, $rs->getApiLogin());
 		$this->assertEquals(PAYU_API_LOGIN, $rs->getApiLogin());
 	}
+
+	/**
+	 * @see ApiAbstract::isStaging()
+	 */
+	public function testIsStagingDefaultValue()
+	{
+		$rs = $this->object->isStaging();
+		$this->assertInternalType('bool', $rs);
+		$this->assertFalse($rs);
+	}
+
+	/**
+	 * @see ApiAbstract::isProduction()
+	 */
+	public function testIsProductionDefaultValue()
+	{
+		$rs = $this->object->isProduction();
+		$this->assertInternalType('bool', $rs);
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see ApiAbstract::setStaging()
+	 */
+	public function testSetStaging1()
+	{
+		$rs = $this->object->setStaging();
+		$this->assertInstanceOf('\PayU\Api\ApiAbstract', $rs);
+
+		$rs = $this->object->isStaging();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see ApiAbstract::setStaging()
+	 */
+	public function testSetStaging2()
+	{
+		$rs = $this->object->setStaging(true);
+		$this->assertInstanceOf('\PayU\Api\ApiAbstract', $rs);
+
+		$rs = $this->object->isStaging();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see ApiAbstract::setStaging()
+	 */
+	public function testSetStaging3()
+	{
+		$rs = $this->object->setStaging(false);
+		$this->assertInstanceOf('\PayU\Api\ApiAbstract', $rs);
+
+		$rs = $this->object->isStaging();
+		$this->assertFalse($rs);
+
+		$rs = $this->object->isProduction();
+		$this->assertTrue($rs);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

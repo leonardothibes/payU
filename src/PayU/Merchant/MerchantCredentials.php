@@ -54,6 +54,14 @@ class MerchantCredentials
     }
 
     /**
+     * Reset the singleton instance.
+     */
+    public function resetInstance()
+    {
+        self::$instance = null;
+    }
+
+    /**
      * Set the merchant api login.
      *
      * @param  string $apiLogin

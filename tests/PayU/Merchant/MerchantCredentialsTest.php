@@ -32,6 +32,7 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
+    	$this->object->resetInstance();
     	unset($this->object);
     }
 

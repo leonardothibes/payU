@@ -17,28 +17,74 @@ use \PayU\Merchant\MerchantCredentials;
  */
 abstract class ApiAbstract
 {
-	/**
-	 * @var MerchantCredentials
-	 */
-	protected $credentials = null;
+    /**
+     * Merchant credentials object.
+     * @var MerchantCredentials
+     */
+    protected $credentials = null;
 
-	/**
-	 * Set the Merchant credentials on class contruction.
-	 *
-	 * @param  MerchantCredentials $credentials
-	 * @return void
-	 */
-	public function __construct(MerchantCredentials $credentials)
-	{
-		$this->credentials = $credentials;
-	}
+    /**
+     * Staging flag.
+     * @var bool
+     */
+    protected $isStaging = false;
 
-	/**
-	 * Get the credentials object.
-	 * @return MerchantCredentials
-	 */
-	public function getCredentials()
-	{
-		return $this->credentials;
-	}
+    /**
+     * Set the Merchant credentials on class contruction.
+     *
+     * @param  MerchantCredentials $credentials
+     * @return void
+     */
+    public function __construct(MerchantCredentials $credentials)
+    {
+        $this->credentials = $credentials;
+    }
+
+    /**
+     * Get the credentials object.
+     * @return MerchantCredentials
+     */
+    public function getCredentials()
+    {
+        return $this->credentials;
+    }
+
+    /**
+     * Set the payment and reports environment to stagin.
+     *
+     * @param  bool $flag
+     * @return ApiAbstract
+     */
+    public function setStaging($flag = true)
+    {
+        $this->isStaging = (bool)$flag;
+        return $this;
+    }
+
+    /**
+     * Test the staging flag is staging.
+     * @return bool
+     */
+    public function isStaging()
+    {
+        return (bool)$this->isStaging;
+    }
+
+    /**
+     * Test the staging flag is production.
+     * @return bool
+     */
+    public function isProduction()
+    {
+        return !(bool)$this->isStaging;
+    }
+
+    /**
+     * Get the api url.
+     * @return string
+     */
+    protected function getApiUrl()
+    {
+    	return (string)$this->apiUrl;
+    }
 }
