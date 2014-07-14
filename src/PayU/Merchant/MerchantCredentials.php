@@ -19,7 +19,7 @@ class MerchantCredentials
      * Singleton instance.
      * @var MerchantCredentials
      */
-    public static $instance = null;
+    protected static $instance = null;
 
     /**
      * Merchant api login.
