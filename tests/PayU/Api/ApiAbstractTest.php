@@ -10,7 +10,7 @@ use \PayU\Api\ApiAbstract;
 use \PayU\Merchant\MerchantCredentials;
 
 require_once dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'bootstrap.php';
-class ApiAbstractMock extends ApiAbstract {}
+class ApiAbstractMock extends ApiAbstract { public function ping() {} }
 
 /**
  * @author Leonardo Thibes <leonardothibes@gmail.com>
