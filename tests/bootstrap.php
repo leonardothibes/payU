@@ -5,6 +5,13 @@
  * @copyright Copyright (c) The Authors
  */
 
+/**
+ * Test api credentials provided by PayU
+ * @link http://docs.payulatam.com/pt-br/integracao-com-api/o-que-voce-precisa-saber-a-integracao-via-api/
+ */
+define('PAYU_API_LOGIN', '403ba744e9827f3');
+define('PAYU_API_KEY', '676k86ks53la6tni6clgd30jf6');
+
 // Path for api.
 define('LIBRARY_PATH', dirname(__FILE__) . '/../src');
 
