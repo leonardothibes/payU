@@ -117,7 +117,7 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function addTest($json)
     {
-    	$array             = json_decode($json, true);
+    	$array         = json_decode($json, true);
     	$array['test'] = $this->isStaging();
     	return json_encode($array);
     }
