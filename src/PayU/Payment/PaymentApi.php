@@ -6,8 +6,12 @@
 
 namespace PayU\Payment;
 
-use \PayU\Api\ApiAbstract;
 use \PayU\Payment\PaymentException;
+use \PayU\Api\ApiAbstract;
+use \PayU\Api\ApiStatus;
+
+use \Exception;
+use \stdClass;
 
 /**
  * Payent api class.
@@ -42,10 +46,31 @@ class PaymentApi extends ApiAbstract
             $json     = '{"command": "PING"}';
             $json     = $this->addMetadata($json);
             $response = $this->curlRequest($json);
-            return ($response->code == 'SUCCESS');
+            return ($response->code == ApiStatus::SUCCESS);
         } catch (Exception $e) {
             throw new PaymentException($e->getMessage(), $e->getCode());
         }
+    }
+
+    /**
+     * List all payment methods accepted by country configuration.
+     *
+     * @return array
+     * @throws PaymentException
+     */
+    public function paymentMethods()
+    {
+    	try {
+    		$json     = '{"command": "GET_PAYMENT_METHODS"}';
+    		$json     = $this->addMetadata($json);
+    		$response = $this->curlRequest($json);
+    		if ($response->code != ApiStatus::SUCCESS) {
+    			throw new PaymentException($response->error);
+    		}
+    		return $response->paymentMethods;
+    	} catch (Exception $e) {
+    		throw new PaymentException($e->getMessage(), $e->getCode());
+    	}
     }
 
     /**
@@ -53,7 +78,6 @@ class PaymentApi extends ApiAbstract
      */
     public function authorize()
     {
-
     }
 
     /**
@@ -61,7 +85,6 @@ class PaymentApi extends ApiAbstract
      */
     public function capture()
     {
-
     }
 
     /**
@@ -69,7 +92,6 @@ class PaymentApi extends ApiAbstract
      */
     public function authorizeAndCapture()
     {
-
     }
 
     /**
@@ -77,6 +99,5 @@ class PaymentApi extends ApiAbstract
      */
     public function void()
     {
-
     }
 }

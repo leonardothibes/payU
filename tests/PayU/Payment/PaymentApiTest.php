@@ -6,6 +6,7 @@
 
 namespace PayU\Payment;
 
+use \stdClass;
 use \PayU\Payment\PaymentApi;
 use \PayU\Merchant\MerchantCredentials;
 
@@ -73,4 +74,57 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     		$this->assertEquals(0, $e->getCode());
     	}
     }
+
+    /**
+     * @see PaymentApi::paymentMethods()
+     */
+    public function testPaymentMethods()
+    {
+    	$rs = $this->object->paymentMethods();
+
+    	$this->assertInternalType('array', $rs);
+    	$this->assertGreaterThan(0, count($rs));
+
+    	foreach ($rs as $paymentMethod) {
+
+    		$this->assertInstanceOf('\stdClass', $paymentMethod);
+
+    		$this->assertTrue(isset($paymentMethod->id));
+    		$this->assertTrue(is_numeric($paymentMethod->id));
+
+    		$this->assertTrue(isset($paymentMethod->description));
+    		$this->assertGreaterThan(0, strlen($paymentMethod->description));
+
+    		$this->assertTrue(isset($paymentMethod->country));
+    		$this->assertEquals(2, strlen($paymentMethod->country));
+    	}
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
