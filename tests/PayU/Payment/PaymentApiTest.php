@@ -99,32 +99,20 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     		$this->assertEquals(2, strlen($paymentMethod->country));
     	}
     }
+
+    /**
+     * @see PaymentApi::paymentMethods()
+     */
+    public function testPaymentCredentials()
+    {
+    	try {
+    		$this->credentials->setApiLogin('wrong-login')
+    	                      ->setApiKey('wrong-key');
+    		$rs = $this->object->paymentMethods();
+    	} catch (\Exception $e) {
+    		$this->assertInstanceOf('\PayU\PayUException', $e);
+    		$this->assertEquals('Invalid credentials', $e->getMessage());
+    		$this->assertEquals(0, $e->getCode());
+    	}
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
