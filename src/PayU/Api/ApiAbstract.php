@@ -190,8 +190,7 @@ abstract class ApiAbstract implements ApiInterface
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            $rs = curl_exec($ch);
-            $rs = json_decode($rs);
+            $rs = json_decode(curl_exec($ch));
             //cUrl request.
 
             //Error treatment.
