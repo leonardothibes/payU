@@ -100,7 +100,7 @@ abstract class ApiAbstract implements ApiInterface
      * Get the api url.
      * @return string
      */
-    protected function getApiUrl()
+    public function getApiUrl()
     {
         if ($this->isProduction()) {
             return sprintf($this->apiUrlProduction, $this->apiVer);
