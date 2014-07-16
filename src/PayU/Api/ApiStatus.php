@@ -15,8 +15,8 @@ namespace PayU\Api;
  */
 class ApiStatus
 {
-	/**
-	 * Sucess on rest request.
-	 */
-	const SUCCESS = 'SUCCESS';
+    /**
+     * Sucess on rest request.
+     */
+    const SUCCESS = 'SUCCESS';
 }

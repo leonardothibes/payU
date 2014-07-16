@@ -60,17 +60,17 @@ class PaymentApi extends ApiAbstract
      */
     public function paymentMethods()
     {
-    	try {
-    		$json     = '{"command": "GET_PAYMENT_METHODS"}';
-    		$json     = $this->addMetadata($json);
-    		$response = $this->curlRequest($json);
-    		if ($response->code != ApiStatus::SUCCESS) {
-    			throw new PaymentException($response->error);
-    		}
-    		return $response->paymentMethods;
-    	} catch (Exception $e) {
-    		throw new PaymentException($e->getMessage(), $e->getCode());
-    	}
+        try {
+            $json     = '{"command": "GET_PAYMENT_METHODS"}';
+            $json     = $this->addMetadata($json);
+            $response = $this->curlRequest($json);
+            if ($response->code != ApiStatus::SUCCESS) {
+                throw new PaymentException($response->error);
+            }
+            return $response->paymentMethods;
+        } catch (Exception $e) {
+            throw new PaymentException($e->getMessage(), $e->getCode());
+        }
     }
 
     /**
