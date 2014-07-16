@@ -49,6 +49,24 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     	unset($this->object, $this->credentials);
     }
 
+    /**
+     * @see ApiAbstract::getApiUrl()
+     */
+    public function testGetApiUrlInStaging()
+    {
+    	$rs = $this->object->setStaging(true)->getApiUrl();
+    	$this->assertEquals('https://stg.api.payulatam.com/payments-api/4.0/service.cgi', $rs);
+    }
+
+    /**
+     * @see ApiAbstract::getApiUrl()
+     */
+    public function testGetApiUrlInProduction()
+    {
+    	$rs = $this->object->setStaging(false)->getApiUrl();
+    	$this->assertEquals('https://api.payulatam.com/payments-api/4.0/service.cgi', $rs);
+    }
+
 	/**
 	 * @see PaymentApi::ping()
 	 */
