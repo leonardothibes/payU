@@ -26,6 +26,29 @@ class TransactionEntity implements EntityInterface
 	protected $type = null;
 
 	/**
+	 * Set type of transaction.
+	 *
+	 * @see   \PayU\Payment\PaymentTypes
+	 * @param stirng $type
+	 *
+	 * @return TransactionEntity
+	 */
+	public function setType($type)
+	{
+		$this->type = (string)$type;
+		return $this;
+	}
+
+	/**
+	 * Get type of transaction.
+	 * @return stirng
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	/**
 	 * Payment method.
 	 *
 	 * @see \PayU\Payment\PaymentMethods
@@ -34,12 +57,52 @@ class TransactionEntity implements EntityInterface
 	protected $paymentMethod = null;
 
 	/**
+	 * Set payment method.
+	 *
+	 * @see   \PayU\Payment\PaymentMethods
+	 * @param string $paymentMethod
+	 *
+	 * @return TransactionEntity
+	 */
+	public function setPaymentMethod($paymentMethod)
+	{
+		$this->paymentMethod = (string)$paymentMethod;
+		return $this;
+	}
+
+	/**
+	 * Get payment method.
+	 * @return string
+	 */
+	public function getPaymentMethod()
+	{
+		return $this->paymentMethod;
+	}
+
+	/**
 	 * Payment country.
 	 *
 	 * @see \PayU\Payment\PaymentCountries
 	 * @var string
 	 */
 	protected $paymentCountry = null;
+
+	/**
+	 * Set payment country.
+	 *
+	 * @see   \PayU\Payment\PaymentCountries
+	 * @param string $paymentCountry
+	 *
+	 * @return TransactionEntity
+	 */
+	public function setPaymentCountry($paymentCountry)
+	{
+		$this->paymentCountry = (string)$paymentCountry;
+	}
+
+	/**
+	 * Get payment country.
+	 */
 
 	/**
 	 * Client IP address(optional).
