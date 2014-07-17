@@ -17,5 +17,12 @@ use \PayU\Entity\EntityInterface;
  */
 class CreditCardEntity implements EntityInterface
 {
-
+	/**
+	 * Generate arry order.
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return array();
+	}
 }
