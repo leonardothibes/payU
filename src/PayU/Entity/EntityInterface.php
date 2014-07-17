@@ -16,13 +16,8 @@ namespace PayU\Entity;
 interface EntityInterface
 {
 	/**
-	 * Generate json order.
-	 * @return string
+	 * Generate arry order.
+	 * @return array
 	 */
-	public function toJson();
-
-	/**
-	 * Same of "toJson" method.
-	 */
-	public function __toString();
+	public function toArray();
 }
