@@ -174,8 +174,8 @@ class OrderEntity implements EntityInterface
 	/**
 	 * Shipping addreess.
 	 *
-	 * @see    \PayU\Entity\Transaction\ShippingAddressEntity
-	 * @return ShippingAddressEntity
+	 * @see \PayU\Entity\Transaction\ShippingAddressEntity
+	 * @var ShippingAddressEntity
 	 */
 	protected $shippingAddress = null;
 
@@ -201,23 +201,65 @@ class OrderEntity implements EntityInterface
 	}
 
 	/**
-	 * Order buyer interface.
+	 * Order buyer.
 	 *
-	 * @see    \PayU\Entity\Transaction\Order\BuyerEntity
-	 * @return BuyerEntity
+	 * @see \PayU\Entity\Transaction\Order\BuyerEntity
+	 * @var BuyerEntity
 	 */
 	protected $buyer = null;
 
 	/**
+	 * Set order buyer.
+	 *
+	 * @param  BuyerEntity $buyer
+	 * @return OrderEntity
+	 */
+	public function setBuyer(BuyerEntity $buyer)
+	{
+		$this->buyer = $buyer;
+		return $this;
+	}
+
+	/**
+	 * Get order buyer.
+	 * @return BuyerEntity
+	 */
+	public function getBuyer()
+	{
+		return $this->buyer;
+	}
+
+	/**
 	 * Order additional values.
 	 *
-	 * @see    \PayU\Entity\Transaction\Order\AdditionalValuesEntity
-	 * @return AdditionalValuesEntity
+	 * @see \PayU\Entity\Transaction\Order\AdditionalValuesEntity
+	 * @var AdditionalValuesEntity
 	 */
 	protected $additionalValues = null;
 
 	/**
-	 * Generate arry order.
+	 * Set order additional values.
+	 *
+	 * @param  AdditionalValuesEntity $additionalValues
+	 * @return OrderEntity
+	 */
+	public function setAdditionalValues(AdditionalValues $additionalValues)
+	{
+		$this->additionalValues;
+		return $this;
+	}
+
+	/**
+	 * Get order additional values.
+	 * @return AdditionalValuesEntity
+	 */
+	public function getAdditionalValues()
+	{
+		return $this->additionalValues;
+	}
+
+	/**
+	 * Generate array order.
 	 * @return array
 	 */
 	public function toArray()
