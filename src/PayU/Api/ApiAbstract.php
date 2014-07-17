@@ -211,13 +211,4 @@ abstract class ApiAbstract implements ApiInterface
 
         return $rs;
     }
-
-    /**
-     * Ping request for service health.
-     * @return bool
-     */
-    public function ping()
-    {
-    	//Nothing to do...
-    }
 }

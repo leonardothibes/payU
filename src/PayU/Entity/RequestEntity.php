@@ -7,6 +7,7 @@
 namespace PayU\Entity;
 
 use \PayU\Api\ApiAbstract;
+use \PayU\Payment\PaymentApi;
 use \PayU\Entity\EntityInterface;
 
 /**
@@ -23,6 +24,17 @@ class RequestEntity extends ApiAbstract
 	 * @var array
 	 */
 	protected $request = array('command' => 'SUBMIT_TRANSACTION');
+
+	/**
+	 * Ping request for service health.
+	 * @return bool
+	 */
+	public function ping()
+	{
+		$payment = new PaymentApi($this->credentials);
+		$payment->setStaging($this->isStaging);
+		return $payment->ping();
+	}
 
 	/**
 	 * Add a transaction entity to json.

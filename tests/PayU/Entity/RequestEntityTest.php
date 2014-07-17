@@ -48,31 +48,27 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
     	unset($this->object, $this->credentials);
     }
 
-	public function testFoo()
-	{
-		$rs = $this->object->toJson();
+    /**
+     * @see RequestEntity::ping()
+     */
+    public function testPing()
+    {
+    	$rs = $this->object->ping();
+    	$this->assertTrue($rs);
+    }
 
-		$rs = json_decode($rs, true);
-		\Tbs\Log::debug($rs);
+    /**
+     * @see RequestEntity::addTransaction()
+     */
+	public function testAddTransaction()
+	{
+		$transaction = array('test' => 'ok');
+		$rs          = $this->object->addTransaction($transaction)->toJson();
+		$rs          = json_decode($rs, true);
+
+		$this->assertInternalType('array', $rs);
+		$this->assertArrayHasKey('transaction', $rs);
+		$this->assertArrayHasKey('test', $rs['transaction']);
+		$this->assertEquals('ok', $rs['transaction']['test']);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
