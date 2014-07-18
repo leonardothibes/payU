@@ -161,7 +161,7 @@ class ShippingAddressEntity implements EntityInterface
 	 */
 	public function setPostalCode($postalCode)
 	{
-		$this->portalCode = (string)$postalCode;
+		$this->postalCode = (string)$postalCode;
 		return $this;
 	}
 
@@ -203,6 +203,14 @@ class ShippingAddressEntity implements EntityInterface
 	 */
 	public function toArray()
 	{
-		return array();
+		return array(
+			'street1'    => $this->street1,
+			'street2'    => $this->street2,
+			'city'       => $this->city,
+			'state'      => $this->state,
+			'country'    => $this->country,
+			'postalCode' => $this->postalCode,
+			'phone'      => $this->phone,
+		);
 	}
 }
