@@ -187,7 +187,7 @@ class ShippingAddressEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPhone()
     {
-    	$phone = rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9);
+    	$phone = rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9);
     	$rs    = $this->object->setPhone($phone);
     	$this->assertInstanceOf('\PayU\Entity\Transaction\ShippingAddressEntity', $rs);
 
