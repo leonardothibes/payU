@@ -7,6 +7,7 @@
 namespace PayU\Entity\Transaction;
 
 use \PayU\Entity\EntityInterface;
+use \PayU\Entity\Transaction\Order\OrderEntity;
 
 /**
  * Request transaction order class.
@@ -102,7 +103,12 @@ class TransactionEntity implements EntityInterface
 
 	/**
 	 * Get payment country.
+	 * @return string
 	 */
+	public function getPaymentCountry()
+	{
+		return $this->paymentCountry;
+	}
 
 	/**
 	 * Client IP address(optional).
@@ -111,22 +117,106 @@ class TransactionEntity implements EntityInterface
 	protected $ipAddress = null;
 
 	/**
+	 * Set client IP address.
+	 *
+	 * @param  string $ipAddress
+	 * @return TransactionEntity
+	 */
+	public function setIpAddress($ipAddress)
+	{
+		$this->ipAddress = (string)$ipAddress;
+		return $this;
+	}
+
+	/**
+	 * Get client IP address.
+	 * @return string
+	 */
+	public function getIpAddress()
+	{
+		return (string)$this->ipAddress;
+	}
+
+	/**
 	 * Cookie value on client(optional).
 	 * @var string
 	 */
 	protected $cookie = null;
 
 	/**
-	 * Client browser name(optional).
+	 * Set cookie value.
+	 *
+	 * @param  string $cookie
+	 * @return TransactionEntity
+	 */
+	public function setCookie($cookie)
+	{
+		$this->cookie = (string)$cookie;
+		return $this;
+	}
+
+	/**
+	 * Get cookie value.
+	 * @return string
+	 */
+	public function getCookie()
+	{
+		return (string)$this->cookie;
+	}
+
+	/**
+	 * Client user agent(optional).
 	 * @var string
 	 */
 	protected $userAgent = null;
+
+	/**
+	 * Set user agent.
+	 *
+	 * @param  string $userAgent
+	 * @return TransactionEntity
+	 */
+	public function setUserAgent($userAgent)
+	{
+		$this->userAgent = (string)$userAgent;
+		return $this;
+	}
+
+	/**
+	 * Set user agent.
+	 * @return string
+	 */
+	public function getUserAgent()
+	{
+		return (string)$this->userAgent;
+	}
 
 	/**
 	 * Order registry.
 	 * @var \PayU\Entity\Transaction\Order\OrderEntity
 	 */
 	protected $order = null;
+
+	/**
+	 * Set order registry.
+	 *
+	 * @param  OrderEntity $order
+	 * @return TransactionEntity
+	 */
+	public function serOrder(OrderEntity $order)
+	{
+		$this->order = $order;
+		return $this;
+	}
+
+	/**
+	 * Get order registry.
+	 * @return OrderEntity
+	 */
+	public function getOrder()
+	{
+		return $this->order;
+	}
 
 	/**
 	 * Generate arry order.
@@ -137,35 +227,3 @@ class TransactionEntity implements EntityInterface
 		return array();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
