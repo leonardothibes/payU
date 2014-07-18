@@ -8,6 +8,9 @@ namespace PayU\Entity\Transaction;
 
 use \PayU\Entity\EntityInterface;
 use \PayU\Entity\Transaction\Order\OrderEntity;
+use \PayU\Entity\Transaction\CreditCardEntity;
+use \PayU\Entity\Transaction\PayerEntity;
+use \PayU\Entity\Transaction\ExtraParametersEntity;
 
 /**
  * Request transaction order class.
@@ -219,6 +222,87 @@ class TransactionEntity implements EntityInterface
 	}
 
 	/**
+	 * Credit card registry.
+	 * @var \PayU\Entity\Transaction\CreditCardEntity
+	 */
+	protected $creditCard = null;
+
+	/**
+	 * Set credit card registry.
+	 *
+	 * @param  CreditCardEntity $creditCard
+	 * @return TransactionEntity
+	 */
+	public function setCreditCard(CreditCardEntity $creditCard)
+	{
+		$this->creditCard = $creditCard;
+		return $this;
+	}
+
+	/**
+	 * Get credit card registry.
+	 * @return CreditCardEntity
+	 */
+	public function getCreditCard()
+	{
+		return $this->creditCard;
+	}
+
+	/**
+	 * Payer registry.
+	 * @var \PayU\Entity\Transaction\PayerEntity
+	 */
+	protected $payer = null;
+
+	/**
+	 * Set payer registry.
+	 *
+	 * @param  PayerEntity $payer
+	 * @return TransactionEntity
+	 */
+	public function setPayer(PayerEntity $payer)
+	{
+		$this->payer = $payer;
+		return $this;
+	}
+
+	/**
+	 * Get payer registry.
+	 * @return PayerEntity
+	 */
+	public function getPayer()
+	{
+		return $this->payer;
+	}
+
+	/**
+	 * Extra parameters registry.
+	 * @var \PayU\Entity\Transaction\ExtraParametersEntity
+	 */
+	protected $extraParameters = null;
+
+	/**
+	 * Set extra parameters registry.
+	 *
+	 * @param  ExtraParametersEntity $extraParameters
+	 * @return TransactionEntity
+	 */
+	public function setExtraParameters(ExtraParametersEntity $extraParameters)
+	{
+		$this->extraParameters = $extraParameters;
+		return $this;
+	}
+
+	/**
+	 * Get extra parameters registry.
+	 * @return ExtraParametersEntity
+	 */
+	public function getExtraParameters()
+	{
+		return $this->extraParameters;
+	}
+
+	/**
 	 * Generate arry order.
 	 * @return array
 	 */
@@ -227,3 +311,21 @@ class TransactionEntity implements EntityInterface
 		return array();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

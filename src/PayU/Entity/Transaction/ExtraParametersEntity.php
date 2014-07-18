@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 
-use PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityInterface;
 
 /**
  * Extra parameters entity class.
@@ -15,7 +15,7 @@ use PayU\Entity\EntityInterface;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class extraParameters implements EntityInterface
+class ExtraParametersEntity implements EntityInterface
 {
 	/**
 	 * Generate arry order.
