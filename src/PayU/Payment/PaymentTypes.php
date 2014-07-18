@@ -15,6 +15,6 @@ namespace PayU\Payment;
  */
 class PaymentTypes
 {
-	const AUTHORIZATION_AND_CAPTURE = 'AUTHORIZATION_AND_CAPTURE';
-	const AUTHORIZATION             = 'AUTHORIZATION';
+    const AUTHORIZATION_AND_CAPTURE = 'AUTHORIZATION_AND_CAPTURE';
+    const AUTHORIZATION             = 'AUTHORIZATION';
 }

@@ -17,12 +17,12 @@ use \PayU\Entity\EntityInterface;
  */
 class BuyerEntity implements EntityInterface
 {
-	/**
-	 * Generate arry order.
-	 * @return array
-	 */
-	public function toArray()
-	{
-		return array();
-	}
+    /**
+     * Generate arry order.
+     * @return array
+     */
+    public function toArray()
+    {
+        return array();
+    }
 }

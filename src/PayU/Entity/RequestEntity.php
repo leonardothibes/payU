@@ -19,42 +19,42 @@ use \PayU\Entity\EntityInterface;
  */
 class RequestEntity extends ApiAbstract
 {
-	/**
-	 * Request body.
-	 * @var array
-	 */
-	protected $request = array('command' => 'SUBMIT_TRANSACTION');
+    /**
+     * Request body.
+     * @var array
+     */
+    protected $request = array('command' => 'SUBMIT_TRANSACTION');
 
-	/**
-	 * Ping request for service health.
-	 * @return bool
-	 */
-	public function ping()
-	{
-		$payment = new PaymentApi($this->credentials);
-		$payment->setStaging($this->isStaging);
-		return $payment->ping();
-	}
+    /**
+     * Ping request for service health.
+     * @return bool
+     */
+    public function ping()
+    {
+        $payment = new PaymentApi($this->credentials);
+        $payment->setStaging($this->isStaging);
+        return $payment->ping();
+    }
 
-	/**
-	 * Add a transaction entity to json.
-	 *
-	 * @param  array $transaction
-	 * @return RequestEntity
-	 */
-	public function addTransaction(array $transaction)
-	{
-		$this->request['transaction'] = $transaction;
-		return $this;
-	}
+    /**
+     * Add a transaction entity to json.
+     *
+     * @param  array $transaction
+     * @return RequestEntity
+     */
+    public function addTransaction(array $transaction)
+    {
+        $this->request['transaction'] = $transaction;
+        return $this;
+    }
 
-	/**
-	 * Generate json order.
-	 * @return string
-	 */
-	public function toJson()
-	{
-		$json = json_encode($this->request);
-		return $this->addMetadata($json);
-	}
+    /**
+     * Generate json order.
+     * @return string
+     */
+    public function toJson()
+    {
+        $json = json_encode($this->request);
+        return $this->addMetadata($json);
+    }
 }

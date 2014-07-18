@@ -15,9 +15,9 @@ namespace PayU\Entity;
  */
 interface EntityInterface
 {
-	/**
-	 * Generate arry order.
-	 * @return array
-	 */
-	public function toArray();
+    /**
+     * Generate arry order.
+     * @return array
+     */
+    public function toArray();
 }

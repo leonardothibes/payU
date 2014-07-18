@@ -15,10 +15,10 @@ namespace PayU\Payment;
  */
 class PaymentCountries
 {
-	const BRAZIL    = 'BR';
-	const ARGENTINA = 'AR';
-	const PANAMA    = 'PA';
-	const MEXICO    = 'ME';
-	const COLOMBIA  = 'CO';
-	const PERU      = 'PE';
+    const BRAZIL    = 'BR';
+    const ARGENTINA = 'AR';
+    const PANAMA    = 'PA';
+    const MEXICO    = 'ME';
+    const COLOMBIA  = 'CO';
+    const PERU      = 'PE';
 }
