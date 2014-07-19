@@ -195,4 +195,31 @@ class ShippingAddressEntityTest extends \PHPUnit_Framework_TestCase
     	$this->assertInternalType('string', $rs);
     	$this->assertEquals($phone, $rs);
     }
+
+    /**
+     * @see ShippingAddressEntity::toArray()
+     */
+    public function testToArray()
+    {
+    	$entity = array(
+    		'street1'    => 'street1_' . rand(1,1000),
+   			'street2'    => 'street1_' . rand(1,1000),
+   			'city'       => 'city_' . rand(1,1000),
+   			'state'      => 'state_' . rand(1,1000),
+   			'country'    => 'country_' . rand(1,1000),
+   			'postalCode' => 'postalCode_' . rand(1,1000),
+   			'phone'      => 'phone_' . rand(1,1000),
+    	);
+
+    	$this->object->setStreet1($entity['street1'])
+    	             ->setStreet2($entity['street2'])
+    	             ->setCity($entity['city'])
+    	             ->setState($entity['state'])
+    	             ->setCountry($entity['country'])
+    	             ->setPostalCode($entity['postalCode'])
+    	             ->setPhone($entity['phone']);
+
+    	$rs = $this->object->toArray();
+    	$this->assertSame($entity, $rs);
+    }
 }
