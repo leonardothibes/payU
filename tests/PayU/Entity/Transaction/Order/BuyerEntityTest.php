@@ -173,13 +173,13 @@ class BuyerEntityTest extends \PHPUnit_Framework_TestCase
     public function testToArray()
     {
     	$address = array(
-    			'street1'    => 'street1_' . rand(1,1000),
-    			'street2'    => 'street2_' . rand(1,1000),
-    			'city'       => 'city_' . rand(1,1000),
-    			'state'      => 'state_' . rand(1,1000),
-    			'country'    => 'country_' . rand(1,1000),
-    			'postalCode' => 'postalCode_' . rand(1,1000),
-    			'phone'      => 'phone_' . rand(1,1000),
+   			'street1'    => 'street1_' . rand(1,1000),
+   			'street2'    => 'street2_' . rand(1,1000),
+   			'city'       => 'city_' . rand(1,1000),
+   			'state'      => 'state_' . rand(1,1000),
+   			'country'    => 'country_' . rand(1,1000),
+   			'postalCode' => 'postalCode_' . rand(1,1000),
+   			'phone'      => 'phone_' . rand(1,1000),
     	);
     	$shippingAddress = new ShippingAddressEntity();
     	$shippingAddress->setStreet1($address['street1'])
