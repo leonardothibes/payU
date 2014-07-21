@@ -6,7 +6,6 @@
 
 namespace PayU\Entity\Transaction;
 use \PayU\Entity\Transaction\CreditCardEntity;
-use Tbs\Helper\CreditCard;
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 /**
