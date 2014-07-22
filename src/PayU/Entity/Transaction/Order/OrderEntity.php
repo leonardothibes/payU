@@ -7,6 +7,8 @@
 namespace PayU\Entity\Transaction\Order;
 
 use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityException;
+
 use \PayU\Entity\Transaction\ShippingAddressEntity;
 use \PayU\Entity\Transaction\Order\BuyerEntity;
 use \PayU\Entity\Transaction\Order\AdditionalValuesEntity;
@@ -20,6 +22,16 @@ use \PayU\Entity\Transaction\Order\AdditionalValuesEntity;
  */
 class OrderEntity implements EntityInterface
 {
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->shippingAddress  = new ShippingAddressEntity();
+		$this->additionalValues = new AdditionalValuesEntity();
+		$this->buyer            = new BuyerEntity();
+	}
+
     /**
      * Client identifier id.
      * @var string
@@ -40,6 +52,7 @@ class OrderEntity implements EntityInterface
 
     /**
      * Get client identifier id.
+     * @return string
      */
     public function getAccountId()
     {
@@ -103,7 +116,7 @@ class OrderEntity implements EntityInterface
      * Language of e-mails.
      * @var string
      */
-    protected $language = null;
+    protected $language = 'en';
 
     /**
      * Set language of e-mails.
@@ -137,9 +150,14 @@ class OrderEntity implements EntityInterface
      *
      * @param  string $notifyUrl
      * @return OrderEntity
+     * @throws EntityException
      */
     public function setNotifyUrl($notifyUrl)
     {
+    	if (substr($notifyUrl, 0, 4) != 'http') {
+    		$message = sprintf('Invalid url: %s', $notifyUrl);
+    		throw new EntityException($message);
+    	}
         $this->notifyUrl = (string)$notifyUrl;
         return $this;
     }
@@ -155,12 +173,21 @@ class OrderEntity implements EntityInterface
 
     /**
      * Signature of order.
-     *
-     * This class self generate the signature.
-     *
      * @var string
      */
     protected $signature = null;
+
+    /**
+     * Set signature of order.
+     *
+     * @param  string $signature
+     * @return OrderEntity
+     */
+    public function setSignature($signature)
+    {
+    	$this->signature = (string)$signature;
+    	return $this;
+    }
 
     /**
      * Get signature of order.
@@ -243,7 +270,7 @@ class OrderEntity implements EntityInterface
      * @param  AdditionalValuesEntity $additionalValues
      * @return OrderEntity
      */
-    public function setAdditionalValues(AdditionalValues $additionalValues)
+    public function setAdditionalValues(AdditionalValuesEntity $additionalValues)
     {
         $this->additionalValues;
         return $this;
@@ -264,6 +291,16 @@ class OrderEntity implements EntityInterface
      */
     public function toArray()
     {
-        return array();
+        return array(
+			'accountId'        => $this->accountId,
+			'referenceCode'    => $this->referenceCode,
+			'description'      => $this->description,
+			'language'         => $this->language,
+			'notifyUrl'        => $this->notifyUrl,
+			'signature'        => $this->signature,
+			'shippingAddress'  => $this->shippingAddress->toArray(),
+			'buyer'            => $this->buyer->toArray(),
+			'additionalValues' => $this->additionalValues->toArray(),
+        );
     }
 }
