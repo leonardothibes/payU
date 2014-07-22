@@ -21,15 +21,15 @@ use \Tbs\Helper\Email;
  */
 class BuyerEntity implements EntityInterface
 {
-	/**
-	 * Constructor.
-	 */
-	public function __construct()
-	{
-		$this->shippingAddress = new ShippingAddressEntity();
-	}
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->shippingAddress = new ShippingAddressEntity();
+    }
 
-	/**
+    /**
      * Payer full name.
      * @var string
      */
@@ -92,55 +92,55 @@ class BuyerEntity implements EntityInterface
      * DNI number
      * @var string
      */
-	protected $dniNumber = null;
+    protected $dniNumber = null;
 
-	/**
-	 * Set DNI number
-	 *
-	 * @param  string $dniNumber
-	 * @return BuyerEntity
-	 */
-	public function setDniNumber($dniNumber)
-	{
-		$this->dniNumber = (string)$dniNumber;
-		return $this;
-	}
+    /**
+     * Set DNI number
+     *
+     * @param  string $dniNumber
+     * @return BuyerEntity
+     */
+    public function setDniNumber($dniNumber)
+    {
+        $this->dniNumber = (string)$dniNumber;
+        return $this;
+    }
 
-	/**
-	 * Get DNI number
-	 * @return string
-	 */
-	public function getDniNumber()
-	{
-		return (string)$this->dniNumber;
-	}
+    /**
+     * Get DNI number
+     * @return string
+     */
+    public function getDniNumber()
+    {
+        return (string)$this->dniNumber;
+    }
 
-	/**
-	 * Shipping address.
-	 * @var ShippingAddressEntity
-	 */
-	protected $shippingAddress = null;
+    /**
+     * Shipping address.
+     * @var ShippingAddressEntity
+     */
+    protected $shippingAddress = null;
 
-	/**
-	 * Set shipping address.
-	 *
-	 * @param  ShippingAddressEntity $shippingAddress
-	 * @return BuyerEntity
-	 */
-	public function setShippingAddress(ShippingAddressEntity $shippingAddress)
-	{
-		$this->shippingAddress = $shippingAddress;
-		return $this;
-	}
+    /**
+     * Set shipping address.
+     *
+     * @param  ShippingAddressEntity $shippingAddress
+     * @return BuyerEntity
+     */
+    public function setShippingAddress(ShippingAddressEntity $shippingAddress)
+    {
+        $this->shippingAddress = $shippingAddress;
+        return $this;
+    }
 
-	/**
-	 * Get shipping address.
-	 * @return ShippingAddressEntity
-	 */
-	public function getShippingAddress()
-	{
-		return $this->shippingAddress;
-	}
+    /**
+     * Get shipping address.
+     * @return ShippingAddressEntity
+     */
+    public function getShippingAddress()
+    {
+        return $this->shippingAddress;
+    }
 
     /**
      * Generate arry order.
@@ -149,10 +149,10 @@ class BuyerEntity implements EntityInterface
     public function toArray()
     {
         return array(
-        	'fullName'        => $this->fullName,
-        	'emailAddress'    => $this->emailAddress,
-        	'dniNumber'       => $this->dniNumber,
-        	'shippingAddress' => $this->shippingAddress->toArray(),
+            'fullName'        => $this->fullName,
+            'emailAddress'    => $this->emailAddress,
+            'dniNumber'       => $this->dniNumber,
+            'shippingAddress' => $this->shippingAddress->toArray(),
         );
     }
 }

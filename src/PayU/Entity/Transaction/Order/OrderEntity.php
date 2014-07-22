@@ -22,15 +22,15 @@ use \PayU\Entity\Transaction\Order\AdditionalValuesEntity;
  */
 class OrderEntity implements EntityInterface
 {
-	/**
-	 * Constructor.
-	 */
-	public function __construct()
-	{
-		$this->shippingAddress  = new ShippingAddressEntity();
-		$this->additionalValues = new AdditionalValuesEntity();
-		$this->buyer            = new BuyerEntity();
-	}
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->shippingAddress  = new ShippingAddressEntity();
+        $this->additionalValues = new AdditionalValuesEntity();
+        $this->buyer            = new BuyerEntity();
+    }
 
     /**
      * Client identifier id.
@@ -154,10 +154,10 @@ class OrderEntity implements EntityInterface
      */
     public function setNotifyUrl($notifyUrl)
     {
-    	if (substr($notifyUrl, 0, 4) != 'http') {
-    		$message = sprintf('Invalid url: %s', $notifyUrl);
-    		throw new EntityException($message);
-    	}
+        if (substr($notifyUrl, 0, 4) != 'http') {
+            $message = sprintf('Invalid url: %s', $notifyUrl);
+            throw new EntityException($message);
+        }
         $this->notifyUrl = (string)$notifyUrl;
         return $this;
     }
@@ -185,8 +185,8 @@ class OrderEntity implements EntityInterface
      */
     public function setSignature($signature)
     {
-    	$this->signature = (string)$signature;
-    	return $this;
+        $this->signature = (string)$signature;
+        return $this;
     }
 
     /**
@@ -292,15 +292,15 @@ class OrderEntity implements EntityInterface
     public function toArray()
     {
         return array(
-			'accountId'        => $this->accountId,
-			'referenceCode'    => $this->referenceCode,
-			'description'      => $this->description,
-			'language'         => $this->language,
-			'notifyUrl'        => $this->notifyUrl,
-			'signature'        => $this->signature,
-			'shippingAddress'  => $this->shippingAddress->toArray(),
-			'buyer'            => $this->buyer->toArray(),
-			'additionalValues' => $this->additionalValues->toArray(),
+            'accountId'        => $this->accountId,
+            'referenceCode'    => $this->referenceCode,
+            'description'      => $this->description,
+            'language'         => $this->language,
+            'notifyUrl'        => $this->notifyUrl,
+            'signature'        => $this->signature,
+            'shippingAddress'  => $this->shippingAddress->toArray(),
+            'buyer'            => $this->buyer->toArray(),
+            'additionalValues' => $this->additionalValues->toArray(),
         );
     }
 }
