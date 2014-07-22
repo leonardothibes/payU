@@ -17,37 +17,37 @@ use \PayU\Entity\EntityInterface;
  */
 class AdditionalValuesEntity implements EntityInterface
 {
-	/**
-	 * Additional values indexes constants.
-	 */
-	const TX_VALUE            = 'TX_VALUE';
-	const TX_TAX              = 'TX_TAX';
-	const TX_TAX_RETURN_BASE  = 'TX_TAX_RETURN_BASE';
-	const TX_ADDITIONAL_VALUE = 'TX_ADDITIONAL_VALUE';
+    /**
+     * Additional values indexes constants.
+     */
+    const TX_VALUE            = 'TX_VALUE';
+    const TX_TAX              = 'TX_TAX';
+    const TX_TAX_RETURN_BASE  = 'TX_TAX_RETURN_BASE';
+    const TX_ADDITIONAL_VALUE = 'TX_ADDITIONAL_VALUE';
 
-	/**
-	 * Additional values list.
-	 * @var array
-	 */
-	protected $additionalValues = array();
+    /**
+     * Additional values list.
+     * @var array
+     */
+    protected $additionalValues = array();
 
-	/**
-	 * Add tax.
-	 *
-	 * @param string $tax
-	 * @param string $currency
-	 * @param string $value
-	 *
-	 * @return AdditionalValuesEntity
-	 */
-	public function addTax($tax, $currency, $value)
-	{
-		$this->additionalValues[$tax]['currency'] = (string)$currency;
-		$this->additionalValues[$tax]['value']    = (string)$value;
-		return $this;
-	}
+    /**
+     * Add tax.
+     *
+     * @param string $tax
+     * @param string $currency
+     * @param string $value
+     *
+     * @return AdditionalValuesEntity
+     */
+    public function addTax($tax, $currency, $value)
+    {
+        $this->additionalValues[$tax]['currency'] = (string)$currency;
+        $this->additionalValues[$tax]['value']    = (string)$value;
+        return $this;
+    }
 
-	/**
+    /**
      * Generate arry order.
      * @return array
      */

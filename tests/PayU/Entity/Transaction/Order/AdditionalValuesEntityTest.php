@@ -59,30 +59,13 @@ class AdditionalValuesEntityTest extends \PHPUnit_Framework_TestCase
     	$rs = $this->object->toArray();
 
     	$this->assertInternalType('array', $rs);
+    	$this->assertEquals(4, count($rs));
+
+    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_VALUE, $rs);
+    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_TAX, $rs);
+    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_TAX_RETURN_BASE, $rs);
+    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, $rs);
+
+    	$this->markTestIncomplete();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
