@@ -7,10 +7,16 @@
 namespace PayU\Entity\Transaction;
 
 use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityException;
+
 use \PayU\Entity\Transaction\Order\OrderEntity;
 use \PayU\Entity\Transaction\CreditCardEntity;
 use \PayU\Entity\Transaction\PayerEntity;
 use \PayU\Entity\Transaction\ExtraParametersEntity;
+
+use \PayU\Payment\PaymentCountries;
+use \PayU\Payment\PaymentMethods;
+use \PayU\Payment\PaymentTypes;
 
 /**
  * Request transaction order class.
@@ -21,6 +27,17 @@ use \PayU\Entity\Transaction\ExtraParametersEntity;
  */
 class TransactionEntity implements EntityInterface
 {
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->order           = new OrderEntity();
+		$this->creditCard      = new CreditCardEntity();
+		$this->payer           = new PayerEntity();
+		$this->extraParameters = new ExtraParametersEntity();
+	}
+
     /**
      * Type of transaction.
      *
@@ -33,12 +50,19 @@ class TransactionEntity implements EntityInterface
      * Set type of transaction.
      *
      * @see   \PayU\Payment\PaymentTypes
-     * @param stirng $type
+     * @param string $type
      *
      * @return TransactionEntity
+     * @throws EntityException
      */
     public function setType($type)
     {
+    	if (
+    		$type != PaymentTypes::AUTHORIZATION_AND_CAPTURE and
+    		$type != PaymentTypes::AUTHORIZATION
+		) {
+    		throw new EntityException('Invalid transaction type');
+    	}
         $this->type = (string)$type;
         return $this;
     }
@@ -49,7 +73,7 @@ class TransactionEntity implements EntityInterface
      */
     public function getType()
     {
-        return $this->type;
+        return (string)$this->type;
     }
 
     /**
@@ -80,7 +104,7 @@ class TransactionEntity implements EntityInterface
      */
     public function getPaymentMethod()
     {
-        return $this->paymentMethod;
+        return (string)$this->paymentMethod;
     }
 
     /**
@@ -102,6 +126,7 @@ class TransactionEntity implements EntityInterface
     public function setPaymentCountry($paymentCountry)
     {
         $this->paymentCountry = (string)$paymentCountry;
+        return $this;
     }
 
     /**
@@ -110,7 +135,7 @@ class TransactionEntity implements EntityInterface
      */
     public function getPaymentCountry()
     {
-        return $this->paymentCountry;
+        return (string)$this->paymentCountry;
     }
 
     /**
@@ -206,7 +231,7 @@ class TransactionEntity implements EntityInterface
      * @param  OrderEntity $order
      * @return TransactionEntity
      */
-    public function serOrder(OrderEntity $order)
+    public function setOrder(OrderEntity $order)
     {
         $this->order = $order;
         return $this;
