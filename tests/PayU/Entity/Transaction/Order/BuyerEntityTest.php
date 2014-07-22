@@ -128,7 +128,15 @@ class BuyerEntityTest extends \PHPUnit_Framework_TestCase
     public function testGetShippingAddress()
     {
     	$rs = $this->object->getShippingAddress();
-    	$this->assertNull($rs);
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\ShippingAddressEntity', $rs);
+
+    	$this->assertEquals(0, strlen($rs->getStreet1()));
+    	$this->assertEquals(0, strlen($rs->getStreet2()));
+    	$this->assertEquals(0, strlen($rs->getCity()));
+    	$this->assertEquals(0, strlen($rs->getState()));
+    	$this->assertEquals(0, strlen($rs->getCountry()));
+    	$this->assertEquals(0, strlen($rs->getPostalCode()));
+    	$this->assertEquals(0, strlen($rs->getPhone()));
     }
 
     /**
