@@ -6,9 +6,8 @@
 
 namespace PayU\Entity;
 
-use \PayU\Api\ApiAbstract;
-use \PayU\Payment\PaymentApi;
 use \PayU\Entity\EntityInterface;
+use \PayU\Entity\Transaction\TransactionEntity;
 
 /**
  * Request order class.
@@ -17,44 +16,49 @@ use \PayU\Entity\EntityInterface;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class RequestEntity extends ApiAbstract
+class RequestEntity implements EntityInterface
 {
     /**
-     * Request body.
-     * @var array
+     * Transaction object.
+     * @var TransactionEntity
      */
-    protected $request = array('command' => 'SUBMIT_TRANSACTION');
+	protected $transaction = null;
 
-    /**
-     * Ping request for service health.
-     * @return bool
-     */
-    public function ping()
-    {
-        $payment = new PaymentApi($this->credentials);
-        $payment->setStaging($this->isStaging);
-        return $payment->ping();
-    }
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->transaction = new TransactionEntity();
+	}
 
-    /**
-     * Add a transaction entity to json.
-     *
-     * @param  array $transaction
-     * @return RequestEntity
-     */
-    public function addTransaction(array $transaction)
-    {
-        $this->request['transaction'] = $transaction;
-        return $this;
-    }
+	/**
+	 * Set the transaction.
+	 *
+	 * @param  TransactionEntity $transaction
+	 * @return RequestEntity
+	 */
+	public function setTransaction(TransactionEntity $transaction)
+	{
+		$this->transaction = $transaction;
+		return $this;
+	}
 
-    /**
-     * Generate json order.
-     * @return string
-     */
-    public function toJson()
-    {
-        $json = json_encode($this->request);
-        return $this->addMetadata($json);
-    }
+	/**
+	 * Get the transaction.
+	 * @return TransactionEntity
+	 */
+	public function getTransaction()
+	{
+		return $this->transaction;
+	}
+
+	/**
+	 * Generate arry order.
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return array('transaction' => $this->transaction->toArray());
+	}
 }

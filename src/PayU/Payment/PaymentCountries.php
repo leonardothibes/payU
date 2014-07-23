@@ -7,7 +7,7 @@
 namespace PayU\Payment;
 
 /**
- * Constants for supported payment cuntries.
+ * Constants for supported payment countries.
  *
  * @package PayU\Payment
  * @author Leonardo Thibes <leonardothibes@gmail.com>
