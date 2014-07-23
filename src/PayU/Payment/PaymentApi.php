@@ -10,6 +10,9 @@ use \PayU\Payment\PaymentException;
 use \PayU\Api\ApiAbstract;
 use \PayU\Api\ApiStatus;
 
+use \PayU\Payment\PaymentTypes;
+use \PayU\Entity\RequestEntity;
+
 use \Exception;
 use \stdClass;
 
@@ -71,23 +74,47 @@ class PaymentApi extends ApiAbstract
     }
 
     /**
-     * Authorize a payment order.
+     * Make a request "authorize" and "authorizeAndCapture" methods.
+     *
+     * @param RequestEntity $request
+     * @param string        $type
+     *
+     * @return ResponseEntity
      */
-    public function authorize()
+    private function authorizeRequest(RequestEntity $request, $type)
     {
+    	$request = array('command' => 'SUBMIT_TRANSACTION');
+    	$json    = json_encode($request->toArray());
+    	$json    = $this->addMetadata($json);
+    	return $this->curlRequest($json);
+    }
+
+    /**
+     * Authorize a payment order.
+     *
+     * @param  RequestEntity $request
+     * @return ResponseEntity
+     */
+    public function authorize(RequestEntity $request)
+    {
+    	return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION);
+    }
+
+    /**
+     * Authorize and capture a payment order.
+     *
+     * @param  RequestEntity $request
+     * @return ResponseEntity
+     */
+    public function authorizeAndCapture(RequestEntity $request)
+    {
+    	return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION_AND_CAPTURE);
     }
 
     /**
      * Capture an payment.
      */
     public function capture()
-    {
-    }
-
-    /**
-     * Authorize and capture a payment order.
-     */
-    public function authorizeAndCapture()
     {
     }
 
