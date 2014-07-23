@@ -12,6 +12,8 @@ use \PayU\Payment\PaymentCountries;
 
 use \PayU\Entity\Transaction\TransactionEntity;
 use \PayU\Entity\Transaction\CreditCardEntity;
+use \PayU\Entity\Transaction\PayerEntity;
+use \PayU\Entity\Transaction\ExtraParametersEntity;
 use \PayU\Entity\Transaction\Order\OrderEntity;
 
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'bootstrap.php';
@@ -329,7 +331,22 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPayer()
     {
-    	$this->markTestIncomplete();
+    	$payerEntity = new PayerEntity();
+
+    	$fullName = 'person name ' . rand(1,9) . rand(1,9) . rand(1,9);
+    	$payerEntity->setFullName($fullName);
+
+    	$emailAddress = 'email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com';
+    	$payerEntity->setEmailAddress($emailAddress);
+
+    	$rs = $this->object->setPayer($payerEntity);
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\TransactionEntity', $rs);
+
+    	$rs = $this->object->getPayer();
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\PayerEntity', $rs);
+
+		$this->assertEquals($fullName    , $rs->getFullName());
+		$this->assertEquals($emailAddress, $rs->getEmailAddress());
     }
 
     /**
@@ -346,7 +363,30 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetExtraParameters()
     {
-    	$this->markTestIncomplete();
+    	$extraParametersEntity = new ExtraParametersEntity();
+
+    	$installmentsNumber = rand(1, 10);
+    	$extraParametersEntity->setInstallmentsNumber($installmentsNumber);
+
+    	$installmentsType = rand(1, 3);
+    	$extraParametersEntity->setInstallmentsType($installmentsType);
+
+    	$securityCodeIndicator = rand(0, 2);
+    	$extraParametersEntity->setSecurityCodeIndicator($securityCodeIndicator);
+
+    	$responseUrl = 'https://response-url-' . rand(1, 1000) . '.com';
+    	$extraParametersEntity->setResponseUrl($responseUrl);
+
+    	$rs = $this->object->setExtraParameters($extraParametersEntity);
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\TransactionEntity', $rs);
+
+    	$rs = $this->object->getExtraParameters();
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\ExtraParametersEntity', $rs);
+
+		$this->assertEquals($installmentsNumber   , $rs->getInstallmentsNumber());
+		$this->assertEquals($installmentsType     , $rs->getInstallmentsType());
+		$this->assertEquals($securityCodeIndicator, $rs->getSecurityCodeIndicator());
+		$this->assertEquals($responseUrl          , $rs->getResponseUrl());
     }
 
     /**
@@ -354,34 +394,17 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testToArray()
     {
-    	$this->markTestIncomplete();
+    	$rs = $this->object->toArray();
+
+		$this->assertArrayHasKey('type'           , $rs);
+		$this->assertArrayHasKey('paymentMethod'  , $rs);
+		$this->assertArrayHasKey('paymentCountry' , $rs);
+		$this->assertArrayHasKey('ipAddress'      , $rs);
+		$this->assertArrayHasKey('cookie'         , $rs);
+		$this->assertArrayHasKey('userAgent'      , $rs);
+		$this->assertArrayHasKey('order'          , $rs);
+		$this->assertArrayHasKey('creditCard'     , $rs);
+		$this->assertArrayHasKey('payer'          , $rs);
+		$this->assertArrayHasKey('extraParameters', $rs);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
