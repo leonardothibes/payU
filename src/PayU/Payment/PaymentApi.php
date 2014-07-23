@@ -83,10 +83,10 @@ class PaymentApi extends ApiAbstract
      */
     private function authorizeRequest(RequestEntity $request, $type)
     {
-    	$request = array('command' => 'SUBMIT_TRANSACTION');
-    	$json    = json_encode($request->toArray());
-    	$json    = $this->addMetadata($json);
-    	return $this->curlRequest($json);
+        $request = array('command' => 'SUBMIT_TRANSACTION');
+        $json    = json_encode($request->toArray());
+        $json    = $this->addMetadata($json);
+        return $this->curlRequest($json);
     }
 
     /**
@@ -97,7 +97,7 @@ class PaymentApi extends ApiAbstract
      */
     public function authorize(RequestEntity $request)
     {
-    	return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION);
+        return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION);
     }
 
     /**
@@ -108,7 +108,7 @@ class PaymentApi extends ApiAbstract
      */
     public function authorizeAndCapture(RequestEntity $request)
     {
-    	return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION_AND_CAPTURE);
+        return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION_AND_CAPTURE);
     }
 
     /**
