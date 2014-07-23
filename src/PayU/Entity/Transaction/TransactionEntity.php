@@ -27,16 +27,16 @@ use \PayU\Payment\PaymentTypes;
  */
 class TransactionEntity implements EntityInterface
 {
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->order           = new OrderEntity();
-		$this->creditCard      = new CreditCardEntity();
-		$this->payer           = new PayerEntity();
-		$this->extraParameters = new ExtraParametersEntity();
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->order           = new OrderEntity();
+        $this->creditCard      = new CreditCardEntity();
+        $this->payer           = new PayerEntity();
+        $this->extraParameters = new ExtraParametersEntity();
+    }
 
     /**
      * Type of transaction.
@@ -57,12 +57,12 @@ class TransactionEntity implements EntityInterface
      */
     public function setType($type)
     {
-    	if (
-    		$type != PaymentTypes::AUTHORIZATION_AND_CAPTURE and
-    		$type != PaymentTypes::AUTHORIZATION
-		) {
-    		throw new EntityException('Invalid transaction type');
-    	}
+        if (
+            $type != PaymentTypes::AUTHORIZATION_AND_CAPTURE and
+            $type != PaymentTypes::AUTHORIZATION
+        ) {
+            throw new EntityException('Invalid transaction type');
+        }
         $this->type = (string)$type;
         return $this;
     }
@@ -335,16 +335,16 @@ class TransactionEntity implements EntityInterface
     {
         return array
         (
-			'type'            => $this->type,
-			'paymentMethod'   => $this->paymentMethod,
-			'paymentCountry'  => $this->paymentCountry,
-			'ipAddress'       => $this->ipAddress,
-			'cookie'          => $this->cookie,
-			'userAgent'       => $this->userAgent,
-			'order'           => $this->order->toArray(),
-			'creditCard'      => $this->creditCard->toArray(),
-			'payer'           => $this->payer->toArray(),
-			'extraParameters' => $this->extraParameters->toArray(),
+            'type'            => $this->type,
+            'paymentMethod'   => $this->paymentMethod,
+            'paymentCountry'  => $this->paymentCountry,
+            'ipAddress'       => $this->ipAddress,
+            'cookie'          => $this->cookie,
+            'userAgent'       => $this->userAgent,
+            'order'           => $this->order->toArray(),
+            'creditCard'      => $this->creditCard->toArray(),
+            'payer'           => $this->payer->toArray(),
+            'extraParameters' => $this->extraParameters->toArray(),
         );
     }
 }
