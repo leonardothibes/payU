@@ -5,10 +5,15 @@
  */
 
 namespace PayU\Entity\Transaction;
+
+use \PayU\Payment\PaymentTypes;
+use \PayU\Payment\PaymentMethods;
+use \PayU\Payment\PaymentCountries;
+
 use \PayU\Entity\Transaction\TransactionEntity;
-use PayU\Payment\PaymentTypes;
-use PayU\Payment\PaymentMethods;
-use PayU\Payment\PaymentCountries;
+use \PayU\Entity\Transaction\CreditCardEntity;
+use \PayU\Entity\Transaction\Order\OrderEntity;
+
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 /**
@@ -236,7 +241,38 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetOrder()
     {
-    	$this->markTestIncomplete();
+    	$orderEntity = new OrderEntity();
+
+    	$accountId = 'accountId_' . rand(1,9) . rand(1,9) . rand(1,9);
+    	$orderEntity->setAccountId($accountId);
+
+    	$referenceCode = 'referenceCode_' . rand(1,9) . rand(1,9) . rand(1,9);
+    	$orderEntity->setReferenceCode($referenceCode);
+
+    	$description = 'description_' . rand(1,9) . rand(1,9) . rand(1,9);
+    	$orderEntity->setDescription($description);
+
+    	$language = 'language_' . rand(1,9) . rand(1,9) . rand(1,9);
+    	$orderEntity->setLanguage($language);
+
+    	$notifyUrl = 'http://notifyurl-' . rand(1,9) . rand(1,9) . rand(1,9) . '.com';
+    	$orderEntity->setNotifyUrl($notifyUrl);
+
+    	$signature = sha1('signature');
+    	$orderEntity->setSignature($signature);
+
+    	$rs = $this->object->setOrder($orderEntity);
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\TransactionEntity', $rs);
+
+		$rs = $this->object->getOrder();
+		$this->assertInstanceOf('\PayU\Entity\Transaction\Order\OrderEntity', $rs);
+
+		$this->assertEquals($accountId    , $rs->getAccountId());
+		$this->assertEquals($referenceCode, $rs->getReferenceCode());
+		$this->assertEquals($description  , $rs->getDescription());
+		$this->assertEquals($language     , $rs->getLanguage());
+		$this->assertEquals($notifyUrl    , $rs->getNotifyUrl());
+		$this->assertEquals($signature    , $rs->getSignature());
     }
 
     /**
@@ -253,7 +289,30 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetCreditCard()
     {
-    	$this->markTestIncomplete();
+    	$creditCardEntity = new CreditCardEntity();
+
+    	$number = str_repeat(rand(1,9), 4) . str_repeat(rand(1,9), 4) . str_repeat(rand(1,9), 4) . str_repeat(rand(1,9), 4);
+    	$creditCardEntity->setNumber($number);
+
+    	$securityCode = rand(1,9) . rand(1,9) . rand(1,9);
+    	$creditCardEntity->setSecurityCode($securityCode);
+
+    	$expirationDate = rand(1,9) . rand(1,9) . rand(1,9). rand(1,9) . '/' . rand(1,9) . rand(1,9);
+    	$creditCardEntity->setExpirationDate($expirationDate);
+
+    	$name = 'person name ' . rand(1,9) . rand(1,9) . rand(1,9);
+    	$creditCardEntity->setName($name);
+
+    	$rs = $this->object->setCreditCard($creditCardEntity);
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\TransactionEntity', $rs);
+
+    	$rs = $this->object->getCreditCard();
+    	$this->assertInstanceOf('PayU\Entity\Transaction\CreditCardEntity', $rs);
+
+    	$this->assertEquals($number        , $rs->getNumber());
+    	$this->assertEquals($securityCode  , $rs->getSecurityCode());
+    	$this->assertEquals($expirationDate, $rs->getExpirationDate());
+    	$this->assertEquals($name          , $rs->getName());
     }
 
     /**
