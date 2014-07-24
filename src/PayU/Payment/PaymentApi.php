@@ -82,13 +82,32 @@ class PaymentApi extends ApiAbstract
      */
     private function authorizeRequest(TransactionEntity $transaction)
     {
-    	$requestEntity = new RequestEntity();
-    	$request       = $requestEntity->setTransaction($transaction)->toArray();
+    	$requestEntity      = new RequestEntity();
+    	$request            = $requestEntity->setTransaction($transaction)->toArray();
     	$request['command'] = 'SUBMIT_TRANSACTION';
+
+    	//Order signature.
+    	$order            = $transaction->getOrder();
+    	$additionalValues = $order->getAdditionalValues()->toArray();
+    	$signature = sprintf(
+    		'%s~%s~%s~%s~%s',
+    		$this->credentials->getApiKey(),
+    		$this->credentials->getMerchantId(),
+    		$order->getReferenceCode(),
+    		$additionalValues['TX_TAX']['value'],
+    		$additionalValues['TX_TAX']['currency']
+		);
+    	$signature = sha1($signature);
+
+    	\Tbs\Log::debug($signature);
+
+    	$order->setSignature($signature);
+    	//Order signature.
+
         $json               = json_encode($request);
         $json               = $this->addMetadata($json);
 
-        \Tbs\Log::debug($json);
+        //\Tbs\Log::debug($json);
 
         return $this->curlRequest($json);
     }

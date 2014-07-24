@@ -9,11 +9,11 @@
  * Test api credentials provided by PayU
  * @link http://docs.payulatam.com/pt-br/integracao-com-api/o-que-voce-precisa-saber-a-integracao-via-api/
  */
-//define('MERCHANT_ID', '500365');                      //Brazil
+//define('PAYU_MERCHANT_ID', '500365');                 //Brazil
 //define('PAYU_API_LOGIN', '403ba744e9827f3');          //Brazil
 //define('PAYU_API_KEY', '676k86ks53la6tni6clgd30jf6'); //Brazil
 
-define('MERCHANT_ID', '500238');                      //Colombia, Panama, Peru, Mexico, Argentina
+define('PAYU_MERCHANT_ID', '500238');                  //Colombia, Panama, Peru, Mexico, Argentina
 define('PAYU_API_LOGIN', '11959c415b33d0c');          //Colombia, Panama, Peru, Mexico, Argentina
 define('PAYU_API_KEY', '6u39nqhq8ftd0hlvnjfs66eh8c'); //Colombia, Panama, Peru, Mexico, Argentina
 
