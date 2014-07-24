@@ -12,6 +12,7 @@ use \PayU\Api\ApiStatus;
 
 use \PayU\Payment\PaymentTypes;
 use \PayU\Entity\RequestEntity;
+use \PayU\Entity\Transaction\TransactionEntity;
 
 use \Exception;
 use \stdClass;
@@ -76,39 +77,44 @@ class PaymentApi extends ApiAbstract
     /**
      * Make a request "authorize" and "authorizeAndCapture" methods.
      *
-     * @param RequestEntity $request
-     * @param string        $type
-     *
+     * @param  TransactionEntity $transaction
      * @return ResponseEntity
      */
-    private function authorizeRequest(RequestEntity $request, $type)
+    private function authorizeRequest(TransactionEntity $transaction)
     {
-        $request = array('command' => 'SUBMIT_TRANSACTION');
-        $json    = json_encode($request->toArray());
-        $json    = $this->addMetadata($json);
+    	$requestEntity = new RequestEntity();
+    	$request       = $requestEntity->setTransaction($transaction)->toArray();
+    	$request['command'] = 'SUBMIT_TRANSACTION';
+        $json               = json_encode($request);
+        $json               = $this->addMetadata($json);
+
+        \Tbs\Log::debug($json);
+
         return $this->curlRequest($json);
     }
 
     /**
      * Authorize a payment order.
      *
-     * @param  RequestEntity $request
+     * @param  TransactionEntity $transaction
      * @return ResponseEntity
      */
-    public function authorize(RequestEntity $request)
+    public function authorize(TransactionEntity $transaction)
     {
-        return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION);
+    	$transaction->setType(PaymentTypes::AUTHORIZATION);
+        return $this->authorizeRequest($transaction);
     }
 
     /**
      * Authorize and capture a payment order.
      *
-     * @param  RequestEntity $request
+     * @param  TransactionEntity $transaction
      * @return ResponseEntity
      */
-    public function authorizeAndCapture(RequestEntity $request)
+    public function authorizeAndCapture(TransactionEntity $transaction)
     {
-        return $this->authorizeRequest($request, PaymentTypes::AUTHORIZATION_AND_CAPTURE);
+    	$transaction->setType(PaymentTypes::AUTHORIZATION_AND_CAPTURE);
+        return $this->authorizeRequest($transaction);
     }
 
     /**

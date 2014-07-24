@@ -51,8 +51,8 @@ class AdditionalValuesEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testToArray()
     {
-    	$this->object->addTax(AdditionalValuesEntity::TX_VALUE, 'BRL'    , 'BRL', 1000);
-    	$this->object->addTax(AdditionalValuesEntity::TX_TAX, 'BRL'      , 'BRL', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_VALUE           , 'BRL', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_TAX             , 'BRL', 1000);
     	$this->object->addTax(AdditionalValuesEntity::TX_TAX_RETURN_BASE , 'BRL', 1000);
     	$this->object->addTax(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, 'BRL', 1000);
 
