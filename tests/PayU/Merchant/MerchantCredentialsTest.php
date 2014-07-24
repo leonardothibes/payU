@@ -36,13 +36,37 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
     	unset($this->object);
     }
 
+    /**
+     * @see MerchantCredentials::getMerchantId()
+     */
+    public function testGetMerchantId()
+    {
+    	$rs = $this->object->getMerchantId();
+    	$this->assertEquals(0, strlen($rs));
+    }
+
+    /**
+     * @see MerchantCredentials::setMerchantId()
+     */
+    public function testSetMerchantId()
+    {
+    	$merchantId = 'merchantId_' . rand(1,1000);
+
+    	$rs = $this->object->setMerchantId($merchantId);
+    	$this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+
+    	$rs = $this->object->getMerchantId();
+    	$this->assertInternalType('string', $rs);
+    	$this->assertEquals($merchantId, $rs);
+    }
+
 	/**
 	 * @see MerchantCredentials::getApiLogin()
 	 */
     public function testGetApiLogin()
     {
     	$rs = $this->object->getApiLogin();
-    	$this->assertNull($rs);
+    	$this->assertEquals(0, strlen($rs));
     }
 
     /**
@@ -66,7 +90,7 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
     public function testGetApiKey()
     {
     	$rs = $this->object->getApiKey();
-    	$this->assertNull($rs);
+    	$this->assertEquals(0, strlen($rs));
     }
 
     /**

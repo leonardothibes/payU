@@ -22,6 +22,12 @@ class MerchantCredentials
     protected static $instance = null;
 
     /**
+     * Merchant id.
+     * @var string
+     */
+    protected $merchantId = null;
+
+    /**
      * Merchant api login.
      * @var string
      */
@@ -62,6 +68,27 @@ class MerchantCredentials
     }
 
     /**
+     * Set the merchant id.
+     *
+     * @param  string $merchantId
+     * @return MerchantCredentials
+     */
+    public function setMerchantId($merchantId)
+    {
+    	$this->merchantId = (string)$merchantId;
+    	return $this;
+    }
+
+    /**
+     * Get the merchant id.
+     * @return string
+     */
+    public function getMerchantId()
+    {
+    	return (string)$this->merchantId;
+    }
+
+    /**
      * Set the merchant api login.
      *
      * @param  string $apiLogin
@@ -79,7 +106,7 @@ class MerchantCredentials
      */
     public function getApiLogin()
     {
-        return $this->apiLogin;
+        return (string)$this->apiLogin;
     }
 
     /**
@@ -100,6 +127,6 @@ class MerchantCredentials
      */
     public function getApiKey()
     {
-        return $this->apiKey;
+        return (string)$this->apiKey;
     }
 }
