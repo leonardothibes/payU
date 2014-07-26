@@ -4,6 +4,7 @@ Thumbs.db
 .project
 .vagrant
 .settings
+.idea
 *.db
 *.bak
 *.swp
