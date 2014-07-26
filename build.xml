@@ -63,30 +63,32 @@
     
     <!-- RW -->
     <target name="rw" depends="clean">
-    
+
         <!-- BUILD DIR -->
         <mkdir dir="${build}" mode="755" />
-        
+
         <!-- LOG DIR -->
         <mkdir dir="${logs}" mode="777" />
-        
+
         <!-- LOGS -->
         <php function="date" returnProperty="data">
             <param value="Y-m-d" />
         </php>
         <touch file="${logs}/payu_${data}.log" />
         <!-- ENDS LOGS -->
-        
+
         <!-- PERMISSION -->
         <exec command="chmod -R 777 ${logs}" />
-        
+
     </target>
     <!-- ENDS RW -->
     
     <!-- INSTALL -->
     <target name="check-composer">
         <mkdir dir="${bin}" mode="755" />
-        <exec command="[ -f ${bin}/composer.phar ] || curl -sS https://getcomposer.org/installer | php --" />
+        <exec command="
+            [ -f ${bin}/composer.phar ] || curl -sS https://getcomposer.org/installer | php -- --install-dir=${bin}"
+        />
     </target>
     <target name="install" depends="rw, check-composer">
         
