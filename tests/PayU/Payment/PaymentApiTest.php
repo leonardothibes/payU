@@ -231,7 +231,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      * @see PaymentApi::authorize()
      * @dataProvider providerMockTransaction
      */
-    public function testAuthorize($transaction)
+    public function estAuthorize($transaction)
     {
     	$rs = $this->object->authorize($transaction);
     	
@@ -240,10 +240,13 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @see PaymentApi::authorizeAndCapture()
+     * @dataProvider providerMockTransaction
      */
-    public function estAuthorizeAndCapture()
+    public function testAuthorizeAndCapture($transaction)
     {
-    	$this->markTestIncomplete();
+    	$rs = $this->object->authorizeAndCapture($transaction);
+    	
+    	\Tbs\Log::debug($rs);
     }
 
     /**
