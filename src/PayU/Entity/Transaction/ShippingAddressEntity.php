@@ -196,36 +196,6 @@ class ShippingAddressEntity implements EntityInterface
     {
         return (string)$this->phone;
     }
-    
-    /**
-     * Generate xml order.
-     * @return \SimpleXMLElement
-     */
-    public function toXml()
-    {
-    	//$xml = new \DOMDocument('shippingAddress');
-    	$xml = new \DOMDocument('1.0', 'utf-8');
-    	
-    	$dom     = new \DOMDocument('1.0', 'utf-8');
-		$element = $dom->createElement('test', 'This is the root element!');
-		$dom->appendChild($element);
-		\Tbs\Log::debug($dom->saveXML());
-    	
-    	//$element = $xml->appendChild('shippingAddress');
-    	
-    	//\Tbs\Log::debug($element);
-    	
-    	
-    	
-    	$xml->appendChild('street1', $this->street1);
-    	//$xml->addChild('street2', $this->street2);
-    	//$xml->addChild('city', $this->city);
-    	//$xml->addChild('state', $this->state);
-    	//$xml->addChild('country', $this->country);
-    	//$xml->addChild('postalCode', $this->postalCode);
-    	//$xml->addChild('phone', $this->phone);
-    	return $xml;
-    }
 
     /**
      * Generate arry order.

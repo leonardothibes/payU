@@ -284,31 +284,6 @@ class OrderEntity implements EntityInterface
     {
         return $this->additionalValues;
     }
-    
-    /**
-     * Generate xml order.
-     * @return \SimpleXMLElement
-     */
-    public function toXml()
-    {
-    	$xml = new \SimpleXMLElement('<order />');
-    	
-    	$xml->addChild('accountId', $this->accountId);
-    	$xml->addChild('referenceCode', $this->referenceCode);
-	    $xml->addChild('description', $this->description);
-	    $xml->addChild('language', $this->language);
-	    $xml->addChild('notifyUrl', $this->notifyUrl);
-	    $xml->addChild('signature', $this->signature);
-	    
-	    $shippingAddress = $xml->addChild('shippingAddress');
-	    $shippingAddress->addChild('street1', $this->shippingAddress->getStreet1());
-	    
-	    $xml->addChild('buyer', $this->buyer->toXml());
-    	
-	    $xml->addChild('additionalValues', $this->additionalValues->toXml());
-    	
-    	return $xml;
-    }
 
     /**
      * Generate array order.
