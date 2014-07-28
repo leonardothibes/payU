@@ -89,6 +89,9 @@ class PaymentApi extends ApiAbstract
         //Order signature.
         $order            = $transaction->getOrder();
         $additionalValues = $order->getAdditionalValues()->toArray();
+        
+        \Tbs\Log::debug($additionalValues);
+        
         $signature = sprintf(
             '%s~%s~%s~%s~%s',
             $this->credentials->getApiKey(),

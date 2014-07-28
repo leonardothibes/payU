@@ -51,6 +51,29 @@ class AdditionalValuesEntity implements EntityInterface
     	);
         return $this;
     }
+    
+    /**
+	 * Generate xml order.
+	 * @return \SimpleXMLElement
+	 */
+	public function toXml()
+    {
+    	$xml = new \SimpleXMLElement('<additionalValues />');
+    	
+    	if (count($this->additionalValues) > 0) {
+    		foreach ($this->additionalValues as $row) {
+    			
+	    		$entry = $xml->addChild('entry');
+	    		$entry->addChild('string', $row['string']);
+	    		
+	    		$additionalValue = $entry->addChild('additionalValue');
+	    		$additionalValue->addChild('currency', $row['additionalValue']['currency']);
+	    		$additionalValue->addChild('value', $row['additionalValue']['value']);
+    		}
+    	}
+    	
+    	return $xml;
+    }
 
     /**
      * Generate arry order.

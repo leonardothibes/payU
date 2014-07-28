@@ -45,6 +45,37 @@ class AdditionalValuesEntityTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(AdditionalValuesEntity::TX_TAX_RETURN_BASE, 'TX_TAX_RETURN_BASE');
 		$this->assertEquals(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, 'TX_ADDITIONAL_VALUE');
     }
+    
+    /**
+     * @see AdditionalValuesEntity::toXml()
+     */
+    public function testToXml()
+    {
+    	$values = array(
+    		AdditionalValuesEntity::TX_VALUE,
+    		AdditionalValuesEntity::TX_TAX,
+    		AdditionalValuesEntity::TX_TAX_RETURN_BASE,
+    		AdditionalValuesEntity::TX_ADDITIONAL_VALUE,
+    	);
+    	
+    	$this->object->addTax(AdditionalValuesEntity::TX_VALUE           , 'USD', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_TAX             , 'USD', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_TAX_RETURN_BASE , 'USD', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, 'USD', 1000);
+    	
+    	$rs = $this->object->toXml();
+    	$this->assertInstanceOf('\SimpleXMLElement', $rs);
+    	
+    	foreach ($rs->entry as $entry)
+    	{
+    		$this->assertInstanceOf('\SimpleXMLElement', $entry);
+    		$this->assertTrue(in_array($entry->string, $values));
+    		
+    		$this->assertEquals('USD', $entry->additionalValue->currency);
+    		$this->assertEquals('1000', $entry->additionalValue->value);
+    	}
+    	
+    }
 
     /**
      * @see AdditionalValuesEntity::toArray()
