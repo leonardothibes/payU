@@ -196,6 +196,15 @@ class ShippingAddressEntity implements EntityInterface
     {
         return (string)$this->phone;
     }
+    
+    /**
+     * Generate xml order.
+     * @return \SimpleXMLElement
+     */
+    public function toXml()
+    {
+    	
+    }
 
     /**
      * Generate arry order.
