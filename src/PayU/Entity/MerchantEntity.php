@@ -31,8 +31,8 @@ class MerchantEntity
      */
     public function setMerchantId($merchantId)
     {
-    	$this->merchantId = (string)$merchantId;
-    	return $this;
+        $this->merchantId = (string)$merchantId;
+        return $this;
     }
     
     /**
@@ -41,7 +41,7 @@ class MerchantEntity
      */
     public function getMerchantId()
     {
-    	return (string)$this->merchantId;
+        return (string)$this->merchantId;
     }
     
     /**
@@ -58,8 +58,8 @@ class MerchantEntity
      */
     public function setApiLogin($apiLogin)
     {
-    	$this->apiLogin = (string)$apiLogin;
-    	return $this;
+        $this->apiLogin = (string)$apiLogin;
+        return $this;
     }
     
     /**
@@ -68,7 +68,7 @@ class MerchantEntity
      */
     public function getApiLogin()
     {
-    	return (string)$this->apiLogin;
+        return (string)$this->apiLogin;
     }
 
     /**
@@ -85,8 +85,8 @@ class MerchantEntity
      */
     public function setApiKey($apiKey)
     {
-    	$this->apiKey = (string)$apiKey;
-    	return $this;
+        $this->apiKey = (string)$apiKey;
+        return $this;
     }
     
     /**
@@ -95,7 +95,7 @@ class MerchantEntity
      */
     public function getApiKey()
     {
-    	return (string)$this->apiKey;
+        return (string)$this->apiKey;
     }
 
     /**
@@ -112,8 +112,8 @@ class MerchantEntity
      */
     public function setAccountId($accountId)
     {
-    	$this->accountId = (string)$accountId;
-    	return $this;
+        $this->accountId = (string)$accountId;
+        return $this;
     }
 
     /**

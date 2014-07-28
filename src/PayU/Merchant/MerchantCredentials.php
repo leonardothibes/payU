@@ -75,8 +75,8 @@ class MerchantCredentials
      */
     public function setMerchantId($merchantId)
     {
-    	$this->merchantId = (string)$merchantId;
-    	return $this;
+        $this->merchantId = (string)$merchantId;
+        return $this;
     }
 
     /**
@@ -85,7 +85,7 @@ class MerchantCredentials
      */
     public function getMerchantId()
     {
-    	return (string)$this->merchantId;
+        return (string)$this->merchantId;
     }
 
     /**

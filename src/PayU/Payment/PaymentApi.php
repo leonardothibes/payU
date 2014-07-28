@@ -82,27 +82,27 @@ class PaymentApi extends ApiAbstract
      */
     private function authorizeRequest(TransactionEntity $transaction)
     {
-    	$requestEntity      = new RequestEntity();
-    	$request            = $requestEntity->setTransaction($transaction)->toArray();
-    	$request['command'] = 'SUBMIT_TRANSACTION';
+        $requestEntity      = new RequestEntity();
+        $request            = $requestEntity->setTransaction($transaction)->toArray();
+        $request['command'] = 'SUBMIT_TRANSACTION';
 
-    	//Order signature.
-    	$order            = $transaction->getOrder();
-    	$additionalValues = $order->getAdditionalValues()->toArray();
-    	$signature = sprintf(
-    		'%s~%s~%s~%s~%s',
-    		$this->credentials->getApiKey(),
-    		$this->credentials->getMerchantId(),
-    		$order->getReferenceCode(),
-    		$additionalValues['TX_TAX']['value'],
-    		$additionalValues['TX_TAX']['currency']
-		);
-    	$signature = sha1($signature);
+        //Order signature.
+        $order            = $transaction->getOrder();
+        $additionalValues = $order->getAdditionalValues()->toArray();
+        $signature = sprintf(
+            '%s~%s~%s~%s~%s',
+            $this->credentials->getApiKey(),
+            $this->credentials->getMerchantId(),
+            $order->getReferenceCode(),
+            $additionalValues['TX_TAX']['value'],
+            $additionalValues['TX_TAX']['currency']
+        );
+        $signature = sha1($signature);
 
-    	\Tbs\Log::debug($signature);
+        \Tbs\Log::debug($signature);
 
-    	$order->setSignature($signature);
-    	//Order signature.
+        $order->setSignature($signature);
+        //Order signature.
 
         $json               = json_encode($request);
         $json               = $this->addMetadata($json);
@@ -120,7 +120,7 @@ class PaymentApi extends ApiAbstract
      */
     public function authorize(TransactionEntity $transaction)
     {
-    	$transaction->setType(PaymentTypes::AUTHORIZATION);
+        $transaction->setType(PaymentTypes::AUTHORIZATION);
         return $this->authorizeRequest($transaction);
     }
 
@@ -132,7 +132,7 @@ class PaymentApi extends ApiAbstract
      */
     public function authorizeAndCapture(TransactionEntity $transaction)
     {
-    	$transaction->setType(PaymentTypes::AUTHORIZATION_AND_CAPTURE);
+        $transaction->setType(PaymentTypes::AUTHORIZATION_AND_CAPTURE);
         return $this->authorizeRequest($transaction);
     }
 
