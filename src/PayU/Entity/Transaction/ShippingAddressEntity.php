@@ -203,7 +203,15 @@ class ShippingAddressEntity implements EntityInterface
      */
     public function toXml()
     {
-    	
+    	$xml = new \SimpleXMLElement('<shippingAddress />');
+    	$xml->addChild('street1', $this->street1);
+    	$xml->addChild('street2', $this->street2);
+    	$xml->addChild('city', $this->city);
+    	$xml->addChild('state', $this->state);
+    	$xml->addChild('country', $this->country);
+    	$xml->addChild('postalCode', $this->postalCode);
+    	$xml->addChild('phone', $this->phone);
+    	return $xml;
     }
 
     /**

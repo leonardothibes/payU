@@ -195,6 +195,39 @@ class ShippingAddressEntityTest extends \PHPUnit_Framework_TestCase
     	$this->assertInternalType('string', $rs);
     	$this->assertEquals($phone, $rs);
     }
+    
+    /**
+     * @see ShippingAddressEntity::toXml()
+     */
+    public function testToXml()
+    {
+    	$rs = $this->object->toXml();
+    	
+ 		$street1    = 'street1_' . rand(1,1000);
+    	$street2    = 'street1_' . rand(1,1000);
+    	$city       = 'city_' . rand(1,1000);
+    	$state      = 'state_' . rand(1,1000);
+    	$country    = 'country_' . rand(1,1000);
+    	$postalCode = 'postalCode_' . rand(1,1000);
+    	$phone      = 'phone_' . rand(1,1000);
+    	$this->object->setStreet1($street1)
+			    	  ->setStreet2($street2)
+			    	  ->setCity($city)
+			    	  ->setState($state)
+			    	  ->setCountry($country)
+			    	  ->setPostalCode($postalCode)
+			    	  ->setPhone($phone);
+    	
+    	$rs = $this->object->toXml();
+    	
+    	$this->assertEquals($street1, $rs->street1);
+    	$this->assertEquals($street2, $rs->street2);
+    	$this->assertEquals($city, $rs->city);
+    	$this->assertEquals($state, $rs->state);
+    	$this->assertEquals($country, $rs->country);
+    	$this->assertEquals($postalCode, $rs->postalCode);
+    	$this->assertEquals($phone, $rs->phone);
+    }
 
     /**
      * @see ShippingAddressEntity::toArray()
