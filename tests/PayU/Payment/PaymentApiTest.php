@@ -235,7 +235,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     {
     	$rs = $this->object->authorize($transaction);
     	
-    	//\Tbs\Log::debug($rs);
+    	\Tbs\Log::debug($rs);
     }
 
     /**

@@ -105,8 +105,6 @@ class PaymentApi extends ApiAbstract
      */
     private function authorizeRequest(TransactionEntity $transaction)
     {
-    	\Tbs\Log::debug($transaction);
-    	
         $requestEntity = new RequestEntity();
         $request       = $requestEntity->setCommand('SUBMIT_TRANSACTION')
                                        ->setMerchant($this->credentials)
@@ -203,14 +201,9 @@ class PaymentApi extends ApiAbstract
         	}
         }
         
-        \Tbs\Log::debug($xmlExtraParameters);
-        
-        
-        $xml = $xmlRequest->asXML();
-        
-        \Tbs\Log::debug($xml);
-        
-        //return $this->curlRequestXml($xml);
+        return $this->curlRequestXml(
+        	$xmlRequest->asXML()
+        );
     }
 
     /**
