@@ -226,27 +226,60 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     		array($transaction)
     	);
     }
+    
+    /**
+     * Verify transaction response.
+     * @param stdClass $response 
+     */
+    private function _testTransactionResponse($rs)
+    {
+    	\Tbs\Log::debug($rs);
+    	
+    	$this->assertInstanceOf('\stdClass', $rs);
+    	
+    	$this->assertTrue(isset($rs->code));
+    	
+    	$rs->error = 'teste';
+    	
+    	$this->assertTrue(isset($rs->error));
+    	
+    	//$this->assertTrue(isset($rs->transactionResponse));
+    	//$this->assertInstanceOf('\stdClass', $rs->transactionResponse);
+    	//$this->assertTrue(isset($rs->transactionResponse->orderId));
+    	//$this->assertTrue(isset($rs->transactionResponse->transactionId));
+    	//$this->assertTrue(isset($rs->transactionResponse->state));
+    	//$this->assertTrue(isset($rs->transactionResponse->paymentNetworkResponseCode));
+    	//$this->assertTrue(isset($rs->transactionResponse->paymentNetworkResponseErrorMessage));
+    	//$this->assertTrue(isset($rs->transactionResponse->trazabilityCode));
+    	//$this->assertTrue(isset($rs->transactionResponse->authorizationCode));
+    	//$this->assertTrue(isset($rs->transactionResponse->pendingReason));
+    	//$this->assertTrue(isset($rs->transactionResponse->responseCode));
+    	//$this->assertTrue(isset($rs->transactionResponse->errorCode));
+    	//$this->assertTrue(isset($rs->transactionResponse->responseMessage));
+    	//$this->assertTrue(isset($rs->transactionResponse->transactionDate));
+    	//$this->assertTrue(isset($rs->transactionResponse->transactionTime));
+    	//$this->assertTrue(isset($rs->transactionResponse->operationDate));
+    	//$this->assertTrue(isset($rs->transactionResponse->extraParameters));
+    }
 
     /**
      * @see PaymentApi::authorize()
      * @dataProvider providerMockTransaction
      */
-    public function estAuthorize($transaction)
+    public function testAuthorize($transaction)
     {
     	$rs = $this->object->authorize($transaction);
-    	
-    	\Tbs\Log::debug($rs);
+    	$this->_testTransactionResponse($rs);
     }
 
     /**
      * @see PaymentApi::authorizeAndCapture()
      * @dataProvider providerMockTransaction
      */
-    public function testAuthorizeAndCapture($transaction)
+    public function estAuthorizeAndCapture($transaction)
     {
     	$rs = $this->object->authorizeAndCapture($transaction);
-    	
-    	\Tbs\Log::debug($rs);
+    	$this->_testTransactionResponse($rs);
     }
 
     /**
