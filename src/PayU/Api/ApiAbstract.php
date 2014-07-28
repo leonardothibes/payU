@@ -211,4 +211,51 @@ abstract class ApiAbstract implements ApiInterface
 
         return $rs;
     }
+    
+    /**
+     * Make the cURL request in PayU webservice.
+     *
+     * @param  DOMDocument $xml
+     * @return array
+     * @throws PayUException
+     */
+    protected function curlRequestXml($xml)
+    {
+    	//HTTP headers.
+    	$headers = array(
+    		'Content-Type: application/xml',
+    		'Accept: application/json',
+    		'Content-Length: ' . strlen($xml),
+    	);
+    	//HTTP headers.
+    
+    	try {
+    		//cUrl request.
+    		$ch = curl_init($this->getApiUrl());
+    		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+    		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+    		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    		$rs = json_decode(curl_exec($ch));
+    		//cUrl request.
+    
+    		//Error treatment.
+    		$error = curl_error($ch);
+    		if (strlen($error)) {
+    			throw new PayUException($error);
+    		}
+    		//Error treatment.
+    
+    		//Error treatment.
+    		if (strlen((string)$rs->error)) {
+    			throw new PayUException($rs->error);
+    		}
+    		//Error treatment.
+    	} catch (Exception $e) {
+    		throw new PayUException($e->getMessage(), $e->getCode());
+    	}
+    
+    	return $rs;
+    }
 }

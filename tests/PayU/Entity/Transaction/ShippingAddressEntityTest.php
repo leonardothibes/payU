@@ -220,6 +220,10 @@ class ShippingAddressEntityTest extends \PHPUnit_Framework_TestCase
     	
     	$rs = $this->object->toXml();
     	
+    	\Tbs\Log::debug($rs->saveXML());
+    	
+    	$this->assertInstanceOf('\DOMDocument', $rs);
+    	
     	$this->assertEquals($street1, $rs->street1);
     	$this->assertEquals($street2, $rs->street2);
     	$this->assertEquals($city, $rs->city);

@@ -80,19 +80,20 @@ class PaymentApi extends ApiAbstract
      * @param  TransactionEntity $transaction
      * @return ResponseEntity
      */
-    private function authorizeRequest(TransactionEntity $transaction)
+    //private function authorizeRequest(TransactionEntity $transaction)
+    private function authorizeRequest()
     {
-        $requestEntity      = new RequestEntity();
+        /*$requestEntity      = new RequestEntity();
         $request            = $requestEntity->setTransaction($transaction)->toArray();
-        $request['command'] = 'SUBMIT_TRANSACTION';
+        $request['command'] = 'SUBMIT_TRANSACTION';*/
 
         //Order signature.
-        $order            = $transaction->getOrder();
-        $additionalValues = $order->getAdditionalValues()->toArray();
+        //$order            = $transaction->getOrder();
+        //$additionalValues = $order->getAdditionalValues()->toArray();
         
-        \Tbs\Log::debug($additionalValues);
+        //\Tbs\Log::debug($additionalValues);
         
-        $signature = sprintf(
+        /*$signature = sprintf(
             '%s~%s~%s~%s~%s',
             $this->credentials->getApiKey(),
             $this->credentials->getMerchantId(),
@@ -101,18 +102,112 @@ class PaymentApi extends ApiAbstract
             $additionalValues['TX_TAX']['currency']
         );
         $signature = sha1($signature);
-
-        \Tbs\Log::debug($signature);
-
-        $order->setSignature($signature);
+        \Tbs\Log::debug($signature);*/
+        //$order->setSignature($signature);
         //Order signature.
 
-        $json               = json_encode($request);
-        $json               = $this->addMetadata($json);
+        //$json               = json_encode($request);
+        //$json               = $this->addMetadata($json);
 
         //\Tbs\Log::debug($json);
+        
+        $xml = '
+<request>
 
-        return $this->curlRequest($json);
+	<language>en</language>
+	<command>SUBMIT_TRANSACTION</command>
+	<isTest>true</isTest>
+	
+	<merchant>
+		<apiLogin>11959c415b33d0c</apiLogin>
+		<apiKey>6u39nqhq8ftd0hlvnjfs66eh8c</apiKey>
+	</merchant>
+	
+	<transaction>
+	
+		<type>AUTHORIZATION_AND_CAPTURE</type>
+        <paymentMethod>VISA</paymentMethod>
+        <paymentCountry>PA</paymentCountry>
+        
+        <ipAddress>127.0.0.1</ipAddress>
+        <cookie>cookie_52278879710130</cookie>
+        <userAgent>Firefox</userAgent>
+		
+		<order>
+		
+			<accountId>500537</accountId>
+			<referenceCode>testPanama1</referenceCode>
+			<description>Test order Panama</description>
+			<language>en</language>
+			<notifyUrl>http://pruebaslap.xtrweb.com/lap/pruebconf.php</notifyUrl>
+			<signature>bdedc9902977ac9eafb232444e37d51189cf9c0d</signature>
+			
+			<shippingAddress>
+		      	<street1>Calle 93 B 17 – 25</street1>
+                <city>Panama</city>
+                <state>Panama</state>
+                <country>PA</country>
+                <postalCode>000000</postalCode>
+                <phone>5582254</phone>
+			</shippingAddress>
+			
+			<buyer>
+				<fullName>José Pérez</fullName>
+				<emailAddress>test@payulatam.com</emailAddress>
+				<dniNumber>1155255887</dniNumber>
+				
+				<shippingAddress>
+					<street1>Calle 93 B 17 – 25</street1>
+					<city>Panama</city>
+					<state>Panama</state>
+					<country>PA</country>
+					<postalCode>000000</postalCode>
+					<phone>5582254</phone>
+				</shippingAddress>
+				
+			</buyer>
+			
+			<additionalValues>
+				<entry>
+					<string>TX_VALUE</string>
+					<additionalValue>
+						<value>5</value>
+						<currency>USD</currency>
+					</additionalValue>
+				</entry>
+			</additionalValues>
+			
+		</order>
+		
+		<creditCard>
+			<number>4111111111111111</number>
+			<securityCode>123</securityCode>
+			<expirationDate>2018/08</expirationDate>
+			<name>Test</name>
+		</creditCard>
+		
+		<payer>
+			<fullName>José Pérez</fullName>
+			<emailAddress>test@payulatam.com</emailAddress>
+		</payer>
+		
+		<extraParameters>
+			<entry>
+				<string>RESPONSE_URL</string>
+				<string>http://www.misitioweb.com/respuesta.php</string>
+			</entry>
+			<entry>
+				<string>INSTALLMENTS_NUMBER</string>
+				<string>1</string>
+			</entry>
+		</extraParameters>
+		
+	</transaction>
+	
+</request>
+        ';
+
+        return $this->curlRequestXml($xml);
     }
 
     /**
@@ -121,10 +216,14 @@ class PaymentApi extends ApiAbstract
      * @param  TransactionEntity $transaction
      * @return ResponseEntity
      */
-    public function authorize(TransactionEntity $transaction)
+    /*public function authorize(TransactionEntity $transaction)
     {
         $transaction->setType(PaymentTypes::AUTHORIZATION);
         return $this->authorizeRequest($transaction);
+    }*/
+    public function authorize()
+    {
+    	return $this->authorizeRequest();
     }
 
     /**

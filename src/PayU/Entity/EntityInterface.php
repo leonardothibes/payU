@@ -15,12 +15,6 @@ namespace PayU\Entity;
  */
 interface EntityInterface
 {
-	/**
-	 * Generate xml order.
-	 * @return \SimpleXMLElement
-	 */
-	public function toXml();
-	
     /**
      * Generate array order.
      * @return array
