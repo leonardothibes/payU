@@ -154,15 +154,14 @@ class BuyerEntity implements EntityInterface
     	$xml->addChild('emailAddress', $this->emailAddress);
     	$xml->addChild('dniNumber', $this->dniNumber);
     	 
-    	$shippingAddress = $xml->addChild('shippingAddress', $this->shippingAddress->toXml());
-    	
-    	/*$shippingAddress->addChild('street1', $this->shippingAddress->getStreet1());
+    	$shippingAddress = $xml->addChild('shippingAddress');
+    	$shippingAddress->addChild('street1', $this->shippingAddress->getStreet1());
     	$shippingAddress->addChild('street2', $this->shippingAddress->getStreet2());
     	$shippingAddress->addChild('city', $this->shippingAddress->getCity());
     	$shippingAddress->addChild('state', $this->shippingAddress->getState());
     	$shippingAddress->addChild('country', $this->shippingAddress->getCountry());
     	$shippingAddress->addChild('postalCode', $this->shippingAddress->getPostalCode());
-    	$shippingAddress->addChild('phone', $this->shippingAddress->getPhone());*/
+    	$shippingAddress->addChild('phone', $this->shippingAddress->getPhone());
     	 
     	return $xml;
     }
