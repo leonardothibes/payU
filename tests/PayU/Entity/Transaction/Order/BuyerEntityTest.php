@@ -176,51 +176,6 @@ class BuyerEntityTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @see BuyerEntity::toXml()
-     */
-    public function testToXml()
-    {
-		$street1    = 'street1_' . rand(1,1000);
-		$street2    = 'street2_' . rand(1,1000);
-   		$city       = 'city_' . rand(1,1000);
-   		$state      = 'state_' . rand(1,1000);
-   		$country    = 'country_' . rand(1,1000);
-   		$postalCode = 'postalCode_' . rand(1,1000);
-    	$phone      = 'phone_' . rand(1,1000);
-    	$shippingAddress = new ShippingAddressEntity();
-    	$shippingAddress->setStreet1($street1)
-				    	->setStreet2($street2)
-				    	->setCity($city)
-				    	->setState($state)
-				    	->setCountry($country)
-				    	->setPostalCode($postalCode)
-				    	->setPhone($phone);
-    	$this->object->setShippingAddress($shippingAddress);
-    	
-   		$fullName     = 'person name ' . rand(1,9) . rand(1,9) . rand(1,9);
-   		$emailAddress = 'email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com';
-   		$dniNumber    = Cpf::random();
-    	$this->object->setFullName($fullName)
-				     ->setEmailAddress($emailAddress)
-				     ->setDniNumber($dniNumber);
-    	
-    	$rs = $this->object->toXml();
-    	$this->assertInstanceOf('\SimpleXMLElement', $rs);
-    	
-    	$this->assertEquals($fullName, $rs->fullName);
-    	$this->assertEquals($emailAddress, $rs->emailAddress);
-    	$this->assertEquals($dniNumber, $rs->dniNumber);
-    	
-    	$this->assertEquals($street1, $rs->shippingAddress->street1);
-    	$this->assertEquals($street2, $rs->shippingAddress->street2);
-    	$this->assertEquals($city, $rs->shippingAddress->city);
-    	$this->assertEquals($state, $rs->shippingAddress->state);
-    	$this->assertEquals($country, $rs->shippingAddress->country);
-    	$this->assertEquals($postalCode, $rs->shippingAddress->postalCode);
-    	$this->assertEquals($phone, $rs->shippingAddress->phone);
-    }
-
-    /**
      * @see BuyerEntity::toArray()
      */
     public function testToArray()

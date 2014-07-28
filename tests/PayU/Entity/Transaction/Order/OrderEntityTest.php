@@ -351,56 +351,6 @@ class OrderEntityTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @see OrderEntity::toXml()
-     */
-    public function testToXml()
-    {
-    	$accountId = 'accountId_' . rand(1,9) . rand(1,9) . rand(1,9);
-    	$this->object->setAccountId($accountId);
-    	
-    	$referenceCode = 'referenceCode_' . rand(1,9) . rand(1,9) . rand(1,9);
-    	$this->object->setReferenceCode($referenceCode);
-    	
-    	$description = 'description_' . rand(1,9) . rand(1,9) . rand(1,9);
-    	$this->object->setDescription($description);
-    	
-    	$language = 'language_' . rand(1,9) . rand(1,9) . rand(1,9);
-    	$this->object->setLanguage($language);
-    	
-    	$notifyUrl = 'http://notifyurl-' . rand(1,9) . rand(1,9) . rand(1,9) . '.com';
-    	$this->object->setNotifyUrl($notifyUrl);
-    	
-    	$signature = sha1('signature');
-    	$this->object->setSignature($signature);
-    	
-    	$shippingAddress = $this->object->getShippingAddress();
-    	$shippingAddress->setStreet1('street1_' . rand(1,1000))
-				    	->setStreet2('street2_' . rand(1,1000))
-				    	->setCity('city_' . rand(1,1000))
-				    	->setState('state_' . rand(1,1000))
-				    	->setCountry('country_' . rand(1,1000))
-				    	->setPostalCode('postalCode_' . rand(1,1000))
-				    	->setPhone('phone_' . rand(1,1000));
-    	
-    	$buyer = $this->object->getBuyer();
-    	$buyer->setFullName('person name ' . rand(1,9) . rand(1,9) . rand(1,9))
-	    	  ->setEmailAddress('email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com')
-	    	  ->setDniNumber(Cpf::random())
-	    	  ->setShippingAddress($shippingAddress);
-    	
-    	$additionalValues = $this->object->getAdditionalValues();
-    	$additionalValues->addTax(AdditionalValuesEntity::TX_VALUE, 'BRL'    , 'BRL', 1000);
-    	$additionalValues->addTax(AdditionalValuesEntity::TX_TAX, 'BRL'      , 'BRL', 1000);
-    	$additionalValues->addTax(AdditionalValuesEntity::TX_TAX_RETURN_BASE , 'BRL', 1000);
-    	$additionalValues->addTax(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, 'BRL', 1000);
-    	
-    	$rs = $this->object->toXml();
-    	$this->assertInstanceOf('\SimpleXMLElement', $rs);
-    	
-    	\Tbs\Log::debug($rs);
-    }
-
-    /**
      * @see OrderEntity::toArray()
      */
     public function testToArray()
