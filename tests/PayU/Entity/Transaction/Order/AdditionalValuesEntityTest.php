@@ -51,21 +51,29 @@ class AdditionalValuesEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function testToArray()
     {
-    	$this->object->addTax(AdditionalValuesEntity::TX_VALUE           , 'BRL', 1000);
-    	$this->object->addTax(AdditionalValuesEntity::TX_TAX             , 'BRL', 1000);
-    	$this->object->addTax(AdditionalValuesEntity::TX_TAX_RETURN_BASE , 'BRL', 1000);
-    	$this->object->addTax(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, 'BRL', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_VALUE           , 'USD', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_TAX             , 'USD', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_TAX_RETURN_BASE , 'USD', 1000);
+    	$this->object->addTax(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, 'USD', 1000);
 
     	$rs = $this->object->toArray();
-
+    	
     	$this->assertInternalType('array', $rs);
     	$this->assertEquals(4, count($rs));
-
-    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_VALUE, $rs);
-    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_TAX, $rs);
-    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_TAX_RETURN_BASE, $rs);
-    	$this->assertArrayHasKey(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, $rs);
-
-    	$this->markTestIncomplete();
+    	
+    	foreach ($rs as $entry) {
+    		
+    		$this->assertInternalType('array', $entry);
+    		$this->assertEquals(2, count($entry));
+    		
+    		$this->assertArrayHasKey('string', $entry);
+    		$this->assertArrayHasKey('additionalValue', $entry);
+    		
+    		$this->assertInternalType('array', $entry['additionalValue']);
+    		$this->assertEquals(2, count($entry['additionalValue']));
+    		
+    		$this->assertArrayHasKey('currency', $entry['additionalValue']);
+    		$this->assertArrayHasKey('value', $entry['additionalValue']);
+    	}
     }
 }

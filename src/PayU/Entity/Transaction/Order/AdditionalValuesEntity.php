@@ -29,12 +29,7 @@ class AdditionalValuesEntity implements EntityInterface
      * Additional values list.
      * @var array
      */
-    protected $additionalValues = array(
-        self::TX_VALUE            => array('currency' => 'US', 'value' => 0),
-        self::TX_TAX              => array('currency' => 'US', 'value' => 0),
-        self::TX_TAX_RETURN_BASE  => array('currency' => 'US', 'value' => 0),
-        self::TX_ADDITIONAL_VALUE => array('currency' => 'US', 'value' => 0),
-    );
+    protected $additionalValues = array();
 
     /**
      * Add tax.
@@ -47,8 +42,13 @@ class AdditionalValuesEntity implements EntityInterface
      */
     public function addTax($tax, $currency, $value)
     {
-        $this->additionalValues[$tax]['currency'] = (string)$currency;
-        $this->additionalValues[$tax]['value']    = (string)$value;
+    	$this->additionalValues[] = array(
+    		'string' => $tax,
+    		'additionalValue' => array(
+    			'currency' => $currency,
+    			'value'    => $value,
+    		)
+    	);
         return $this;
     }
 
