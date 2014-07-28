@@ -43,7 +43,8 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
     	$this->credentials = MerchantCredentials::getInstance();
-    	$this->credentials->setMerchantId(PAYU_MERCHANT_ID)
+    	$this->credentials->setAccountId(PAYU_ACCOUNT_ID)
+    	                  ->setMerchantId(PAYU_MERCHANT_ID)
     	                  ->setApiLogin(PAYU_API_LOGIN)
     					  ->setApiKey(PAYU_API_KEY);
     	$this->object = new PaymentApi($this->credentials);
@@ -153,21 +154,6 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     	$transaction = new TransactionEntity();
 
     	//Transaction.
-    	$methods = array(
-    			PaymentMethods::VISA,
-    			PaymentMethods::MASTERCARD,
-    	);
-    	$paymentMethod = $methods[rand(0, count($methods)-1)];
-
-    	$countries = array(
-    			PaymentCountries::ARGENTINA,
-    			PaymentCountries::BRAZIL,
-    			PaymentCountries::COLOMBIA,
-    			PaymentCountries::MEXICO,
-    			PaymentCountries::PANAMA,
-    	);
-    	$paymentCountry = $countries[rand(0, count($countries)-1)];
-
     	$ipAddress = rand(1,254) . '.' . rand(1,254) . '.' . rand(1,254) . '.' . rand(1,254);
     	$cookie    = 'cookie_' . md5(rand(1000, 2000));
 
@@ -180,8 +166,8 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     	);
     	$userAgent = $browsers[rand(0, count($browsers)-1)];
 
-    	$transaction->setPaymentMethod($paymentMethod)
-    	            ->setPaymentCountry($paymentCountry)
+    	$transaction->setPaymentMethod(PaymentMethods::VISA)
+    	            ->setPaymentCountry(PaymentCountries::PANAMA)
     	            ->setIpAddress($ipAddress)
     	            ->setCookie($cookie)
     	            ->setUserAgent($userAgent);
@@ -193,7 +179,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
 				    	->setStreet2('street2_' . rand(1,1000))
 				    	->setCity('city_' . rand(1,1000))
 				    	->setState('state_' . rand(1,1000))
-				    	->setCountry('country_' . rand(1,1000))
+				    	->setCountry(PaymentCountries::PANAMA)
 				    	->setPostalCode('postalCode_' . rand(1,1000))
 				    	->setPhone('phone_' . rand(1,1000));
     	//Shipping address.
@@ -219,14 +205,14 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
 
     	//Additional values.
     	$additionalValues = $order->getAdditionalValues();
-    	$additionalValues->addTax('TX_VALUE', 'BRL', 100);
+    	$additionalValues->addTax('TX_VALUE', 'USD', 100);
     	//Additional values.
 
     	//Credit card.
     	$creditCard = $transaction->getCreditCard();
-    	$creditCard->setNumber(str_repeat(rand(1,9), 4) . str_repeat(rand(1,9), 4) . str_repeat(rand(1,9), 4) . str_repeat(rand(1,9), 4))
+    	$creditCard->setNumber('4111111111111111')
     	           ->setSecurityCode(rand(1,9) . rand(1,9) . rand(1,9))
-    	           ->setExpirationDate(rand(1,9) . rand(1,9) . rand(1,9). rand(1,9) . '/' . rand(1,9) . rand(1,9))
+    	           ->setExpirationDate(rand(2015,2020) . '/' . rand(10,12))
     	           ->setName('person name ' . rand(1,9) . rand(1,9) . rand(1,9));
     	//Credit card.
 
@@ -245,17 +231,11 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      * @see PaymentApi::authorize()
      * @dataProvider providerMockTransaction
      */
-    /*public function estAuthorize($transaction)
+    public function testAuthorize($transaction)
     {
     	$rs = $this->object->authorize($transaction);
-
-    	\Tbs\Log::debug($rs);
-    }*/
-    public function testAuthorize()
-    {
-    	$rs = $this->object->authorize();
-    
-    	\Tbs\Log::debug($rs);
+    	
+    	//\Tbs\Log::debug($rs);
     }
 
     /**

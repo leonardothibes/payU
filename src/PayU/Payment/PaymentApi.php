@@ -14,6 +14,7 @@ use \PayU\Payment\PaymentTypes;
 use \PayU\Entity\RequestEntity;
 use \PayU\Entity\Transaction\TransactionEntity;
 
+use \SimpleXMLElement;
 use \Exception;
 use \stdClass;
 
@@ -73,6 +74,28 @@ class PaymentApi extends ApiAbstract
             throw new PaymentException($e->getMessage(), $e->getCode());
         }
     }
+    
+    /**
+     * Compute signature of order
+     * 
+     * @param string $referenceCode
+     * @param stirng $tx_value
+     * @param string $currency
+     * 
+     * @return string
+     */
+    private function computeSignature($referenceCode, $tx_value, $currency)
+    {
+    	$signature = sprintf(
+    		'%s~%s~%s~%s~%s',
+    		$this->credentials->getApiKey(),
+    		$this->credentials->getMerchantId(),
+    		$referenceCode,
+    		$tx_value,
+    		$currency
+    	);
+    	return sha1($signature);
+    }
 
     /**
      * Make a request "authorize" and "authorizeAndCapture" methods.
@@ -80,134 +103,114 @@ class PaymentApi extends ApiAbstract
      * @param  TransactionEntity $transaction
      * @return ResponseEntity
      */
-    //private function authorizeRequest(TransactionEntity $transaction)
-    private function authorizeRequest()
+    private function authorizeRequest(TransactionEntity $transaction)
     {
-        /*$requestEntity      = new RequestEntity();
-        $request            = $requestEntity->setTransaction($transaction)->toArray();
-        $request['command'] = 'SUBMIT_TRANSACTION';*/
+    	\Tbs\Log::debug($transaction);
+    	
+        $requestEntity = new RequestEntity();
+        $request       = $requestEntity->setCommand('SUBMIT_TRANSACTION')
+                                       ->setMerchant($this->credentials)
+                                       ->setTransaction($transaction)
+                                       ->setIsTest($this->isStaging);
 
         //Order signature.
-        //$order            = $transaction->getOrder();
-        //$additionalValues = $order->getAdditionalValues()->toArray();
-        
-        //\Tbs\Log::debug($additionalValues);
-        
-        /*$signature = sprintf(
-            '%s~%s~%s~%s~%s',
-            $this->credentials->getApiKey(),
-            $this->credentials->getMerchantId(),
-            $order->getReferenceCode(),
-            $additionalValues['TX_TAX']['value'],
-            $additionalValues['TX_TAX']['currency']
-        );
-        $signature = sha1($signature);
-        \Tbs\Log::debug($signature);*/
-        //$order->setSignature($signature);
+        $order            = $transaction->getOrder();
+        $additionalValues = $order->getAdditionalValues()->toArray();
+        $tx_value         = $additionalValues[0]['additionalValue']['value'];
+        $currency         = $additionalValues[0]['additionalValue']['currency'];
+        $signature        = $this->computeSignature($order->getReferenceCode(), $tx_value, $currency);
         //Order signature.
-
-        //$json               = json_encode($request);
-        //$json               = $this->addMetadata($json);
-
-        //\Tbs\Log::debug($json);
         
-        $xml = '
-<request>
-
-	<language>en</language>
-	<command>SUBMIT_TRANSACTION</command>
-	<isTest>true</isTest>
-	
-	<merchant>
-		<apiLogin>11959c415b33d0c</apiLogin>
-		<apiKey>6u39nqhq8ftd0hlvnjfs66eh8c</apiKey>
-	</merchant>
-	
-	<transaction>
-	
-		<type>AUTHORIZATION_AND_CAPTURE</type>
-        <paymentMethod>VISA</paymentMethod>
-        <paymentCountry>PA</paymentCountry>
+        $xmlRequest = new SimpleXMLElement('<request />');
         
-        <ipAddress>127.0.0.1</ipAddress>
-        <cookie>cookie_52278879710130</cookie>
-        <userAgent>Firefox</userAgent>
-		
-		<order>
-		
-			<accountId>500537</accountId>
-			<referenceCode>testPanama1</referenceCode>
-			<description>Test order Panama</description>
-			<language>en</language>
-			<notifyUrl>http://pruebaslap.xtrweb.com/lap/pruebconf.php</notifyUrl>
-			<signature>bdedc9902977ac9eafb232444e37d51189cf9c0d</signature>
-			
-			<shippingAddress>
-		      	<street1>Calle 93 B 17 – 25</street1>
-                <city>Panama</city>
-                <state>Panama</state>
-                <country>PA</country>
-                <postalCode>000000</postalCode>
-                <phone>5582254</phone>
-			</shippingAddress>
-			
-			<buyer>
-				<fullName>José Pérez</fullName>
-				<emailAddress>test@payulatam.com</emailAddress>
-				<dniNumber>1155255887</dniNumber>
-				
-				<shippingAddress>
-					<street1>Calle 93 B 17 – 25</street1>
-					<city>Panama</city>
-					<state>Panama</state>
-					<country>PA</country>
-					<postalCode>000000</postalCode>
-					<phone>5582254</phone>
-				</shippingAddress>
-				
-			</buyer>
-			
-			<additionalValues>
-				<entry>
-					<string>TX_VALUE</string>
-					<additionalValue>
-						<value>5</value>
-						<currency>USD</currency>
-					</additionalValue>
-				</entry>
-			</additionalValues>
-			
-		</order>
-		
-		<creditCard>
-			<number>4111111111111111</number>
-			<securityCode>123</securityCode>
-			<expirationDate>2018/08</expirationDate>
-			<name>Test</name>
-		</creditCard>
-		
-		<payer>
-			<fullName>José Pérez</fullName>
-			<emailAddress>test@payulatam.com</emailAddress>
-		</payer>
-		
-		<extraParameters>
-			<entry>
-				<string>RESPONSE_URL</string>
-				<string>http://www.misitioweb.com/respuesta.php</string>
-			</entry>
-			<entry>
-				<string>INSTALLMENTS_NUMBER</string>
-				<string>1</string>
-			</entry>
-		</extraParameters>
-		
-	</transaction>
-	
-</request>
-        ';
-
-        return $this->curlRequestXml($xml);
+        $xmlRequest->addChild('language', $request->getLanguage());
+        $xmlRequest->addChild('command', $request->getCommand());
+        $xmlRequest->addChild('isTest', ($request->getIsTest() ? 'true' : 'false'));
+        
+        $merchant = $xmlRequest->addChild('merchant');
+        $merchant->addChild('apiLogin', $request->getMerchant()->getApiLogin());
+        $merchant->addChild('apiKey', $request->getMerchant()->getApiKey());
+        
+        $xmlTransaction = $xmlRequest->addChild('transaction');
+        $xmlTransaction->addChild('type', $transaction->getType());
+        $xmlTransaction->addChild('paymentMethod', $transaction->getPaymentMethod());
+        $xmlTransaction->addChild('paymentCountry', $transaction->getPaymentCountry());
+        $xmlTransaction->addChild('ipAddress', $transaction->getIpAddress());
+        $xmlTransaction->addChild('cookie', $transaction->getCookie());
+        $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
+        
+        $creditCard    = $transaction->getCreditCard();
+        $xmlCreditCard = $xmlTransaction->addChild('creditCard');
+        $xmlCreditCard->addChild('number', $creditCard->getNumber());
+        $xmlCreditCard->addChild('securityCode', $creditCard->getSecurityCode());
+        $xmlCreditCard->addChild('expirationDate', $creditCard->getExpirationDate());
+        $xmlCreditCard->addChild('name', $creditCard->getName());
+        
+        $payer    = $transaction->getPayer();
+        $xmlPayer = $xmlTransaction->addChild('payer');
+        $xmlPayer->addChild('fullName', $payer->getFullName());
+        $xmlPayer->addChild('emailAddress', $payer->getEmailAddress());
+        
+        $order    = $transaction->getOrder();
+        $xmlOrder = $xmlTransaction->addChild('order');
+        $xmlOrder->addChild('accountId', $request->getMerchant()->getAccountId());
+        $xmlOrder->addChild('referenceCode', $order->getReferenceCode());
+        $xmlOrder->addChild('description', $order->getDescription());
+        $xmlOrder->addChild('language', $order->getLanguage());
+        $xmlOrder->addChild('notifyUrl', $order->getNotifyUrl());
+        $xmlOrder->addChild('signature', $signature);
+        
+        $shippingAddress    = $order->getShippingAddress();
+        $xmlShippingAddress = $xmlOrder->addChild('shippingAddress');
+        $xmlShippingAddress->addChild('street1', $shippingAddress->getStreet1());
+        $xmlShippingAddress->addChild('street2', $shippingAddress->getStreet2());
+        $xmlShippingAddress->addChild('city', $shippingAddress->getCity());
+        $xmlShippingAddress->addChild('state', $shippingAddress->getState());
+        $xmlShippingAddress->addChild('country', $shippingAddress->getCountry());
+        $xmlShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
+        $xmlShippingAddress->addChild('phone', $shippingAddress->getPhone());
+                
+        $buyer    = $order->getBuyer();
+        $xmlBuyer = $xmlOrder->addChild('buyer');
+        $xmlBuyer->addChild('fullName', $buyer->getFullName());
+        $xmlBuyer->addChild('emailAddress', $buyer->getEmailAddress());
+        $xmlBuyer->addChild('dniNumber', $buyer->getDniNumber());
+        
+        $xmlBuyerShippingAddress = $xmlBuyer->addChild('shippingAddress');
+        $xmlBuyerShippingAddress->addChild('street1', $shippingAddress->getStreet1());
+        $xmlBuyerShippingAddress->addChild('street2', $shippingAddress->getStreet2());
+        $xmlBuyerShippingAddress->addChild('city', $shippingAddress->getCity());
+        $xmlBuyerShippingAddress->addChild('state', $shippingAddress->getState());
+        $xmlBuyerShippingAddress->addChild('country', $shippingAddress->getCountry());
+        $xmlBuyerShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
+        $xmlBuyerShippingAddress->addChild('phone', $shippingAddress->getPhone());
+        
+        $additionalValues    = $order->getAdditionalValues()->toArray();
+        $xmlAdditionalValues = $xmlOrder->addChild('additionalValues');
+        $entry = $xmlAdditionalValues->addChild('entry');
+        $entry->addChild('string', $additionalValues[0]['string']);
+        $additionalValue = $entry->addChild('additionalValue');
+        $additionalValue->addChild('currency', $additionalValues[0]['additionalValue']['currency']);
+        $additionalValue->addChild('value', $additionalValues[0]['additionalValue']['value']);
+        
+        $extraParameters    = $transaction->getExtraParameters()->toArray();
+        $xmlExtraParameters = $xmlTransaction->addChild('extraParameters');
+        if (count($extraParameters) > 0) {
+        	foreach ($extraParameters as $label => $value) {
+        		$entry  = $xmlExtraParameters->addChild('entry');
+        		$entry->addChild('string', $label);
+        		$entry->addChild('string', $value);
+        	}
+        }
+        
+        \Tbs\Log::debug($xmlExtraParameters);
+        
+        
+        $xml = $xmlRequest->asXML();
+        
+        \Tbs\Log::debug($xml);
+        
+        //return $this->curlRequestXml($xml);
     }
 
     /**
@@ -216,14 +219,10 @@ class PaymentApi extends ApiAbstract
      * @param  TransactionEntity $transaction
      * @return ResponseEntity
      */
-    /*public function authorize(TransactionEntity $transaction)
+    public function authorize(TransactionEntity $transaction)
     {
         $transaction->setType(PaymentTypes::AUTHORIZATION);
         return $this->authorizeRequest($transaction);
-    }*/
-    public function authorize()
-    {
-    	return $this->authorizeRequest();
     }
 
     /**

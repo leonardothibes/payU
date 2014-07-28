@@ -20,6 +20,12 @@ class MerchantCredentials
      * @var MerchantCredentials
      */
     protected static $instance = null;
+    
+    /**
+     * Account id.
+     * @var string
+     */
+    protected $accountId = null;
 
     /**
      * Merchant id.
@@ -67,6 +73,27 @@ class MerchantCredentials
         self::$instance = null;
     }
 
+    /**
+     * Set accountId
+     * 
+     * @param  string $accountId
+     * @return MerchantCredentials
+     */
+    public function setAccountId($accountId)
+    {
+    	$this->accountId = (string)$accountId;
+    	return $this;
+    }
+    
+    /**
+     * Get accountId
+     * @return string
+     */
+    public function getAccountId()
+    {
+    	return (string)$this->accountId;
+    }
+    
     /**
      * Set the merchant id.
      *
