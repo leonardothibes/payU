@@ -78,11 +78,13 @@ class PaymentApi extends ApiAbstract
     /**
      * Compute signature of order
      * 
+     * 
      * @param string $referenceCode
      * @param stirng $tx_value
      * @param string $currency
      * 
      * @return string
+     * @link   http://docs.payulatam.com/pt-br/integracao-com-api/se-voce-utiliza-outra-linguagem-2/operacoes-da-api-de-pagamentos
      */
     private function computeSignature($referenceCode, $tx_value, $currency)
     {

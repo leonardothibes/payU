@@ -63,7 +63,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see ApiAbstract::getApiUrl()
      */
-    public function estGetApiUrlInStaging()
+    public function testGetApiUrlInStaging()
     {
     	$rs = $this->object->setStaging(true)->getApiUrl();
     	$this->assertEquals('https://stg.api.payulatam.com/payments-api/4.0/service.cgi', $rs);
@@ -72,7 +72,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see ApiAbstract::getApiUrl()
      */
-    public function estGetApiUrlInProduction()
+    public function testGetApiUrlInProduction()
     {
     	$rs = $this->object->setStaging(false)->getApiUrl();
     	$this->assertEquals('https://api.payulatam.com/payments-api/4.0/service.cgi', $rs);
@@ -81,7 +81,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @see PaymentApi::ping()
 	 */
-    public function estPing()
+    public function testPing()
     {
     	$rs = $this->object->ping();
     	$this->assertInternalType('bool', $rs);
@@ -91,7 +91,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see PaymentApi::ping()
      */
-    public function estPingWrongCredentials()
+    public function testPingWrongCredentials()
     {
     	try {
     		$this->credentials->setApiLogin('wrong-login')
@@ -107,7 +107,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see PaymentApi::paymentMethods()
      */
-    public function estPaymentMethods()
+    public function testPaymentMethods()
     {
     	$rs = $this->object->paymentMethods();
 
@@ -132,7 +132,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see PaymentApi::paymentMethods()
      */
-    public function estPaymentMethodsWrongCredentials()
+    public function testPaymentMethodsWrongCredentials()
     {
     	try {
     		$this->credentials->setApiLogin('wrong-login')
@@ -233,33 +233,31 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      */
     private function _testTransactionResponse($rs)
     {
-    	\Tbs\Log::debug($rs);
-    	
     	$this->assertInstanceOf('\stdClass', $rs);
-    	
     	$this->assertTrue(isset($rs->code));
+    	$this->assertEquals(0, strlen($rs->error));
     	
-    	$rs->error = 'teste';
+    	$this->assertTrue(isset($rs->transactionResponse));
+    	$this->assertInstanceOf('\stdClass', $rs->transactionResponse);
+    	    	
+    	$transaction = $rs->transactionResponse;
     	
-    	$this->assertTrue(isset($rs->error));
+    	$this->assertTrue(isset($rs->transactionResponse->orderId));
+    	$this->assertTrue(isset($rs->transactionResponse->transactionId));
+    	$this->assertTrue(isset($rs->transactionResponse->state));
+    	$this->assertTrue(isset($rs->transactionResponse->responseCode));
     	
-    	//$this->assertTrue(isset($rs->transactionResponse));
-    	//$this->assertInstanceOf('\stdClass', $rs->transactionResponse);
-    	//$this->assertTrue(isset($rs->transactionResponse->orderId));
-    	//$this->assertTrue(isset($rs->transactionResponse->transactionId));
-    	//$this->assertTrue(isset($rs->transactionResponse->state));
-    	//$this->assertTrue(isset($rs->transactionResponse->paymentNetworkResponseCode));
-    	//$this->assertTrue(isset($rs->transactionResponse->paymentNetworkResponseErrorMessage));
-    	//$this->assertTrue(isset($rs->transactionResponse->trazabilityCode));
-    	//$this->assertTrue(isset($rs->transactionResponse->authorizationCode));
-    	//$this->assertTrue(isset($rs->transactionResponse->pendingReason));
-    	//$this->assertTrue(isset($rs->transactionResponse->responseCode));
-    	//$this->assertTrue(isset($rs->transactionResponse->errorCode));
-    	//$this->assertTrue(isset($rs->transactionResponse->responseMessage));
-    	//$this->assertTrue(isset($rs->transactionResponse->transactionDate));
-    	//$this->assertTrue(isset($rs->transactionResponse->transactionTime));
-    	//$this->assertTrue(isset($rs->transactionResponse->operationDate));
-    	//$this->assertTrue(isset($rs->transactionResponse->extraParameters));
+    	$this->assertEquals(0, strlen($transaction->paymentNetworkResponseCode));
+    	$this->assertEquals(0, strlen($transaction->paymentNetworkResponseErrorMessage));
+    	$this->assertEquals(0, strlen($transaction->trazabilityCode));
+    	$this->assertEquals(0, strlen($transaction->authorizationCode));
+    	$this->assertEquals(0, strlen($transaction->pendingReason));
+    	$this->assertEquals(0, strlen($transaction->errorCode));
+    	$this->assertEquals(0, strlen($transaction->responseMessage));
+    	$this->assertEquals(0, strlen($transaction->transactionDate));
+    	$this->assertEquals(0, strlen($transaction->transactionTime));
+    	$this->assertEquals(0, strlen($transaction->operationDate));
+    	$this->assertEquals(0, strlen($transaction->extraParameters));
     }
 
     /**
@@ -276,7 +274,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      * @see PaymentApi::authorizeAndCapture()
      * @dataProvider providerMockTransaction
      */
-    public function estAuthorizeAndCapture($transaction)
+    public function testAuthorizeAndCapture($transaction)
     {
     	$rs = $this->object->authorizeAndCapture($transaction);
     	$this->_testTransactionResponse($rs);
