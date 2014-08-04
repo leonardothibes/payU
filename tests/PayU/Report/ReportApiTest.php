@@ -95,10 +95,10 @@ class ReportApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Orders data provider.
+     * Order ids data provider.
      * @return array
      */
-    public function providerOrderId()
+    public function providerOrderIds()
     {
     	return array(
     		array(2637540)
@@ -107,12 +107,13 @@ class ReportApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @see ReportApi::fetchByOrderId()
-     * @dataProvider providerOrderId
+     * @dataProvider providerOrderIds
      */
     public function testFetchByOrderId($orderId)
     {
     	$rs = $this->object->fetchByOrderId($orderId);
     	$this->assertInstanceOf('\stdClass', $rs);
+    	$this->assertEquals('SUCCESS', $rs->code);
     	$this->assertEquals($orderId, $rs->result->payload->id);
     }
 
@@ -123,7 +124,7 @@ class ReportApiTest extends \PHPUnit_Framework_TestCase
     {
     	try {
     		$orderId = rand(1,1000);
-    		$rs      = $this->object->fetchByOrderId($orderId);
+    		$this->object->fetchByOrderId($orderId);
     	} catch (\Exception $e) {
     		$this->assertInstanceOf('PayU\Report\ReportException', $e);
     		$this->assertEquals(0, $e->getCode());
@@ -132,30 +133,69 @@ class ReportApiTest extends \PHPUnit_Framework_TestCase
     		$this->assertEquals($message, $e->getMessage());
     	}
     }
+
+    /**
+     * Order reference codes data provider.
+     * @return array
+     */
+    public function providerReferenceCodes()
+    {
+    	return array(
+    		array('payment_test_00000001')
+    	);
+    }
+
+    /**
+     * @see ReportApi::fetchByReferenceCode()
+     * @dataProvider providerReferenceCodes
+     */
+    /*public function testFetchByReferenceCode($referenceCode)
+    {
+    	$rs = $this->object->fetchByReferenceCode($referenceCode);
+    	$this->assertInstanceOf('\stdClass', $rs);
+    	$this->assertEquals('SUCCESS', $rs->code);
+    	$this->assertInternalType('array', $rs->result->payload);
+    	foreach ($rs->result->payload as $payload) {
+    		$this->assertEquals($referenceCode, $payload->referenceCode);
+    	}
+    }*/
+
+    /**
+     * Transaction ids data provider.
+     * @return array
+     */
+    public function providerTransactionIds()
+    {
+    	return array(
+    		array('41bb0d7d-dc98-4eeb-a128-ce5b7366bcfa')
+    	);
+    }
+
+    /**
+     * @see ReportApi::fetchByTransactionId()
+     * @dataProvider providerTransactionIds
+     */
+    public function testFetchByTransactionId($transactionId)
+    {
+    	$rs = $this->object->fetchByTransactionId($transactionId);
+    	$this->assertInstanceOf('\stdClass', $rs);
+    	$this->assertEquals('SUCCESS', $rs->code);
+    }
+
+    /**
+     * @see ReportApi::fetchByTransactionId()
+     */
+    public function testFetchByTransactionIdNotExists()
+    {
+    	try {
+    		$transactionId = rand(1,1000);
+    		$this->object->fetchByTransactionId($transactionId);
+    	} catch (\Exception $e) {
+    		$this->assertInstanceOf('PayU\Report\ReportException', $e);
+    		$this->assertEquals(0, $e->getCode());
+
+    		$message = sprintf('Entity [Order] Not Found with TransactionId [%d].', $transactionId);
+    		$this->assertEquals($message, $e->getMessage());
+    	}
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
