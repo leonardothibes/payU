@@ -74,15 +74,15 @@ class PaymentApi extends ApiAbstract
             throw new PaymentException($e->getMessage(), $e->getCode());
         }
     }
-    
+
     /**
      * Compute signature of order
-     * 
-     * 
+     *
+     *
      * @param string $referenceCode
      * @param stirng $tx_value
      * @param string $currency
-     * 
+     *
      * @return string
      * @link   http://docs.payulatam.com/pt-br/integracao-com-api/se-voce-utiliza-outra-linguagem-2/operacoes-da-api-de-pagamentos
      */
@@ -120,37 +120,35 @@ class PaymentApi extends ApiAbstract
         $currency         = $additionalValues[0]['additionalValue']['currency'];
         $signature        = $this->computeSignature($order->getReferenceCode(), $tx_value, $currency);
         //Order signature.
-        
-        $xmlRequest = new SimpleXMLElement('<request />');
-        
-        $xmlRequest->addChild('language', $request->getLanguage());
-        $xmlRequest->addChild('command', $request->getCommand());
-        $xmlRequest->addChild('isTest', ($request->getIsTest() ? 'true' : 'false'));
-        
-        $merchant = $xmlRequest->addChild('merchant');
+
+        $this->xmlRequest->addChild('language', $request->getLanguage());
+        $this->xmlRequest->addChild('command', $request->getCommand());
+        $this->xmlRequest->addChild('isTest', ($request->getIsTest() ? 'true' : 'false'));
+
+        $merchant = $this->xmlRequest->addChild('merchant');
         $merchant->addChild('apiLogin', $request->getMerchant()->getApiLogin());
         $merchant->addChild('apiKey', $request->getMerchant()->getApiKey());
-        
-        $xmlTransaction = $xmlRequest->addChild('transaction');
+
+        $xmlTransaction = $this->xmlRequest->addChild('transaction');
         $xmlTransaction->addChild('type', $transaction->getType());
         $xmlTransaction->addChild('paymentMethod', $transaction->getPaymentMethod());
         $xmlTransaction->addChild('paymentCountry', $transaction->getPaymentCountry());
         $xmlTransaction->addChild('ipAddress', $transaction->getIpAddress());
         $xmlTransaction->addChild('cookie', $transaction->getCookie());
         $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
-        
+
         $creditCard    = $transaction->getCreditCard();
         $xmlCreditCard = $xmlTransaction->addChild('creditCard');
         $xmlCreditCard->addChild('number', $creditCard->getNumber());
         $xmlCreditCard->addChild('securityCode', $creditCard->getSecurityCode());
         $xmlCreditCard->addChild('expirationDate', $creditCard->getExpirationDate());
         $xmlCreditCard->addChild('name', $creditCard->getName());
-        
+
         $payer    = $transaction->getPayer();
         $xmlPayer = $xmlTransaction->addChild('payer');
         $xmlPayer->addChild('fullName', $payer->getFullName());
         $xmlPayer->addChild('emailAddress', $payer->getEmailAddress());
-        
+
         $order    = $transaction->getOrder();
         $xmlOrder = $xmlTransaction->addChild('order');
         $xmlOrder->addChild('accountId', $request->getMerchant()->getAccountId());
@@ -159,7 +157,7 @@ class PaymentApi extends ApiAbstract
         $xmlOrder->addChild('language', $order->getLanguage());
         $xmlOrder->addChild('notifyUrl', $order->getNotifyUrl());
         $xmlOrder->addChild('signature', $signature);
-        
+
         $shippingAddress    = $order->getShippingAddress();
         $xmlShippingAddress = $xmlOrder->addChild('shippingAddress');
         $xmlShippingAddress->addChild('street1', $shippingAddress->getStreet1());
@@ -169,13 +167,13 @@ class PaymentApi extends ApiAbstract
         $xmlShippingAddress->addChild('country', $shippingAddress->getCountry());
         $xmlShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
         $xmlShippingAddress->addChild('phone', $shippingAddress->getPhone());
-                
+
         $buyer    = $order->getBuyer();
         $xmlBuyer = $xmlOrder->addChild('buyer');
         $xmlBuyer->addChild('fullName', $buyer->getFullName());
         $xmlBuyer->addChild('emailAddress', $buyer->getEmailAddress());
         $xmlBuyer->addChild('dniNumber', $buyer->getDniNumber());
-        
+
         $xmlBuyerShippingAddress = $xmlBuyer->addChild('shippingAddress');
         $xmlBuyerShippingAddress->addChild('street1', $shippingAddress->getStreet1());
         $xmlBuyerShippingAddress->addChild('street2', $shippingAddress->getStreet2());
@@ -184,7 +182,7 @@ class PaymentApi extends ApiAbstract
         $xmlBuyerShippingAddress->addChild('country', $shippingAddress->getCountry());
         $xmlBuyerShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
         $xmlBuyerShippingAddress->addChild('phone', $shippingAddress->getPhone());
-        
+
         $additionalValues    = $order->getAdditionalValues()->toArray();
         $xmlAdditionalValues = $xmlOrder->addChild('additionalValues');
         $entry = $xmlAdditionalValues->addChild('entry');
@@ -192,7 +190,7 @@ class PaymentApi extends ApiAbstract
         $additionalValue = $entry->addChild('additionalValue');
         $additionalValue->addChild('currency', $additionalValues[0]['additionalValue']['currency']);
         $additionalValue->addChild('value', $additionalValues[0]['additionalValue']['value']);
-        
+
         $extraParameters    = $transaction->getExtraParameters()->toArray();
         $xmlExtraParameters = $xmlTransaction->addChild('extraParameters');
         if (count($extraParameters) > 0) {
@@ -202,9 +200,9 @@ class PaymentApi extends ApiAbstract
         		$entry->addChild('string', $value);
         	}
         }
-        
+
         return $this->curlRequestXml(
-        	$xmlRequest->asXML()
+        	$this->xmlRequest->asXML()
         );
     }
 

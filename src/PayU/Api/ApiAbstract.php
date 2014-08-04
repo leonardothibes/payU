@@ -9,6 +9,7 @@ namespace PayU\Api;
 use \PayU\PayUException;
 use \PayU\Api\ApiInterface;
 use \PayU\Merchant\MerchantCredentials;
+use \SimpleXMLElement;
 
 /**
  * Base of PayU api.
@@ -19,6 +20,12 @@ use \PayU\Merchant\MerchantCredentials;
  */
 abstract class ApiAbstract implements ApiInterface
 {
+	/**
+	 * Simple XML raw object.
+	 * @var SimpleXMLElement
+	 */
+	protected $xmlRequest = null;
+
     /**
      * Merchant credentials object.
      * @var MerchantCredentials
@@ -55,6 +62,25 @@ abstract class ApiAbstract implements ApiInterface
     {
         $this->credentials = $credentials;
         $this->language    = (string)$language;
+        $this->xmlRequest  = new SimpleXMLElement('<request />');
+    }
+
+    /**
+     * Get XML raw object.
+     * @return SimpleXMLElement
+     */
+    public function getXmlRawObject()
+    {
+    	return $this->xmlRequest;
+    }
+
+    /**
+     * Get XML raw string.
+     * @return string
+     */
+    public function getXmlRawString()
+    {
+    	return $this->xmlRequest->asXML();
     }
 
     /**
@@ -211,7 +237,7 @@ abstract class ApiAbstract implements ApiInterface
 
         return $rs;
     }
-    
+
     /**
      * Make the cURL request in PayU webservice.
      *
@@ -228,7 +254,7 @@ abstract class ApiAbstract implements ApiInterface
     		'Content-Length: ' . strlen($xml),
     	);
     	//HTTP headers.
-    
+
     	try {
     		//cUrl request.
     		$ch = curl_init($this->getApiUrl());
@@ -239,14 +265,14 @@ abstract class ApiAbstract implements ApiInterface
     		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     		$rs = json_decode(curl_exec($ch));
     		//cUrl request.
-    
+
     		//Error treatment.
     		$error = curl_error($ch);
     		if (strlen($error)) {
     			throw new PayUException($error);
     		}
     		//Error treatment.
-    
+
     		//Error treatment.
     		if (strlen((string)$rs->error)) {
     			throw new PayUException($rs->error);
@@ -255,7 +281,7 @@ abstract class ApiAbstract implements ApiInterface
     	} catch (Exception $e) {
     		throw new PayUException($e->getMessage(), $e->getCode());
     	}
-    
+
     	return $rs;
     }
 }
