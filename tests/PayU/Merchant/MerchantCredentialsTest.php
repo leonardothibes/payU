@@ -37,6 +37,29 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @see MerchantCredentials::getApiUrl()
+     */
+    public function testGetApiUrl()
+    {
+    	$rs = $this->object->getApiUrl();
+    	$this->assertEquals(0, strlen($rs));
+    }
+
+    /**
+     * @see MerchantCredentials::setApiUrl()
+     */
+    public function testSetApiUrl()
+    {
+    	$apiUrl = 'apiUrl_' . rand(1,1000);
+    	$rs     = $this->object->setApiUrl($apiUrl);
+    	$this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+
+    	$rs = $this->object->getApiUrl();
+    	$this->assertInternalType('string', $rs);
+    	$this->assertEquals($apiUrl, $rs);
+    }
+
+    /**
      * @see MerchantCredentials::getMerchantId()
      */
     public function testGetMerchantId()
@@ -51,8 +74,7 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
     public function testSetMerchantId()
     {
     	$merchantId = 'merchantId_' . rand(1,1000);
-
-    	$rs = $this->object->setMerchantId($merchantId);
+    	$rs         = $this->object->setMerchantId($merchantId);
     	$this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
 
     	$rs = $this->object->getMerchantId();

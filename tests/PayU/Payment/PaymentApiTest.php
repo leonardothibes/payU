@@ -63,6 +63,18 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see ApiAbstract::getApiUrl()
      */
+    public function testGetApiUrlCredentialOverride()
+    {
+    	$apiUrl = 'http://apiurl.com';
+    	$this->credentials->setApiUrl($apiUrl);
+
+    	$rs = $this->object->getApiUrl();
+    	$this->assertInternalType('string', $rs);
+    }
+
+    /**
+     * @see ApiAbstract::getApiUrl()
+     */
     public function testGetApiUrlInStaging()
     {
     	$rs = $this->object->setStaging(true)->getApiUrl();
@@ -226,27 +238,27 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     		array($transaction)
     	);
     }
-    
+
     /**
      * Verify transaction response.
-     * @param stdClass $response 
+     * @param stdClass $response
      */
     private function _testTransactionResponse($rs)
     {
     	$this->assertInstanceOf('\stdClass', $rs);
     	$this->assertTrue(isset($rs->code));
     	$this->assertEquals(0, strlen($rs->error));
-    	
+
     	$this->assertTrue(isset($rs->transactionResponse));
     	$this->assertInstanceOf('\stdClass', $rs->transactionResponse);
-    	    	
+
     	$transaction = $rs->transactionResponse;
-    	
+
     	$this->assertTrue(isset($rs->transactionResponse->orderId));
     	$this->assertTrue(isset($rs->transactionResponse->transactionId));
     	$this->assertTrue(isset($rs->transactionResponse->state));
     	$this->assertTrue(isset($rs->transactionResponse->responseCode));
-    	
+
     	$this->assertEquals(0, strlen($transaction->paymentNetworkResponseCode));
     	$this->assertEquals(0, strlen($transaction->paymentNetworkResponseErrorMessage));
     	$this->assertEquals(0, strlen($transaction->trazabilityCode));

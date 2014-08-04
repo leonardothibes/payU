@@ -20,7 +20,7 @@ class MerchantCredentials
      * @var MerchantCredentials
      */
     protected static $instance = null;
-    
+
     /**
      * Account id.
      * @var string
@@ -44,6 +44,12 @@ class MerchantCredentials
      * @var string
      */
     protected $apiKey = null;
+
+    /**
+     * Api URL.
+     * @var string
+     */
+    protected $apiUrl = null;
 
     /**
      * Gets a singleton instance of class.
@@ -74,8 +80,29 @@ class MerchantCredentials
     }
 
     /**
+     * Set api url.
+     *
+     * @param  string $apiUrl
+     * @return MerchantCredentials
+     */
+    public function setApiUrl($apiUrl)
+    {
+    	$this->apiUrl = (string)$apiUrl;
+    	return $this;
+    }
+
+    /**
+     * Get api url.
+     * @return string
+     */
+    public function getApiUrl()
+    {
+    	return (string)$this->apiUrl;
+    }
+
+    /**
      * Set accountId
-     * 
+     *
      * @param  string $accountId
      * @return MerchantCredentials
      */
@@ -84,7 +111,7 @@ class MerchantCredentials
         $this->accountId = (string)$accountId;
         return $this;
     }
-    
+
     /**
      * Get accountId
      * @return string
@@ -93,7 +120,7 @@ class MerchantCredentials
     {
         return (string)$this->accountId;
     }
-    
+
     /**
      * Set the merchant id.
      *

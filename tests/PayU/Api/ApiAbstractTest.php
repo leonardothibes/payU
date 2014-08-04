@@ -34,7 +34,9 @@ class ApiAbstractTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
     	$this->credentials = MerchantCredentials::getInstance();
-		$this->credentials->setApiLogin(PAYU_API_LOGIN)
+		$this->credentials->setAccountId(PAYU_ACCOUNT_ID)
+						  ->setMerchantId(PAYU_MERCHANT_ID)
+						  ->setApiLogin(PAYU_API_LOGIN)
     	                  ->setApiKey(PAYU_API_KEY);
     	$this->object = new ApiAbstractMock($this->credentials);
     }

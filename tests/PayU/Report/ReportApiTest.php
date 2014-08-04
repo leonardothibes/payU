@@ -34,9 +34,9 @@ class ReportApiTest extends \PHPUnit_Framework_TestCase
     {
     	$this->credentials = MerchantCredentials::getInstance();
     	$this->credentials->setAccountId(PAYU_ACCOUNT_ID)
-	    	 ->setMerchantId(PAYU_MERCHANT_ID)
-	    	 ->setApiLogin(PAYU_API_LOGIN)
-	    	 ->setApiKey(PAYU_API_KEY);
+	    	 			  ->setMerchantId(PAYU_MERCHANT_ID)
+	    	 			  ->setApiLogin(PAYU_API_LOGIN)
+	    	 			  ->setApiKey(PAYU_API_KEY);
     	$this->object = new ReportApi($this->credentials);
     	$this->object->setStaging();
     }
@@ -48,6 +48,18 @@ class ReportApiTest extends \PHPUnit_Framework_TestCase
     {
     	$this->credentials->resetInstance();
     	unset($this->object, $this->credentials);
+    }
+
+    /**
+     * @see ApiAbstract::getApiUrl()
+     */
+    public function testGetApiUrlCredentialOverride()
+    {
+    	$apiUrl = 'http://apiurl.com';
+    	$this->credentials->setApiUrl($apiUrl);
+
+    	$rs = $this->object->getApiUrl();
+    	$this->assertInternalType('string', $rs);
     }
 
     /**

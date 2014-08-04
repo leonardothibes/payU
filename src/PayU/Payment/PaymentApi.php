@@ -31,13 +31,13 @@ class PaymentApi extends ApiAbstract
      * Payment api url for production.
      * @var string
      */
-    protected $apiUrlProduction = 'https://api.payulatam.com/payments-api/%s/service.cgi';
+    protected $apiUrlProduction = 'https://api.payulatam.com/payments-api/4.0/service.cgi';
 
     /**
      * Payment api url for staging.
      * @var string
      */
-    protected $apiUrlStaging = 'https://stg.api.payulatam.com/payments-api/%s/service.cgi';
+    protected $apiUrlStaging = 'https://stg.api.payulatam.com/payments-api/4.0/service.cgi';
 
     /**
      * Ping request for service health.
