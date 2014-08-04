@@ -87,8 +87,8 @@ class MerchantCredentials
      */
     public function setApiUrl($apiUrl)
     {
-    	$this->apiUrl = (string)$apiUrl;
-    	return $this;
+        $this->apiUrl = (string)$apiUrl;
+        return $this;
     }
 
     /**
@@ -97,7 +97,7 @@ class MerchantCredentials
      */
     public function getApiUrl()
     {
-    	return (string)$this->apiUrl;
+        return (string)$this->apiUrl;
     }
 
     /**

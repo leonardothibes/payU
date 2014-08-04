@@ -122,10 +122,10 @@ abstract class ApiAbstract implements ApiInterface
      */
     public function getApiUrl()
     {
-    	$apiUrl = $this->credentials->getApiUrl();
-    	if (strlen($apiUrl)) {
-    		return $apiUrl;
-    	}
+        $apiUrl = $this->credentials->getApiUrl();
+        if (strlen($apiUrl)) {
+            return $apiUrl;
+        }
         if ($this->isProduction()) {
             return $this->apiUrlProduction;
         } else {
