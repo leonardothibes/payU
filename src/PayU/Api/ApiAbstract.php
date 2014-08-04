@@ -20,11 +20,11 @@ use \SimpleXMLElement;
  */
 abstract class ApiAbstract implements ApiInterface
 {
-	/**
-	 * Simple XML raw object.
-	 * @var SimpleXMLElement
-	 */
-	protected $xmlRequest = null;
+    /**
+     * Simple XML raw object.
+     * @var SimpleXMLElement
+     */
+    protected $xmlRequest = null;
 
     /**
      * Merchant credentials object.
@@ -71,7 +71,7 @@ abstract class ApiAbstract implements ApiInterface
      */
     public function getXmlRawObject()
     {
-    	return $this->xmlRequest;
+        return $this->xmlRequest;
     }
 
     /**
@@ -80,7 +80,7 @@ abstract class ApiAbstract implements ApiInterface
      */
     public function getXmlRawString()
     {
-    	return $this->xmlRequest->asXML();
+        return $this->xmlRequest->asXML();
     }
 
     /**
@@ -247,41 +247,41 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function curlRequestXml($xml)
     {
-    	//HTTP headers.
-    	$headers = array(
-    		'Content-Type: application/xml',
-    		'Accept: application/json',
-    		'Content-Length: ' . strlen($xml),
-    	);
-    	//HTTP headers.
+        //HTTP headers.
+        $headers = array(
+            'Content-Type: application/xml',
+            'Accept: application/json',
+            'Content-Length: ' . strlen($xml),
+        );
+        //HTTP headers.
 
-    	try {
-    		//cUrl request.
-    		$ch = curl_init($this->getApiUrl());
-    		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-    		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-    		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    		$rs = json_decode(curl_exec($ch));
-    		//cUrl request.
+        try {
+            //cUrl request.
+            $ch = curl_init($this->getApiUrl());
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $rs = json_decode(curl_exec($ch));
+            //cUrl request.
 
-    		//Error treatment.
-    		$error = curl_error($ch);
-    		if (strlen($error)) {
-    			throw new PayUException($error);
-    		}
-    		//Error treatment.
+            //Error treatment.
+            $error = curl_error($ch);
+            if (strlen($error)) {
+                throw new PayUException($error);
+            }
+            //Error treatment.
 
-    		//Error treatment.
-    		if (strlen((string)$rs->error)) {
-    			throw new PayUException($rs->error);
-    		}
-    		//Error treatment.
-    	} catch (Exception $e) {
-    		throw new PayUException($e->getMessage(), $e->getCode());
-    	}
+            //Error treatment.
+            if (strlen((string)$rs->error)) {
+                throw new PayUException($rs->error);
+            }
+            //Error treatment.
+        } catch (Exception $e) {
+            throw new PayUException($e->getMessage(), $e->getCode());
+        }
 
-    	return $rs;
+        return $rs;
     }
 }

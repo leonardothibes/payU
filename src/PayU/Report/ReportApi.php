@@ -43,14 +43,14 @@ class ReportApi extends ApiAbstract
      */
     public function ping()
     {
-    	try {
-    		$json     = '{"command": "PING"}';
-    		$json     = $this->addMetadata($json);
-    		$response = $this->curlRequest($json);
-    		return ($response->code == ApiStatus::SUCCESS);
-    	} catch (Exception $e) {
-    		throw new ReportException($e->getMessage(), $e->getCode());
-    	}
+        try {
+            $json     = '{"command": "PING"}';
+            $json     = $this->addMetadata($json);
+            $response = $this->curlRequest($json);
+            return ($response->code == ApiStatus::SUCCESS);
+        } catch (Exception $e) {
+            throw new ReportException($e->getMessage(), $e->getCode());
+        }
     }
 
     /**
@@ -61,18 +61,18 @@ class ReportApi extends ApiAbstract
      */
     protected function buildXmlObject($command)
     {
-    	$this->xmlRequest->addChild('language', $this->language);
-    	$this->xmlRequest->addChild('command', $command);
-    	$this->xmlRequest->addChild('isTest', ($this->isStaging() ? 'true' : 'false'));
+        $this->xmlRequest->addChild('language', $this->language);
+        $this->xmlRequest->addChild('command', $command);
+        $this->xmlRequest->addChild('isTest', ($this->isStaging() ? 'true' : 'false'));
 
-    	$merchant = $this->xmlRequest->addChild('merchant');
-    	$merchant->addChild('apiLogin', $this->getCredentials()->getApiLogin());
-    	$merchant->addChild('apiKey', $this->getCredentials()->getApiKey());
+        $merchant = $this->xmlRequest->addChild('merchant');
+        $merchant->addChild('apiLogin', $this->getCredentials()->getApiLogin());
+        $merchant->addChild('apiKey', $this->getCredentials()->getApiKey());
 
-    	$details = $this->xmlRequest->addChild('details');
-    	$details->addAttribute('class', 'java.util.HashMap');
+        $details = $this->xmlRequest->addChild('details');
+        $details->addAttribute('class', 'java.util.HashMap');
 
-    	return $this;
+        return $this;
     }
 
     /**
@@ -83,11 +83,11 @@ class ReportApi extends ApiAbstract
      */
     protected function addOrderId($orderId)
     {
-    	$entry  = $this->xmlRequest->details->addChild('entry');
-    	$string = $entry->addChild('string', 'orderId');
-    	$object = $entry->addChild('object', $orderId);
-    	$object->addAttribute('class', 'java.lang.Integer');
-    	return $this;
+        $entry  = $this->xmlRequest->details->addChild('entry');
+        $string = $entry->addChild('string', 'orderId');
+        $object = $entry->addChild('object', $orderId);
+        $object->addAttribute('class', 'java.lang.Integer');
+        return $this;
     }
 
     /**
@@ -98,15 +98,15 @@ class ReportApi extends ApiAbstract
      */
     public function fetchByOrderId($orderId)
     {
- 	   try {
- 	   		$this->buildXmlObject('ORDER_DETAIL');
-   			$this->addOrderId($orderId);
-    		return $this->curlRequestXml(
-    			$this->xmlRequest->asXML()
-    		);
-    	} catch (Exception $e) {
-    		throw new ReportException($e->getMessage());
-    	}
+        try {
+            $this->buildXmlObject('ORDER_DETAIL');
+            $this->addOrderId($orderId);
+            return $this->curlRequestXml(
+                $this->xmlRequest->asXML()
+            );
+        } catch (Exception $e) {
+            throw new ReportException($e->getMessage());
+        }
     }
 
     /**
@@ -117,11 +117,11 @@ class ReportApi extends ApiAbstract
      */
     protected function addReferenceCode($referenceCode)
     {
-    	$entry  = $this->xmlRequest->details->addChild('entry');
-    	$string = $entry->addChild('string', 'referenceCode');
-    	$object = $entry->addChild('object', $referenceCode);
-    	$object->addAttribute('class', 'java.lang.String');
-    	return $this;
+        $entry  = $this->xmlRequest->details->addChild('entry');
+        $string = $entry->addChild('string', 'referenceCode');
+        $object = $entry->addChild('object', $referenceCode);
+        $object->addAttribute('class', 'java.lang.String');
+        return $this;
     }
 
     /**
@@ -134,15 +134,15 @@ class ReportApi extends ApiAbstract
      */
     public function fetchByReferenceCode($referenceCode)
     {
-    	try {
-    		$this->buildXmlObject('ORDER_DETAIL_BY_REFERENCE_CODE');
-    		$this->addReferenceCode($referenceCode);
-    		return $this->curlRequestXml(
-    			$this->xmlRequest->asXML()
-    		);
-    	} catch (Exception $e) {
-    		throw new ReportException($e->getMessage());
-    	}
+        try {
+            $this->buildXmlObject('ORDER_DETAIL_BY_REFERENCE_CODE');
+            $this->addReferenceCode($referenceCode);
+            return $this->curlRequestXml(
+                $this->xmlRequest->asXML()
+            );
+        } catch (Exception $e) {
+            throw new ReportException($e->getMessage());
+        }
     }
 
     /**
@@ -153,11 +153,11 @@ class ReportApi extends ApiAbstract
      */
     protected function addTransactionId($transactionId)
     {
-    	$entry  = $this->xmlRequest->details->addChild('entry');
-    	$string = $entry->addChild('string', 'transactionId');
-    	$object = $entry->addChild('object', $transactionId);
-    	$object->addAttribute('class', 'java.lang.String');
-    	return $this;
+        $entry  = $this->xmlRequest->details->addChild('entry');
+        $string = $entry->addChild('string', 'transactionId');
+        $object = $entry->addChild('object', $transactionId);
+        $object->addAttribute('class', 'java.lang.String');
+        return $this;
     }
 
     /**
@@ -168,19 +168,19 @@ class ReportApi extends ApiAbstract
      */
     public function fetchByTransactionId($transactionId)
     {
-    	try {
-    		$this->buildXmlObject('TRANSACTION_RESPONSE_DETAIL');
-    		$this->addTransactionId($transactionId);
-    		$response = $this->curlRequestXml(
-    			$this->xmlRequest->asXML()
-    		);
-    		if ($response->code == 'SUCCESS' and $response->result == '') {
-    			$message = sprintf('Entity [Order] Not Found with TransactionId [%d].', $transactionId);
-    			throw new ReportException($message);
-    		}
-    		return $response;
-    	} catch (Exception $e) {
-    		throw new ReportException($e->getMessage());
-    	}
+        try {
+            $this->buildXmlObject('TRANSACTION_RESPONSE_DETAIL');
+            $this->addTransactionId($transactionId);
+            $response = $this->curlRequestXml(
+                $this->xmlRequest->asXML()
+            );
+            if ($response->code == 'SUCCESS' and $response->result == '') {
+                $message = sprintf('Entity [Order] Not Found with TransactionId [%d].', $transactionId);
+                throw new ReportException($message);
+            }
+            return $response;
+        } catch (Exception $e) {
+            throw new ReportException($e->getMessage());
+        }
     }
 }

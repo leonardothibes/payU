@@ -42,13 +42,13 @@ class AdditionalValuesEntity implements EntityInterface
      */
     public function addTax($tax, $currency, $value)
     {
-    	$this->additionalValues[] = array(
-    		'string' => $tax,
-    		'additionalValue' => array(
-    			'currency' => $currency,
-    			'value'    => $value,
-    		)
-    	);
+        $this->additionalValues[] = array(
+            'string' => $tax,
+            'additionalValue' => array(
+                'currency' => $currency,
+                'value'    => $value,
+            )
+        );
         return $this;
     }
     

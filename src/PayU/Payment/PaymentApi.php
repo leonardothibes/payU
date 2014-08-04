@@ -84,19 +84,18 @@ class PaymentApi extends ApiAbstract
      * @param string $currency
      *
      * @return string
-     * @link   http://docs.payulatam.com/pt-br/integracao-com-api/se-voce-utiliza-outra-linguagem-2/operacoes-da-api-de-pagamentos
      */
     private function computeSignature($referenceCode, $tx_value, $currency)
     {
-    	$signature = sprintf(
-    		'%s~%s~%s~%s~%s',
-    		$this->credentials->getApiKey(),
-    		$this->credentials->getMerchantId(),
-    		$referenceCode,
-    		$tx_value,
-    		$currency
-    	);
-    	return sha1($signature);
+        $signature = sprintf(
+            '%s~%s~%s~%s~%s',
+            $this->credentials->getApiKey(),
+            $this->credentials->getMerchantId(),
+            $referenceCode,
+            $tx_value,
+            $currency
+        );
+        return sha1($signature);
     }
 
     /**
@@ -194,15 +193,15 @@ class PaymentApi extends ApiAbstract
         $extraParameters    = $transaction->getExtraParameters()->toArray();
         $xmlExtraParameters = $xmlTransaction->addChild('extraParameters');
         if (count($extraParameters) > 0) {
-        	foreach ($extraParameters as $label => $value) {
-        		$entry  = $xmlExtraParameters->addChild('entry');
-        		$entry->addChild('string', $label);
-        		$entry->addChild('string', $value);
-        	}
+            foreach ($extraParameters as $label => $value) {
+                $entry  = $xmlExtraParameters->addChild('entry');
+                $entry->addChild('string', $label);
+                $entry->addChild('string', $value);
+            }
         }
 
         return $this->curlRequestXml(
-        	$this->xmlRequest->asXML()
+            $this->xmlRequest->asXML()
         );
     }
 
