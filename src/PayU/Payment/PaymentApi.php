@@ -234,7 +234,7 @@ class PaymentApi extends ApiAbstract
      */
     public function capture()
     {
-    	trigger_error('Not implemented, yet...');
+        trigger_error('Not implemented, yet...');
     }
 
     /**
@@ -247,23 +247,23 @@ class PaymentApi extends ApiAbstract
      */
     public function refund($orderId, $transaction)
     {
-    	$this->xmlRequest->addChild('language', $this->language);
-    	$this->xmlRequest->addChild('command', 'SUBMIT_TRANSACTION');
-    	$this->xmlRequest->addChild('isTest', ($this->isStaging ? 'true' : 'false'));
+        $this->xmlRequest->addChild('language', $this->language);
+        $this->xmlRequest->addChild('command', 'SUBMIT_TRANSACTION');
+        $this->xmlRequest->addChild('isTest', ($this->isStaging ? 'true' : 'false'));
 
-    	$merchant = $this->xmlRequest->addChild('merchant');
-    	$merchant->addChild('apiLogin', $this->credentials->getApiLogin());
-    	$merchant->addChild('apiKey', $this->credentials->getApiKey());
+        $merchant = $this->xmlRequest->addChild('merchant');
+        $merchant->addChild('apiLogin', $this->credentials->getApiLogin());
+        $merchant->addChild('apiKey', $this->credentials->getApiKey());
 
-    	$xmlTransaction = $this->xmlRequest->addChild('transaction');
-    	$xmlTransaction->addChild('type', PaymentTypes::REFUND);
-    	$xmlTransaction->addChild('parentTransactionId', $transaction);
+        $xmlTransaction = $this->xmlRequest->addChild('transaction');
+        $xmlTransaction->addChild('type', PaymentTypes::REFUND);
+        $xmlTransaction->addChild('parentTransactionId', $transaction);
 
-    	$order = $xmlTransaction->addChild('order');
-    	$order->addChild('id', $orderId);
+        $order = $xmlTransaction->addChild('order');
+        $order->addChild('id', $orderId);
 
-    	return $this->curlRequestXml(
-    		$this->xmlRequest->asXML()
-    	);
+        return $this->curlRequestXml(
+            $this->xmlRequest->asXML()
+        );
     }
 }
