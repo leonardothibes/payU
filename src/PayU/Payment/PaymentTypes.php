@@ -17,4 +17,6 @@ class PaymentTypes
 {
     const AUTHORIZATION_AND_CAPTURE = 'AUTHORIZATION_AND_CAPTURE';
     const AUTHORIZATION             = 'AUTHORIZATION';
+    const CAPTURE                   = 'CAPTURE';
+    const REFUND                    = 'REFUND';
 }

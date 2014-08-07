@@ -280,6 +280,7 @@ abstract class ApiAbstract implements ApiInterface
             throw new PayUException($e->getMessage(), $e->getCode());
         }
 
+        $this->xmlRequest = new SimpleXMLElement('<request />');
         return $rs;
     }
 }

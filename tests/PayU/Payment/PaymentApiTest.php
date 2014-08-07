@@ -295,44 +295,23 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see PaymentApi::capture()
      */
-    public function estCapture()
+    public function testCapture()
     {
     	$this->markTestIncomplete();
     }
 
     /**
-     * @see PaymentApi::void()
+     * @see PaymentApi::refund()
+     * @dataProvider providerMockTransaction
      */
-    public function estVoid()
+    public function testRefund($transaction)
     {
     	$this->markTestIncomplete();
+
+    	$mock = $this->object->authorizeAndCapture($transaction);
+    	$rs   = $this->object->refund(
+    		$mock->transactionResponse->orderId,
+    		$mock->transactionResponse->transactionId
+    	);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

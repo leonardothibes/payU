@@ -102,7 +102,7 @@ class PaymentApi extends ApiAbstract
      * Make a request "authorize" and "authorizeAndCapture" methods.
      *
      * @param  TransactionEntity $transaction
-     * @return ResponseEntity
+     * @return stdClass
      */
     private function authorizeRequest(TransactionEntity $transaction)
     {
@@ -209,7 +209,7 @@ class PaymentApi extends ApiAbstract
      * Authorize a payment order.
      *
      * @param  TransactionEntity $transaction
-     * @return ResponseEntity
+     * @return stdClass
      */
     public function authorize(TransactionEntity $transaction)
     {
@@ -221,7 +221,7 @@ class PaymentApi extends ApiAbstract
      * Authorize and capture a payment order.
      *
      * @param  TransactionEntity $transaction
-     * @return ResponseEntity
+     * @return stdClass
      */
     public function authorizeAndCapture(TransactionEntity $transaction)
     {
@@ -234,12 +234,36 @@ class PaymentApi extends ApiAbstract
      */
     public function capture()
     {
+    	trigger_error('Not implemented, yet...');
     }
 
     /**
      * Cancel the transaction and no money is charged from the buyer.
+     *
+     * @param int    $orderId     Order ideentification of payU
+     * @param string $transaction PayU transaction identification.
+     *
+     * @return stdClass
      */
-    public function void()
+    public function refund($orderId, $transaction)
     {
+    	$this->xmlRequest->addChild('language', $this->language);
+    	$this->xmlRequest->addChild('command', 'SUBMIT_TRANSACTION');
+    	$this->xmlRequest->addChild('isTest', ($this->isStaging ? 'true' : 'false'));
+
+    	$merchant = $this->xmlRequest->addChild('merchant');
+    	$merchant->addChild('apiLogin', $this->credentials->getApiLogin());
+    	$merchant->addChild('apiKey', $this->credentials->getApiKey());
+
+    	$xmlTransaction = $this->xmlRequest->addChild('transaction');
+    	$xmlTransaction->addChild('type', PaymentTypes::REFUND);
+    	$xmlTransaction->addChild('parentTransactionId', $transaction);
+
+    	$order = $xmlTransaction->addChild('order');
+    	$order->addChild('id', $orderId);
+
+    	return $this->curlRequestXml(
+    		$this->xmlRequest->asXML()
+    	);
     }
 }
