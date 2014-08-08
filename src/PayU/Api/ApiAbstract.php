@@ -56,7 +56,17 @@ abstract class ApiAbstract implements ApiInterface
     {
         $this->credentials = $credentials;
         $this->language    = (string)$language;
-        $this->xmlRequest  = new SimpleXMLElement('<request />');
+        $this->resetRequest();
+    }
+
+    /**
+     * Reset request object.
+     * @return ApiAbstract
+     */
+    protected function resetRequest()
+    {
+    	$this->xmlRequest = new SimpleXMLElement('<request />');
+    	return $this;
     }
 
     /**
@@ -280,7 +290,6 @@ abstract class ApiAbstract implements ApiInterface
             throw new PayUException($e->getMessage(), $e->getCode());
         }
 
-        $this->xmlRequest = new SimpleXMLElement('<request />');
         return $rs;
     }
 }

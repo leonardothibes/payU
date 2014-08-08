@@ -200,9 +200,12 @@ class PaymentApi extends ApiAbstract
             }
         }
 
-        return $this->curlRequestXml(
+        $response = $this->curlRequestXml(
             $this->xmlRequest->asXML()
         );
+
+        $this->resetRequest();
+        return $response;
     }
 
     /**
@@ -262,8 +265,11 @@ class PaymentApi extends ApiAbstract
         $order = $xmlTransaction->addChild('order');
         $order->addChild('id', $orderId);
 
-        return $this->curlRequestXml(
+        $respose = $this->curlRequestXml(
             $this->xmlRequest->asXML()
         );
+
+        $this->resetRequest();
+        return $respose;
     }
 }

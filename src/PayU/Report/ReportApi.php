@@ -174,6 +174,7 @@ class ReportApi extends ApiAbstract
             $response = $this->curlRequestXml(
                 $this->xmlRequest->asXML()
             );
+            $this->resetRequest();
             if ($response->code == 'SUCCESS' and $response->result == '') {
                 $message = sprintf('Entity [Order] Not Found with TransactionId [%d].', $transactionId);
                 throw new ReportException($message);
