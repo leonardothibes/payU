@@ -71,8 +71,8 @@ abstract class ApiAbstract implements ApiInterface
      */
     protected function resetRequest()
     {
-    	$this->xmlRequest = new SimpleXMLElement('<request />');
-    	return $this;
+        $this->xmlRequest = new SimpleXMLElement('<request />');
+        return $this;
     }
 
     /**
@@ -99,7 +99,7 @@ abstract class ApiAbstract implements ApiInterface
      */
     public function getResponseRawString()
     {
-    	return (string)$this->responseRaw;
+        return (string)$this->responseRaw;
     }
 
     /**
@@ -108,7 +108,7 @@ abstract class ApiAbstract implements ApiInterface
      */
     public function getResponseRawObject()
     {
-    	return json_decode($this->responseRaw);
+        return json_decode($this->responseRaw);
     }
 
     /**
