@@ -27,6 +27,12 @@ abstract class ApiAbstract implements ApiInterface
     protected $xmlRequest = null;
 
     /**
+     * Response raw from the PayU request.
+     * @var string
+     */
+    protected $responseRaw = null;
+
+    /**
      * Merchant credentials object.
      * @var MerchantCredentials
      */
@@ -85,6 +91,24 @@ abstract class ApiAbstract implements ApiInterface
     public function getXmlRawString()
     {
         return $this->xmlRequest->asXML();
+    }
+
+    /**
+     * Get response raw from the PayU request as json string.
+     * @return string
+     */
+    public function getResponseRawString()
+    {
+    	return (string)$this->responseRaw;
+    }
+
+    /**
+     * Get response raw from the PayU request as stdClass.
+     * @return \stdClass
+     */
+    public function getResponseRawObject()
+    {
+    	return json_decode($this->responseRaw);
     }
 
     /**
@@ -224,7 +248,9 @@ abstract class ApiAbstract implements ApiInterface
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            $rs = json_decode(curl_exec($ch));
+
+            $this->responseRaw = curl_exec($ch);
+            $response          = json_decode($this->responseRaw);
             //cUrl request.
 
             //Error treatment.
@@ -235,15 +261,15 @@ abstract class ApiAbstract implements ApiInterface
             //Error treatment.
 
             //Error treatment.
-            if (strlen((string)$rs->error)) {
-                throw new PayUException($rs->error);
+            if (strlen((string)$response->error)) {
+                throw new PayUException($response->error);
             }
             //Error treatment.
         } catch (Exception $e) {
             throw new PayUException($e->getMessage(), $e->getCode());
         }
 
-        return $rs;
+        return $response;
     }
 
     /**
@@ -271,7 +297,9 @@ abstract class ApiAbstract implements ApiInterface
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            $rs = json_decode(curl_exec($ch));
+
+            $this->responseRaw = curl_exec($ch);
+            $response          = json_decode($this->responseRaw);
             //cUrl request.
 
             //Error treatment.
@@ -282,14 +310,14 @@ abstract class ApiAbstract implements ApiInterface
             //Error treatment.
 
             //Error treatment.
-            if (strlen((string)$rs->error)) {
-                throw new PayUException($rs->error);
+            if (strlen((string)$response->error)) {
+                throw new PayUException($response->error);
             }
             //Error treatment.
         } catch (Exception $e) {
             throw new PayUException($e->getMessage(), $e->getCode());
         }
 
-        return $rs;
+        return $response;
     }
 }
