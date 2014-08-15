@@ -55,7 +55,7 @@ class PaymentApi extends ApiAbstract
     public static function getHtml($deviceSessionId)
     {
         ob_start();
-        require_once 'PayU/Payment/Html/HtmlTags.phtml';
+        require_once dirname(__FILE__) . '//Html/HtmlTags.phtml';
         $html = ob_get_contents();
         ob_end_clean();
 
