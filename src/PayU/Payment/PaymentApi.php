@@ -76,7 +76,7 @@ class PaymentApi extends ApiAbstract
     }
 
     /**
-     * Compute signature of order
+     * Compute signature of order.
      *
      * @param string $referenceCode
      * @param stirng $tx_value
@@ -98,6 +98,15 @@ class PaymentApi extends ApiAbstract
     }
 
     /**
+     * Compute the device session id.
+     * @return string
+     */
+    private function computeDeviceSessionId()
+    {
+    	return md5(session_id().microtime());
+    }
+
+    /**
      * Make a request "authorize" and "authorizeAndCapture" methods.
      *
      * @param  TransactionEntity $transaction
@@ -110,14 +119,6 @@ class PaymentApi extends ApiAbstract
                                        ->setMerchant($this->credentials)
                                        ->setTransaction($transaction)
                                        ->setIsTest($this->isStaging);
-
-        //Order signature.
-        $order            = $transaction->getOrder();
-        $additionalValues = $order->getAdditionalValues()->toArray();
-        $tx_value         = $additionalValues[0]['additionalValue']['value'];
-        $currency         = $additionalValues[0]['additionalValue']['currency'];
-        $signature        = $this->computeSignature($order->getReferenceCode(), $tx_value, $currency);
-        //Order signature.
 
         $this->xmlRequest->addChild('language', $request->getLanguage());
         $this->xmlRequest->addChild('command', $request->getCommand());
@@ -134,6 +135,7 @@ class PaymentApi extends ApiAbstract
         $xmlTransaction->addChild('ipAddress', $transaction->getIpAddress());
         $xmlTransaction->addChild('cookie', $transaction->getCookie());
         $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
+        $xmlTransaction->addChild('deviceSessionId', $this->computeDeviceSessionId());
 
         $creditCard    = $transaction->getCreditCard();
         $xmlCreditCard = $xmlTransaction->addChild('creditCard');
@@ -154,7 +156,14 @@ class PaymentApi extends ApiAbstract
         $xmlOrder->addChild('description', $order->getDescription());
         $xmlOrder->addChild('language', $order->getLanguage());
         $xmlOrder->addChild('notifyUrl', $order->getNotifyUrl());
+
+        //Order signature.
+        $additionalValues = $order->getAdditionalValues()->toArray();
+        $tx_value         = $additionalValues[0]['additionalValue']['value'];
+        $currency         = $additionalValues[0]['additionalValue']['currency'];
+        $signature        = $this->computeSignature($order->getReferenceCode(), $tx_value, $currency);
         $xmlOrder->addChild('signature', $signature);
+        //Order signature.
 
         $shippingAddress    = $order->getShippingAddress();
         $xmlShippingAddress = $xmlOrder->addChild('shippingAddress');
