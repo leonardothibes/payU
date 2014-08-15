@@ -233,8 +233,8 @@ class TransactionEntity implements EntityInterface
      */
     public function setDeviceSessionId($deviceSessionId)
     {
-    	$this->deviceSessionId = (string)$deviceSessionId;
-    	return $this;
+        $this->deviceSessionId = (string)$deviceSessionId;
+        return $this;
     }
 
     /**
@@ -243,7 +243,7 @@ class TransactionEntity implements EntityInterface
      */
     public function getDeviceSessionId()
     {
-    	return (string)$this->deviceSessionId;
+        return (string)$this->deviceSessionId;
     }
 
     /**

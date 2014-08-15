@@ -103,7 +103,7 @@ class PaymentApi extends ApiAbstract
      */
     private function computeDeviceSessionId()
     {
-    	return md5(session_id().microtime());
+        return md5(session_id().microtime());
     }
 
     /**
