@@ -94,7 +94,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetHtml()
     {
-    	$id = $this->object->getDeviceSessionId();
+    	$id = PaymentApi::getDeviceSessionId();
     	$rs = $this->object->getHtml($id);
 
     	$deviceSessionId = $id . PaymentApi::USER_ID;

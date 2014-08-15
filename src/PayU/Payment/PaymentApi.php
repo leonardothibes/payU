@@ -128,7 +128,7 @@ class PaymentApi extends ApiAbstract
      * Compute the device session id.
      * @return string
      */
-    public function getDeviceSessionId()
+    public static function getDeviceSessionId()
     {
         return md5(session_id().microtime());
     }
@@ -163,7 +163,7 @@ class PaymentApi extends ApiAbstract
         $xmlTransaction->addChild('cookie', $transaction->getCookie());
         $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
         if (!strlen($transaction->getDeviceSessionId())) {
-            $xmlTransaction->addChild('deviceSessionId', $this->getDeviceSessionId());
+            $xmlTransaction->addChild('deviceSessionId', self::getDeviceSessionId());
         }
 
         $creditCard    = $transaction->getCreditCard();
