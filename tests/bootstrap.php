@@ -19,6 +19,9 @@ define('PAYU_MERCHANT_ID', '500238');                 //Panama
 define('PAYU_API_LOGIN', '11959c415b33d0c');          //Panama
 define('PAYU_API_KEY', '6u39nqhq8ftd0hlvnjfs66eh8c'); //Panama
 
+// Session start.
+session_start();
+
 // Path for api.
 define('LIBRARY_PATH', dirname(__FILE__) . '/../src');
 
