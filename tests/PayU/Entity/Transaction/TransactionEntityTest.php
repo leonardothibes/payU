@@ -230,6 +230,30 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @see TransactionEntity::getDeviceSessionId()
+     */
+    public function testGetDeviceSessionId()
+    {
+    	$rs = $this->object->getDeviceSessionId();
+    	$this->assertInternalType('string', $rs);
+    	$this->assertEquals(0, strlen($rs));
+    }
+
+    /**
+     * @see TransactionEntity::setDeviceSessionId()
+     */
+    public function testSetDeviceSessionId()
+    {
+    	$deviceSessionId = md5(session_id().microtime());
+    	$rs              = $this->object->setDeviceSessionId($deviceSessionId);
+    	$this->assertInstanceOf('\PayU\Entity\Transaction\TransactionEntity', $rs);
+
+    	$rs = $this->object->getDeviceSessionId();
+    	$this->assertInternalType('string', $rs);
+    	$this->assertEquals($deviceSessionId, $rs);
+    }
+
+    /**
      * @see TransactionEntity::getOrder()
      */
     public function testGetOrder()

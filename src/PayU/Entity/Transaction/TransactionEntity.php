@@ -220,6 +220,33 @@ class TransactionEntity implements EntityInterface
     }
 
     /**
+     * Device session id.
+     * @var string
+     */
+    protected $deviceSessionId = null;
+
+    /**
+     * Set the device session id.
+     *
+     * @param  string $deviceSessionId
+     * @return TransactionEntity
+     */
+    public function setDeviceSessionId($deviceSessionId)
+    {
+    	$this->deviceSessionId = (string)$deviceSessionId;
+    	return $this;
+    }
+
+    /**
+     * Get the device session id.
+     * @return string
+     */
+    public function getDeviceSessionId()
+    {
+    	return (string)$this->deviceSessionId;
+    }
+
+    /**
      * Order registry.
      * @var \PayU\Entity\Transaction\Order\OrderEntity
      */
