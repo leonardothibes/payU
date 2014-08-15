@@ -27,6 +27,11 @@ use \stdClass;
  */
 class PaymentApi extends ApiAbstract
 {
+	/**
+	 * PayU user id from fraud check.
+	 */
+	const USER_ID = 80200;
+
     /**
      * Payment api url for production.
      * @var string
@@ -38,6 +43,28 @@ class PaymentApi extends ApiAbstract
      * @var string
      */
     protected $apiUrlStaging = 'https://stg.api.payulatam.com/payments-api/4.0/service.cgi';
+
+    /**
+     * Get html tags from PayU's fraud check.
+     *
+     * OBS: Client browser's need flash plugin to work.
+     *
+     * @param  string $deviceSessionId
+     * @return string
+     */
+    public static function getHtml($deviceSessionId)
+    {
+    	ob_start();
+    	require_once 'PayU/Payment/Html/HtmlTags.phtml';
+    	$html = ob_get_contents();
+    	ob_end_clean();
+
+    	$replace = array(
+    		'$[deviceSessionId]' => $deviceSessionId,
+    		'$[usuarioId]'       => self::USER_ID,
+    	);
+		return strtr($html, $replace);
+    }
 
     /**
      * Ping request for service health.
@@ -101,7 +128,7 @@ class PaymentApi extends ApiAbstract
      * Compute the device session id.
      * @return string
      */
-    public function computeDeviceSessionId()
+    public function getDeviceSessionId()
     {
         return md5(session_id().microtime());
     }
@@ -136,7 +163,7 @@ class PaymentApi extends ApiAbstract
         $xmlTransaction->addChild('cookie', $transaction->getCookie());
         $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
         if (!strlen($transaction->getDeviceSessionId())) {
-            $xmlTransaction->addChild('deviceSessionId', $this->computeDeviceSessionId());
+            $xmlTransaction->addChild('deviceSessionId', $this->getDeviceSessionId());
         }
 
         $creditCard    = $transaction->getCreditCard();

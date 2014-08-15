@@ -13,7 +13,6 @@ use \PayU\Payment\PaymentCountries;
 
 use \PayU\Entity\Transaction\TransactionEntity;
 use \PayU\Entity\Transaction\ShippingAddressEntity;
-
 use \PayU\Merchant\MerchantCredentials;
 
 use \Tbs\Helper\Cpf;
@@ -88,6 +87,20 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     {
     	$rs = $this->object->setStaging(false)->getApiUrl();
     	$this->assertEquals('https://api.payulatam.com/payments-api/4.0/service.cgi', $rs);
+    }
+
+    /**
+     * @see PaymentApi::getHtml()
+     */
+    public function testGetHtml()
+    {
+    	$id = $this->object->getDeviceSessionId();
+    	$rs = $this->object->getHtml($id);
+
+    	$deviceSessionId = $id . PaymentApi::USER_ID;
+    	$position        = strpos($rs, $deviceSessionId);
+
+    	$this->assertGreaterThan(0, $position);
     }
 
 	/**
