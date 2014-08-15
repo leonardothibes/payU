@@ -78,7 +78,6 @@ class PaymentApi extends ApiAbstract
     /**
      * Compute signature of order
      *
-     *
      * @param string $referenceCode
      * @param stirng $tx_value
      * @param string $currency
