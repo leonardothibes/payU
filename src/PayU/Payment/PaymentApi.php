@@ -27,10 +27,10 @@ use \stdClass;
  */
 class PaymentApi extends ApiAbstract
 {
-	/**
-	 * PayU user id from fraud check.
-	 */
-	const USER_ID = 80200;
+    /**
+     * PayU user id from fraud check.
+     */
+    const USER_ID = 80200;
 
     /**
      * Payment api url for production.
@@ -54,16 +54,16 @@ class PaymentApi extends ApiAbstract
      */
     public static function getHtml($deviceSessionId)
     {
-    	ob_start();
-    	require_once 'PayU/Payment/Html/HtmlTags.phtml';
-    	$html = ob_get_contents();
-    	ob_end_clean();
+        ob_start();
+        require_once 'PayU/Payment/Html/HtmlTags.phtml';
+        $html = ob_get_contents();
+        ob_end_clean();
 
-    	$replace = array(
-    		'$[deviceSessionId]' => $deviceSessionId,
-    		'$[usuarioId]'       => self::USER_ID,
-    	);
-		return strtr($html, $replace);
+        $replace = array(
+            '$[deviceSessionId]' => $deviceSessionId,
+            '$[usuarioId]'       => self::USER_ID,
+        );
+        return strtr($html, $replace);
     }
 
     /**
