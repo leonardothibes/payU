@@ -162,9 +162,7 @@ class PaymentApi extends ApiAbstract
         $xmlTransaction->addChild('ipAddress', $transaction->getIpAddress());
         $xmlTransaction->addChild('cookie', $transaction->getCookie());
         $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
-        if (!strlen($transaction->getDeviceSessionId())) {
-            $xmlTransaction->addChild('deviceSessionId', self::getDeviceSessionId());
-        }
+        $xmlTransaction->addChild('deviceSessionId', $transaction->getDeviceSessionId());
 
         $creditCard    = $transaction->getCreditCard();
         $xmlCreditCard = $xmlTransaction->addChild('creditCard');
