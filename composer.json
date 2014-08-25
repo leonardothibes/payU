@@ -1,5 +1,8 @@
 {
     "name"   : "leonardothibes/payu",
+    "type"    : "library",
+    "homepage": "http://documentup.com/leonardothibes/Tbs",
+    "license" : "MIT",
     "authors": [
         {
             "name" : "Leonardo Thibes",
