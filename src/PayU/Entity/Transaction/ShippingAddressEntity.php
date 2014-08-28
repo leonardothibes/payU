@@ -197,6 +197,21 @@ class ShippingAddressEntity implements EntityInterface
         return (string)$this->phone;
     }
 
+
+    /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach (get_object_vars($this) as $property) {
+            if($property !== null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Generate arry order.
      * @return array

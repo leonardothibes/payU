@@ -192,30 +192,33 @@ class PaymentApi extends ApiAbstract
         $xmlOrder->addChild('signature', $signature);
         //Order signature.
 
-        $shippingAddress    = $order->getShippingAddress();
-        $xmlShippingAddress = $xmlOrder->addChild('shippingAddress');
-        $xmlShippingAddress->addChild('street1', $shippingAddress->getStreet1());
-        $xmlShippingAddress->addChild('street2', $shippingAddress->getStreet2());
-        $xmlShippingAddress->addChild('city', $shippingAddress->getCity());
-        $xmlShippingAddress->addChild('state', $shippingAddress->getState());
-        $xmlShippingAddress->addChild('country', $shippingAddress->getCountry());
-        $xmlShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
-        $xmlShippingAddress->addChild('phone', $shippingAddress->getPhone());
-
         $buyer    = $order->getBuyer();
         $xmlBuyer = $xmlOrder->addChild('buyer');
         $xmlBuyer->addChild('fullName', $buyer->getFullName());
         $xmlBuyer->addChild('emailAddress', $buyer->getEmailAddress());
         $xmlBuyer->addChild('dniNumber', $buyer->getDniNumber());
 
-        $xmlBuyerShippingAddress = $xmlBuyer->addChild('shippingAddress');
-        $xmlBuyerShippingAddress->addChild('street1', $shippingAddress->getStreet1());
-        $xmlBuyerShippingAddress->addChild('street2', $shippingAddress->getStreet2());
-        $xmlBuyerShippingAddress->addChild('city', $shippingAddress->getCity());
-        $xmlBuyerShippingAddress->addChild('state', $shippingAddress->getState());
-        $xmlBuyerShippingAddress->addChild('country', $shippingAddress->getCountry());
-        $xmlBuyerShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
-        $xmlBuyerShippingAddress->addChild('phone', $shippingAddress->getPhone());
+        $shippingAddress = $order->getShippingAddress();
+
+        if (!$shippingAddress->isEmpty()) {
+            $xmlShippingAddress = $xmlOrder->addChild('shippingAddress');
+            $xmlShippingAddress->addChild('street1', $shippingAddress->getStreet1());
+            $xmlShippingAddress->addChild('street2', $shippingAddress->getStreet2());
+            $xmlShippingAddress->addChild('city', $shippingAddress->getCity());
+            $xmlShippingAddress->addChild('state', $shippingAddress->getState());
+            $xmlShippingAddress->addChild('country', $shippingAddress->getCountry());
+            $xmlShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
+            $xmlShippingAddress->addChild('phone', $shippingAddress->getPhone());
+
+            $xmlBuyerShippingAddress = $xmlBuyer->addChild('shippingAddress');
+            $xmlBuyerShippingAddress->addChild('street1', $shippingAddress->getStreet1());
+            $xmlBuyerShippingAddress->addChild('street2', $shippingAddress->getStreet2());
+            $xmlBuyerShippingAddress->addChild('city', $shippingAddress->getCity());
+            $xmlBuyerShippingAddress->addChild('state', $shippingAddress->getState());
+            $xmlBuyerShippingAddress->addChild('country', $shippingAddress->getCountry());
+            $xmlBuyerShippingAddress->addChild('postalCode', $shippingAddress->getPostalCode());
+            $xmlBuyerShippingAddress->addChild('phone', $shippingAddress->getPhone());
+        }
 
         $additionalValues    = $order->getAdditionalValues()->toArray();
         $xmlAdditionalValues = $xmlOrder->addChild('additionalValues');

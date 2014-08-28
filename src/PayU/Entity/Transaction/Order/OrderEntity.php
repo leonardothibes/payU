@@ -27,7 +27,6 @@ class OrderEntity implements EntityInterface
      */
     public function __construct()
     {
-        $this->shippingAddress  = new ShippingAddressEntity();
         $this->additionalValues = new AdditionalValuesEntity();
         $this->buyer            = new BuyerEntity();
     }
@@ -224,6 +223,9 @@ class OrderEntity implements EntityInterface
      */
     public function getShippingAddress()
     {
+        if(is_null($this->shippingAddress)) {
+            $this->shippingAddress = new ShippingAddressEntity();
+        }
         return $this->shippingAddress;
     }
 
@@ -291,16 +293,23 @@ class OrderEntity implements EntityInterface
      */
     public function toArray()
     {
-        return array(
+        $return =  array(
             'accountId'        => $this->accountId,
             'referenceCode'    => $this->referenceCode,
             'description'      => $this->description,
             'language'         => $this->language,
             'notifyUrl'        => $this->notifyUrl,
             'signature'        => $this->signature,
-            'shippingAddress'  => $this->shippingAddress->toArray(),
             'buyer'            => $this->buyer->toArray(),
             'additionalValues' => $this->additionalValues->toArray(),
         );
+        if (!$this->getShippingAddress()->isEmpty()) {
+            $return = array_merge(
+                $return,
+                array('shippingAddress' => $this->shippingAddress->toArray())
+            );
+        }
+
+        return $return;
     }
 }
