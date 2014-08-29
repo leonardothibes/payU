@@ -35,6 +35,11 @@ class ShippingAddressEntityTest extends \PHPUnit_Framework_TestCase
     	unset($this->object);
     }
 
+    public function testIsEmptyWithEmptyObjectShouldReturnTrue()
+    {
+        $this->assertTrue($this->object->isEmpty());
+    }
+
 	/**
 	 * @see ShippingAddressEntity::getStreet1()
 	 */
@@ -221,5 +226,11 @@ class ShippingAddressEntityTest extends \PHPUnit_Framework_TestCase
 
     	$rs = $this->object->toArray();
     	$this->assertSame($entity, $rs);
+    }
+
+    public function testIsEmptyWithNotEmptyObjectShouldReturnFalse()
+    {
+        $this->object->setCity('Test');
+        $this->assertFalse($this->object->isEmpty());
     }
 }
