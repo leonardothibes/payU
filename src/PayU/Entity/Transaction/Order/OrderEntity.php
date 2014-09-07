@@ -223,7 +223,7 @@ class OrderEntity implements EntityInterface
      */
     public function getShippingAddress()
     {
-        if(is_null($this->shippingAddress)) {
+        if (is_null($this->shippingAddress)) {
             $this->shippingAddress = new ShippingAddressEntity();
         }
         return $this->shippingAddress;

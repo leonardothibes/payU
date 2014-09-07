@@ -205,7 +205,7 @@ class ShippingAddressEntity implements EntityInterface
     public function isEmpty()
     {
         foreach (get_object_vars($this) as $property) {
-            if($property !== null) {
+            if ($property !== null) {
                 return false;
             }
         }
