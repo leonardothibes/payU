@@ -238,9 +238,16 @@ class PaymentApi extends ApiAbstract
             }
         }
 
-        return $this->curlRequestXml(
+        $this->setLastXmlRequest($this->xmlRequest);
+
+        $response = $this->curlRequestXml(
             $this->xmlRequest->asXML()
         );
+
+        $this->resetRequest();
+
+        return $response;
+
     }
 
     /**
@@ -270,20 +277,48 @@ class PaymentApi extends ApiAbstract
     /**
      * Capture an payment.
      */
-    public function capture()
+    public function capture($orderId, $transactionId)
     {
-        trigger_error('Not implemented, yet...');
+        return $this->buildChildRequest(
+            $orderId, $transactionId, PaymentTypes::CAPTURE
+        );
     }
 
     /**
      * Cancel the transaction and no money is charged from the buyer.
      *
      * @param int    $orderId     Order ideentification of payU
-     * @param string $transaction PayU transaction identification.
+     * @param string $transactionId PayU transaction identification.
      *
      * @return stdClass
      */
-    public function refund($orderId, $transaction)
+    public function refund($orderId, $transactionId)
+    {
+        return $this->buildChildRequest(
+            $orderId, $transactionId, PaymentTypes::REFUND
+        );
+    }
+
+    /**
+     * @param $orderId
+     * @param $transactionId
+     * @return stdClass
+     */
+    public function void($orderId, $transactionId)
+    {
+        return $this->buildChildRequest(
+            $orderId, $transactionId, PaymentTypes::VOID
+        );
+    }
+
+    /**
+     * @param $orderId
+     * @param $transactionId
+     * @param $transactionType
+     * @return stdClass
+     * @throws \PayU\PayUException
+     */
+    public function buildChildRequest($orderId, $transactionId, $transactionType)
     {
         $this->xmlRequest->addChild('language', $this->language);
         $this->xmlRequest->addChild('command', 'SUBMIT_TRANSACTION');
@@ -294,17 +329,19 @@ class PaymentApi extends ApiAbstract
         $merchant->addChild('apiKey', $this->credentials->getApiKey());
 
         $xmlTransaction = $this->xmlRequest->addChild('transaction');
-        $xmlTransaction->addChild('type', PaymentTypes::REFUND);
-        $xmlTransaction->addChild('parentTransactionId', $transaction);
+        $xmlTransaction->addChild('type', $transactionType);
+        $xmlTransaction->addChild('parentTransactionId', $transactionId);
 
         $order = $xmlTransaction->addChild('order');
         $order->addChild('id', $orderId);
 
-        $respose = $this->curlRequestXml(
+        $this->setLastXmlRequest($this->xmlRequest);
+
+        $response = $this->curlRequestXml(
             $this->xmlRequest->asXML()
         );
 
         $this->resetRequest();
-        return $respose;
+        return $response;
     }
 }
