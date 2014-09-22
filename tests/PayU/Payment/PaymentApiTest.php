@@ -238,7 +238,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     	$creditCard->setNumber('4111111111111111')
     	           ->setSecurityCode(rand(1,9) . rand(1,9) . rand(1,9))
     	           ->setExpirationDate(rand(2015,2020) . '/' . rand(10,12))
-    	           ->setName('person name ' . rand(1,9) . rand(1,9) . rand(1,9));
+                   ->setName('person name ' . rand(1,9) . rand(1,9) . rand(1,9));
     	//Credit card.
 
     	//Payer.
@@ -256,21 +256,21 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      * Verify transaction response.
      * @param stdClass $response
      */
-    private function _testTransactionResponse($rs)
+    private function _testTransactionResponse($response)
     {
-    	$this->assertInstanceOf('\stdClass', $rs);
-    	$this->assertTrue(isset($rs->code));
-    	$this->assertEquals(0, strlen($rs->error));
+    	$this->assertInstanceOf('\stdClass', $response);
+    	$this->assertTrue(isset($response->code));
+    	$this->assertEquals(0, strlen($response->error));
 
-    	$this->assertTrue(isset($rs->transactionResponse));
-    	$this->assertInstanceOf('\stdClass', $rs->transactionResponse);
+    	$this->assertTrue(isset($response->transactionResponse));
+    	$this->assertInstanceOf('\stdClass', $response->transactionResponse);
 
-    	$transaction = $rs->transactionResponse;
+    	$transaction = $response->transactionResponse;
 
-    	$this->assertTrue(isset($rs->transactionResponse->orderId));
-    	$this->assertTrue(isset($rs->transactionResponse->transactionId));
-    	$this->assertTrue(isset($rs->transactionResponse->state));
-    	$this->assertTrue(isset($rs->transactionResponse->responseCode));
+    	$this->assertTrue(isset($response->transactionResponse->orderId));
+    	$this->assertTrue(isset($response->transactionResponse->transactionId));
+    	$this->assertTrue(isset($response->transactionResponse->state));
+    	$this->assertTrue(isset($response->transactionResponse->responseCode));
 
     	$this->assertEquals(0, strlen($transaction->paymentNetworkResponseCode));
     	$this->assertEquals(0, strlen($transaction->paymentNetworkResponseErrorMessage));
@@ -288,6 +288,8 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see PaymentApi::authorize()
      * @dataProvider providerMockTransaction
+     *
+     * @param \PayU\Entity\Transaction\TransactionEntity $transaction
      */
     public function testAuthorize($transaction)
     {
@@ -298,6 +300,8 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     /**
      * @see PaymentApi::authorizeAndCapture()
      * @dataProvider providerMockTransaction
+     *
+     * @param \PayU\Entity\Transaction\TransactionEntity $transaction
      */
     public function testAuthorizeAndCapture($transaction)
     {
@@ -307,24 +311,40 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @see PaymentApi::capture()
+     * @dataProvider providerMockTransaction
+     *
+     * @param \PayU\Entity\Transaction\TransactionEntity $transaction
      */
-    public function testCapture()
+    public function testCapture($transaction)
     {
-    	$this->markTestIncomplete();
+        $this->markTestIncomplete(
+            "Needs a real transaction. Actually provider returns only denied transactions."
+        );
+
+        $mock = $this->object->authorize($transaction);
+        $rs   = $this->object->capture(
+            $mock->transactionResponse->orderId,
+            $mock->transactionResponse->transactionId
+        );
     }
 
     /**
      * @see PaymentApi::refund()
      * @dataProvider providerMockTransaction
+     *
+     * @param \PayU\Entity\Transaction\TransactionEntity $transaction
      */
     public function testRefund($transaction)
     {
-    	$this->markTestIncomplete();
-
+        $this->markTestSkipped(
+            "PayU Latam doesn't implement REFUND in test environment"
+        );
     	$mock = $this->object->authorizeAndCapture($transaction);
     	$rs   = $this->object->refund(
     		$mock->transactionResponse->orderId,
     		$mock->transactionResponse->transactionId
     	);
+
+        $this->_testTransactionResponse($rs);
     }
 }

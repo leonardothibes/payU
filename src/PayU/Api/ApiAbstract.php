@@ -27,6 +27,11 @@ abstract class ApiAbstract implements ApiInterface
     protected $xmlRequest = null;
 
     /**
+     * @var SimpleXMLElement
+     */
+    protected $lastXmlRequest = null;
+
+    /**
      * Response raw from the PayU request.
      * @var string
      */
@@ -66,6 +71,26 @@ abstract class ApiAbstract implements ApiInterface
     }
 
     /**
+     * @return SimpleXMLElement
+     */
+    public function getLastXmlRequest()
+    {
+        return $this->lastXmlRequest;
+    }
+
+    /**
+     * @param SimpleXMLElement $lastXmlRequest
+     * @return $this
+     */
+    protected function setLastXmlRequest($lastXmlRequest)
+    {
+        $this->lastXmlRequest = $lastXmlRequest;
+        return $this;
+    }
+
+
+
+    /**
      * Reset request object.
      * @return ApiAbstract
      */
@@ -81,7 +106,7 @@ abstract class ApiAbstract implements ApiInterface
      */
     public function getXmlRawObject()
     {
-        return $this->xmlRequest;
+        return $this->getLastXmlRequest();
     }
 
     /**
@@ -90,7 +115,7 @@ abstract class ApiAbstract implements ApiInterface
      */
     public function getXmlRawString()
     {
-        return $this->xmlRequest->asXML();
+        return $this->getLastXmlRequest()->asXML();
     }
 
     /**

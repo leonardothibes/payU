@@ -19,4 +19,5 @@ class PaymentTypes
     const AUTHORIZATION             = 'AUTHORIZATION';
     const CAPTURE                   = 'CAPTURE';
     const REFUND                    = 'REFUND';
+    const VOID                      = 'VOID';
 }
