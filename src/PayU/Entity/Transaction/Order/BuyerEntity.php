@@ -141,6 +141,30 @@ class BuyerEntity implements EntityInterface
     {
         return $this->shippingAddress;
     }
+
+    /**
+     * CNPJ (National Registry of Legal Entities in Brazil)
+     * @var string $cnpj
+     */
+    protected $cnpj;
+
+    /**
+     * @return string
+     */
+    public function getCnpj()
+    {
+        return $this->cnpj;
+    }
+
+    /**
+     * @param string $cnpj
+     * @return $this
+     */
+    public function setCnpj($cnpj)
+    {
+        $this->cnpj = $cnpj;
+        return $this;
+    }
     
     /**
      * Generate arry order.

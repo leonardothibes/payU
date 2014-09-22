@@ -196,7 +196,14 @@ class PaymentApi extends ApiAbstract
         $xmlBuyer = $xmlOrder->addChild('buyer');
         $xmlBuyer->addChild('fullName', $buyer->getFullName());
         $xmlBuyer->addChild('emailAddress', $buyer->getEmailAddress());
-        $xmlBuyer->addChild('dniNumber', $buyer->getDniNumber());
+
+        if (!is_null($buyer->getDniNumber())) {
+            $xmlBuyer->addChild('dniNumber', $buyer->getDniNumber());
+        }
+
+        if (!is_null($buyer->getCnpj())) {
+            $xmlBuyer->addChild('cnpj', $buyer->getCnpj());
+        }
 
         $shippingAddress = $order->getShippingAddress();
 
