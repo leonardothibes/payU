@@ -286,9 +286,7 @@ class PaymentApi extends ApiAbstract
      */
     public function capture($orderId, $transactionId)
     {
-        return $this->buildChildRequest(
-            $orderId, $transactionId, PaymentTypes::CAPTURE
-        );
+        return $this->buildChildRequest($orderId, $transactionId, PaymentTypes::CAPTURE);
     }
 
     /**
@@ -301,9 +299,7 @@ class PaymentApi extends ApiAbstract
      */
     public function refund($orderId, $transactionId)
     {
-        return $this->buildChildRequest(
-            $orderId, $transactionId, PaymentTypes::REFUND
-        );
+        return $this->buildChildRequest($orderId, $transactionId, PaymentTypes::REFUND);
     }
 
     /**
@@ -313,9 +309,7 @@ class PaymentApi extends ApiAbstract
      */
     public function void($orderId, $transactionId)
     {
-        return $this->buildChildRequest(
-            $orderId, $transactionId, PaymentTypes::VOID
-        );
+        return $this->buildChildRequest($orderId, $transactionId, PaymentTypes::VOID);
     }
 
     /**
