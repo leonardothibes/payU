@@ -13,6 +13,9 @@
         "php"               : ">=5.3",
         "leonardothibes/tbs": ">=1@stable"
     },
+	"require-dev": {
+		"phing/phing": ">=2.5@stable"
+	},
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
