@@ -60,6 +60,7 @@ class PaymentMethods
     const ARGENCARD     = 'ARGENCARD';
     const BAPRO         = 'BAPRO';
     const CABAL         = 'CABAL';
+	const CENCOSUD      = 'CENCOSUD';
     const COBRO_EXPRESS = 'COBRO_EXPRESS';
     const NARANJA       = 'NARANJA';
     const PAGOFACIL     = 'PAGOFACIL';
@@ -76,7 +77,6 @@ class PaymentMethods
     const SANTANDER    = 'SANTANDER';
     const SCOTIABANK   = 'SCOTIABANK';
     const SEVEN_ELEVEN = 'SEVEN_ELEVEN';
-
 
     /**
      * @country Colombia
