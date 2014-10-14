@@ -1,25 +1,35 @@
 {
-    "name"   : "leonardothibes/payu",
-    "type"    : "library",
-    "homepage": "http://documentup.com/leonardothibes/payU",
-    "license" : "MIT",
-    "authors": [
+    "name"       : "leonardothibes/payu",
+    "description": "PHP library for integration access to payU payment gateway",
+    "homepage"   : "http://documentup.com/leonardothibes/payU",
+    "keywords"   : ["payu","payment"],
+    "type"       : "library",
+    "license"    : "MIT",
+    "authors"    : [
         {
             "name" : "Leonardo Thibes",
             "email": "leonardothibes@gmail.com"
         }
     ],
     "require": {
-        "php"               : ">=5.3",
-        "leonardothibes/tbs": ">=1@stable"
+        "php"     : ">=5.3",
+        "ext-curl": "*"
     },
 	"require-dev": {
-		"phing/phing": ">=2.5@stable"
+        "squizlabs/php_codesniffer": ">=1.4@stable",
+        "phpunit/phpunit"          : ">=4.0@stable",
+        "phpunit/php-invoker"      : "*",
+        "phpunit/phpunit-story"    : "*",
+        "sebastian/diff"           : "*",
+        "phploc/phploc"            : "*",
+        "phpmd/phpmd"              : ">=2.1@stable",
+        "sebastian/phpcpd"         : ">=2.0@stable",
+        "sebastian/phpdcd"         : ">=1.0@stable"
 	},
-    "minimum-stability": "dev",
+    "config": {
+        "bin-dir": "bin"
+    },
     "autoload": {
-        "psr-0": {
-            "": "src/"
-        }
+        "psr-0": {"": "src"}
     }
 }
