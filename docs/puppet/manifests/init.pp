@@ -4,20 +4,16 @@
 class external
 {
 	class {'env':
-		utils        => ['git'],
+		utils        => ['git','make','curl'],
 		link_in_home => ['workspace=/vagrant'],
-		aliases      => ['phing=clear ; phing','phpunit=clear ; phpunit'],
+		aliases      => ['phpunit=clear ; phpunit'],
 	}
 	class {'vim':
 		tabstop  => 4,
 		opt_misc => ['number','nowrap'],
 	}
 	class {'php':
-		modules => ['xdebug'],
-		extra   => [
-			's3cmd','composer','phing','phpunit','phpdoc',
-			'phpcs','phpdepend','phpmd','phpcpd','phpdcd',
-		],
+		modules => ['xdebug','curl'],
 	}
 }
 
