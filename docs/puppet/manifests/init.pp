@@ -4,7 +4,7 @@
 class external
 {
 	class {'env':
-		utils        => ['git'],
+		utils        => ['git','make','curl'],
 		link_in_home => ['workspace=/vagrant'],
 		aliases      => ['phpunit=clear ; phpunit'],
 	}
@@ -13,7 +13,7 @@ class external
 		opt_misc => ['number','nowrap'],
 	}
 	class {'php':
-		modules => ['xdebug'],
+		modules => ['xdebug','curl'],
 	}
 }
 
