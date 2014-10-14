@@ -18,6 +18,7 @@ BUILD      = "${BASEDIR}/build"
 TESTS      = "${BASEDIR}/tests"
 VENDOR     = "${BASEDIR}/vendor"
 LOGS       = "${BASEDIR}/logs"
+TMP        = "/tmp"
 DATE       = `date "+%Y-%m-%d"`
 LOGFILE    = "${LOGS}/debug_${DATE}.log"
 URI        = "leonardothibes/payU"
@@ -116,7 +117,8 @@ phploc:
 	@echo " - Measure project report generated"
 
 .phpDocumentor:
-	@[ -f ${BIN}/phpDocumentor.phar ] || curl http://phpdoc.org/phpDocumentor.phar -o ${BIN}/phpDocumentor.phar
+	@[ -f ${TMP}/phpDocumentor.phar ] || curl http://phpdoc.org/phpDocumentor.phar -o ${TMP}/phpDocumentor.phar
+	@[ -f ${BIN}/phpDocumentor.phar ] || cp -f ${TMP}/phpDocumentor.phar ${BIN}/phpDocumentor.phar	
 	@[ -f ${BIN}/phpDocumentor.phar ] && chmod 755 ${BIN}/phpDocumentor.phar
 
 phpdoc: rw .clear .phpDocumentor
