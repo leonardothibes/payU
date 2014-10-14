@@ -6,7 +6,7 @@
 #
 
 # General Configuration
-NAME       = "leonardothibes\\PayU"
+NAME       = "leonardothibes/PayU"
 VERSION    = "0.3-beta1"
 AUTHOR     = "Leonardo Thibes"
 STANDARD   = "PSR2"
