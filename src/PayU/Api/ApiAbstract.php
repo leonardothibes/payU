@@ -88,8 +88,6 @@ abstract class ApiAbstract implements ApiInterface
         return $this;
     }
 
-
-
     /**
      * Reset request object.
      * @return ApiAbstract
