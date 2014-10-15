@@ -6,7 +6,7 @@
 
 namespace PayU\Entity;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 use \PayU\Merchant\MerchantCredentials;
 use \PayU\Entity\Transaction\TransactionEntity;
 
@@ -17,7 +17,7 @@ use \PayU\Entity\Transaction\TransactionEntity;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class RequestEntity implements EntityInterface
+class RequestEntity extends EntityAbstract
 {
     /**
      * Constructor.
@@ -160,6 +160,25 @@ class RequestEntity implements EntityInterface
     public function getTransaction()
     {
         return $this->transaction;
+    }
+
+    /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach (get_object_vars($this) as $property => $value) {
+            if (
+                $value !== null and
+                $value !== false and
+                $property !== 'language' and
+                $property !== 'transaction'
+            ) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
