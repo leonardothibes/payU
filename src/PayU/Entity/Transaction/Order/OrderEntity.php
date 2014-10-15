@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction\Order;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 
 use \PayU\Entity\Transaction\ShippingAddressEntity;
@@ -20,7 +20,7 @@ use \PayU\Entity\Transaction\Order\AdditionalValuesEntity;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class OrderEntity implements EntityInterface
+class OrderEntity extends EntityAbstract
 {
     /**
      * Constructor.
@@ -285,6 +285,26 @@ class OrderEntity implements EntityInterface
     public function getAdditionalValues()
     {
         return $this->additionalValues;
+    }
+
+    /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach (get_object_vars($this) as $property => $value) {
+            if (
+                $value    !== null       and
+                $value    !== false      and
+                $property !== 'language' and
+                $property !== 'buyer'    and
+                $property !== 'additionalValues'
+            ) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
