@@ -16,6 +16,12 @@ namespace PayU\Entity;
 interface EntityInterface
 {
     /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty();
+
+    /**
      * Generate array order.
      * @return array
      */
