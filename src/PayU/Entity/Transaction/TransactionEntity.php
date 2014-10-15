@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 
 use \PayU\Entity\Transaction\Order\OrderEntity;
@@ -25,7 +25,7 @@ use \PayU\Payment\PaymentTypes;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class TransactionEntity implements EntityInterface
+class TransactionEntity extends EntityAbstract
 {
     /**
      * Constructor
@@ -352,6 +352,26 @@ class TransactionEntity implements EntityInterface
     public function getExtraParameters()
     {
         return $this->extraParameters;
+    }
+
+    /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach (get_object_vars($this) as $property => $value) {
+            if (
+                $value    !== null         and
+                $property !== 'order'      and
+                $property !== 'creditCard' and
+                $property !== 'payer'      and
+                $property !== 'extraParameters'
+            ) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
