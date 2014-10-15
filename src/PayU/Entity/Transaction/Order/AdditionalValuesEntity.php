@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction\Order;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 
 /**
  * Order additional values entity class.
@@ -15,7 +15,7 @@ use \PayU\Entity\EntityInterface;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class AdditionalValuesEntity implements EntityInterface
+class AdditionalValuesEntity extends EntityAbstract
 {
     /**
      * Additional values indexes constants.
@@ -50,6 +50,15 @@ class AdditionalValuesEntity implements EntityInterface
             )
         );
         return $this;
+    }
+
+    /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return (count($this->additionalValues) === 0);
     }
     
     /**
