@@ -190,7 +190,7 @@ class ExtraParametersEntity extends EntityAbstract
     }
 
     /**
-     * Generate arry order.
+     * Generate array order.
      * @return array
      */
     public function toArray()
