@@ -58,15 +58,20 @@ class PaymentMethods
      * @country Argentina
      */
     const ARGENCARD     = 'ARGENCARD';
-    const BAPRO         = 'BAPRO';
     const CABAL         = 'CABAL';
     const CENCOSUD      = 'CENCOSUD';
-    const COBRO_EXPRESS = 'COBRO_EXPRESS';
     const NARANJA       = 'NARANJA';
+    const SHOPPING      = 'SHOPPING';
+
+    /**
+     * Argentina Cash Collection.
+     * @country Argentina
+     */
+    const BAPRO         = 'BAPRO';
+    const COBRO_EXPRESS = 'COBRO_EXPRESS';
     const PAGOFACIL     = 'PAGOFACIL';
     const RAPIPAGO      = 'RAPIPAGO';
     const RIPSA         = 'RIPSA';
-    const SHOPPING      = 'SHOPPING';
 
     /**
      * @country Mexico
