@@ -349,6 +349,25 @@ class OrderEntityTest extends \PHPUnit_Framework_TestCase
     	$rs = $this->object->setAdditionalValues($additionalValues);
     	$this->assertInstanceOf('\PayU\Entity\Transaction\Order\OrderEntity', $rs);
     }
+
+	/**
+	 * @see OrderEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see OrderEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->setAccountId('what-ever');
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
     
     /**
      * @see OrderEntity::toArray()

@@ -45,6 +45,25 @@ class AdditionalValuesEntityTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(AdditionalValuesEntity::TX_TAX_RETURN_BASE, 'TX_TAX_RETURN_BASE');
 		$this->assertEquals(AdditionalValuesEntity::TX_ADDITIONAL_VALUE, 'TX_ADDITIONAL_VALUE');
     }
+
+	/**
+	 * @see AdditionalValuesEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see AdditionalValuesEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->addTax(AdditionalValuesEntity::TX_TAX, 'USD', 1000);
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
     
     /**
      * @see AdditionalValuesEntity::toArray()

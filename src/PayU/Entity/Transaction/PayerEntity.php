@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 
 use \Tbs\Helper\Email;
@@ -18,7 +18,7 @@ use \Tbs\Helper\Email;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class PayerEntity implements EntityInterface
+class PayerEntity extends EntityAbstract
 {
     /**
      * Payer full name.
@@ -80,7 +80,7 @@ class PayerEntity implements EntityInterface
     }
 
     /**
-     * Generate arry order.
+     * Generate array order.
      * @return array
      */
     public function toArray()

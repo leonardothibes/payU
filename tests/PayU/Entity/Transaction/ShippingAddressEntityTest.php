@@ -200,6 +200,25 @@ class ShippingAddressEntityTest extends \PHPUnit_Framework_TestCase
     	$this->assertInternalType('string', $rs);
     	$this->assertEquals($phone, $rs);
     }
+
+    /**
+     * @see ShippingAddressEntity::isEmpty()
+     */
+    public function testIsEmptyTrue()
+    {
+        $rs = $this->object->isEmpty();
+        $this->assertTrue($rs);
+    }
+
+    /**
+     * @see ShippingAddressEntity::isEmpty()
+     */
+    public function testIsEmptyFalse()
+    {
+        $this->object->setCity('what-ever');
+        $rs = $this->object->isEmpty();
+        $this->assertFalse($rs);
+    }
     
     /**
      * @see ShippingAddressEntity::toArray()

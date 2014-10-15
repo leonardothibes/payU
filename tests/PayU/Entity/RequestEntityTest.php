@@ -126,6 +126,25 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($userAgent     , $rs->getUserAgent());
     }
 
+	/**
+	 * @see RequestEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see RequestEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->setIsTest(true);
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
+
     /**
      * @see RequestEntity::toArray()
      * @dataProvider providerTransactionMockData

@@ -413,6 +413,25 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals($responseUrl          , $rs->getResponseUrl());
     }
 
+	/**
+	 * @see RequestEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see RequestEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->setPaymentMethod('what-ever');
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
+
     /**
      * @see TransactionEntity::toArray()
      */

@@ -177,6 +177,25 @@ class ExtraParametersEntityTest extends \PHPUnit_Framework_TestCase
     	$this->object->setResponseUrl('invalid-url-here');
     }
 
+	/**
+	 * @see ExtraParametersEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see ExtraParametersEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->setInstallmentsNumber(2);
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
+
     /**
      * @see ExtraParametersEntity::toArray()
      */

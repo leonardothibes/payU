@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction\Order;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 use \PayU\Entity\Transaction\ShippingAddressEntity;
 
@@ -19,7 +19,7 @@ use \Tbs\Helper\Email;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class BuyerEntity implements EntityInterface
+class BuyerEntity extends EntityAbstract
 {
     /**
      * Constructor.
@@ -164,6 +164,24 @@ class BuyerEntity implements EntityInterface
     {
         $this->cnpj = $cnpj;
         return $this;
+    }
+
+    /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach (get_object_vars($this) as $property => $value) {
+            if (
+                $value    !== null  and
+                $value    !== false and
+                $property !== 'shippingAddress'
+            ) {
+                return false;
+            }
+        }
+        return true;
     }
     
     /**

@@ -95,6 +95,25 @@ class PayerEntityTest extends \PHPUnit_Framework_TestCase
 		}
     }
 
+	/**
+	 * @see PayerEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see PayerEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->setFullName('what-ever');
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
+
     /**
      * @see PayerEntity::toArray()
      */

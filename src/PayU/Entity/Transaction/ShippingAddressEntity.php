@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 
 /**
  * Shipping address entity class.
@@ -15,7 +15,7 @@ use \PayU\Entity\EntityInterface;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class ShippingAddressEntity implements EntityInterface
+class ShippingAddressEntity extends EntityAbstract
 {
     /**
      * First line of address.

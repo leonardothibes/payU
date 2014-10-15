@@ -174,6 +174,25 @@ class BuyerEntityTest extends \PHPUnit_Framework_TestCase
     	$this->assertEquals($shippingAddress->getPostalCode(), $rs->getPostalCode());
     	$this->assertEquals($shippingAddress->getPhone()     , $rs->getPhone());
     }
+
+	/**
+	 * @see BuyerEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see BuyerEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->setFullName('what-ever');
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
     
     /**
      * @see BuyerEntity::toArray()
