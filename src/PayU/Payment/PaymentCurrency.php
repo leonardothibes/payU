@@ -18,9 +18,9 @@ class PaymentCurrency
 {
     const BRAZIL    = 'BRL';
     const ARGENTINA = 'ARS';
-    const PANAMA    = 'USD';
     const MEXICO    = 'MXN';
     const COLOMBIA  = 'COP';
     const PERU      = 'PEN';
-    const EUA       = 'USD';
+    const PANAMA    = 'USD'; //PayU, in Panama, use the american dollar for currency.
+    const USA       = 'USD';
 }
