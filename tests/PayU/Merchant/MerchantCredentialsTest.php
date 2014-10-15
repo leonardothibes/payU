@@ -39,16 +39,26 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
     /**
      * @see MerchantCredentials::getApiUrl()
      */
-    public function testGetApiUrl()
+    public function testGetApiUrlSingleton()
     {
-    	$rs = $this->object->getApiUrl();
-    	$this->assertEquals(0, strlen($rs));
+        $rs = $this->object->getApiUrl();
+        $this->assertEquals(0, strlen($rs));
+    }
+
+    /**
+     * @see MerchantCredentials::getApiUrl()
+     */
+    public function testGetApiUrlNewInstance()
+    {
+        $this->object = new MerchantCredentials();
+        $rs = $this->object->getApiUrl();
+        $this->assertEquals(0, strlen($rs));
     }
 
     /**
      * @see MerchantCredentials::setApiUrl()
      */
-    public function testSetApiUrl()
+    public function testSetApiUrlSingleton()
     {
     	$apiUrl = 'apiUrl_' . rand(1,1000);
     	$rs     = $this->object->setApiUrl($apiUrl);
@@ -60,18 +70,43 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @see MerchantCredentials::setApiUrl()
+     */
+    public function testSetApiUrlNewInstance()
+    {
+        $this->object = new MerchantCredentials();
+        $apiUrl       = 'apiUrl_' . rand(1,1000);
+        $rs           = $this->object->setApiUrl($apiUrl);
+        $this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+
+        $rs = $this->object->getApiUrl();
+        $this->assertInternalType('string', $rs);
+        $this->assertEquals($apiUrl, $rs);
+    }
+
+    /**
      * @see MerchantCredentials::getMerchantId()
      */
-    public function testGetMerchantId()
+    public function testGetMerchantIdSingleton()
     {
     	$rs = $this->object->getMerchantId();
     	$this->assertEquals(0, strlen($rs));
     }
 
     /**
+     * @see MerchantCredentials::getMerchantId()
+     */
+    public function testGetMerchantIdNewInstance()
+    {
+        $this->object = new MerchantCredentials();
+        $rs = $this->object->getMerchantId();
+        $this->assertEquals(0, strlen($rs));
+    }
+
+    /**
      * @see MerchantCredentials::setMerchantId()
      */
-    public function testSetMerchantId()
+    public function testSetMerchantIdSingleton()
     {
     	$merchantId = 'merchantId_' . rand(1,1000);
     	$rs         = $this->object->setMerchantId($merchantId);
@@ -82,51 +117,116 @@ class MerchantCredentialsTest extends \PHPUnit_Framework_TestCase
     	$this->assertEquals($merchantId, $rs);
     }
 
-	/**
-	 * @see MerchantCredentials::getApiLogin()
-	 */
-    public function testGetApiLogin()
+    /**
+     * @see MerchantCredentials::setMerchantId()
+     */
+    public function testSetMerchantIdNewInstance()
     {
-    	$rs = $this->object->getApiLogin();
-    	$this->assertEquals(0, strlen($rs));
+        $this->object = new MerchantCredentials();
+        $merchantId   = 'merchantId_' . rand(1,1000);
+        $rs           = $this->object->setMerchantId($merchantId);
+        $this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+
+        $rs = $this->object->getMerchantId();
+        $this->assertInternalType('string', $rs);
+        $this->assertEquals($merchantId, $rs);
+    }
+
+    /**
+     * @see MerchantCredentials::getApiLogin()
+     */
+    public function testGetApiLoginSingleton()
+    {
+        $rs = $this->object->getApiLogin();
+        $this->assertEquals(0, strlen($rs));
+    }
+
+    /**
+     * @see MerchantCredentials::getApiLogin()
+     */
+    public function testGetApiLoginNewInstance()
+    {
+        $this->object = new MerchantCredentials();
+        $rs = $this->object->getApiLogin();
+        $this->assertEquals(0, strlen($rs));
     }
 
     /**
      * @see MerchantCredentials::setApiLogin()
      */
-    public function testSetApiLogin()
+    public function testSetApiLoginSingleton()
     {
-    	$apiLogin = 'apiLogin_' . rand(1,1000);
+        $apiLogin = 'apiLogin_' . rand(1,1000);
 
-    	$rs = $this->object->setApiLogin($apiLogin);
-    	$this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+        $rs = $this->object->setApiLogin($apiLogin);
+        $this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
 
-    	$rs = $this->object->getApiLogin();
-    	$this->assertInternalType('string', $rs);
-    	$this->assertEquals($apiLogin, $rs);
+        $rs = $this->object->getApiLogin();
+        $this->assertInternalType('string', $rs);
+        $this->assertEquals($apiLogin, $rs);
+    }
+
+    /**
+     * @see MerchantCredentials::setApiLogin()
+     */
+    public function testSetApiLoginNewInstance()
+    {
+        $this->object = new MerchantCredentials();
+        $apiLogin     = 'apiLogin_' . rand(1,1000);
+        $rs           = $this->object->setApiLogin($apiLogin);
+        $this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+
+        $rs = $this->object->getApiLogin();
+        $this->assertInternalType('string', $rs);
+        $this->assertEquals($apiLogin, $rs);
     }
 
     /**
      * @see MerchantCredentials::getApiKey()
      */
-    public function testGetApiKey()
+    public function testGetApiKeySingleton()
     {
-    	$rs = $this->object->getApiKey();
-    	$this->assertEquals(0, strlen($rs));
+        $rs = $this->object->getApiKey();
+        $this->assertEquals(0, strlen($rs));
+    }
+
+    /**
+     * @see MerchantCredentials::getApiKey()
+     */
+    public function testGetApiKeyNewInstance()
+    {
+        $this->object = new MerchantCredentials();
+        $rs = $this->object->getApiKey();
+        $this->assertEquals(0, strlen($rs));
     }
 
     /**
      * @see MerchantCredentials::setApiKey()
      */
-    public function testSetApiKey()
+    public function testSetApiKeySingleton()
     {
-    	$apiKey = 'apiKey_' . rand(1,1000);
+        $apiKey = 'apiKey_' . rand(1,1000);
 
-    	$rs = $this->object->setApiKey($apiKey);
-    	$this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+        $rs = $this->object->setApiKey($apiKey);
+        $this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
 
-    	$rs = $this->object->getApiKey();
-    	$this->assertInternalType('string', $rs);
-    	$this->assertEquals($apiKey, $rs);
+        $rs = $this->object->getApiKey();
+        $this->assertInternalType('string', $rs);
+        $this->assertEquals($apiKey, $rs);
+    }
+
+    /**
+     * @see MerchantCredentials::setApiKey()
+     */
+    public function testSetApiKeyNewInstance()
+    {
+        $this->object = new MerchantCredentials();
+        $apiKey       = 'apiKey_' . rand(1,1000);
+        $rs           = $this->object->setApiKey($apiKey);
+        $this->assertInstanceOf('\PayU\Merchant\MerchantCredentials', $rs);
+
+        $rs = $this->object->getApiKey();
+        $this->assertInternalType('string', $rs);
+        $this->assertEquals($apiKey, $rs);
     }
 }

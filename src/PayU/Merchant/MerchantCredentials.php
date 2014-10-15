@@ -64,9 +64,9 @@ class MerchantCredentials
     }
 
     /**
-     * Block non singleton instance by visibility.
+     * Constructor.
      */
-    protected function __construct()
+    public function __construct()
     {
         //Do nothing...yet
     }
