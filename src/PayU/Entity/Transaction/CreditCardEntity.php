@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 
 /**
@@ -16,7 +16,7 @@ use \PayU\Entity\EntityException;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class CreditCardEntity implements EntityInterface
+class CreditCardEntity extends EntityAbstract
 {
     /**
      * Number of card.
@@ -132,7 +132,7 @@ class CreditCardEntity implements EntityInterface
     }
 
     /**
-     * Generate arry order.
+     * Generate array order.
      * @return array
      */
     public function toArray()
