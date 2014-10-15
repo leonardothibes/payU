@@ -427,7 +427,7 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testIsEmptyFalse()
 	{
-		$this->object->setPaymentMethod('whatever');
+		$this->object->setPaymentMethod('what-ever');
 		$rs = $this->object->isEmpty();
 		$this->assertFalse($rs);
 	}
