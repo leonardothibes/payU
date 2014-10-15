@@ -6,7 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 
-use \PayU\Entity\EntityInterface;
+use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 
 /**
@@ -16,7 +16,7 @@ use \PayU\Entity\EntityException;
  * @author Leonardo Thibes <leonardothibes@gmail.com>
  * @copyright Copyright (c) The Authors
  */
-class ExtraParametersEntity implements EntityInterface
+class ExtraParametersEntity extends EntityAbstract
 {
     /**
      * Installments number.
@@ -169,6 +169,24 @@ class ExtraParametersEntity implements EntityInterface
     public function getResponseUrl()
     {
         return (string)$this->responseUrl;
+    }
+
+    /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach (get_object_vars($this) as $property => $value) {
+            if (
+                $value !== null and
+                $value !== false and
+                $value !== 1
+            ) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
