@@ -168,6 +168,25 @@ class CreditCardEntityTest extends \PHPUnit_Framework_TestCase
     	$this->assertEquals($name, $rs);
     }
 
+	/**
+	 * @see CreditCardEntity::isEmpty()
+	 */
+	public function testIsEmptyTrue()
+	{
+		$rs = $this->object->isEmpty();
+		$this->assertTrue($rs);
+	}
+
+	/**
+	 * @see CreditCardEntity::isEmpty()
+	 */
+	public function testIsEmptyFalse()
+	{
+		$this->object->setName('what-ever');
+		$rs = $this->object->isEmpty();
+		$this->assertFalse($rs);
+	}
+
     /**
      * @see CreditCardEntity::toArray()
      */
