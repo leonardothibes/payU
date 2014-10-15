@@ -149,7 +149,9 @@ class PaymentApi extends ApiAbstract
 
         $this->xmlRequest->addChild('language', $request->getLanguage());
         $this->xmlRequest->addChild('command', $request->getCommand());
-        $this->xmlRequest->addChild('isTest', ($request->getIsTest() ? 'true' : 'false'));
+        if (!isset($this->xmlRequest->isTest)) {
+            $this->xmlRequest->addChild('isTest', ($request->getIsTest() ? 'true' : 'false'));
+        }
 
         $merchant = $this->xmlRequest->addChild('merchant');
         $merchant->addChild('apiLogin', $request->getMerchant()->getApiLogin());
@@ -164,25 +166,31 @@ class PaymentApi extends ApiAbstract
         $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
         $xmlTransaction->addChild('deviceSessionId', $transaction->getDeviceSessionId());
 
-        $creditCard    = $transaction->getCreditCard();
-        $xmlCreditCard = $xmlTransaction->addChild('creditCard');
-        $xmlCreditCard->addChild('number', $creditCard->getNumber());
-        $xmlCreditCard->addChild('securityCode', $creditCard->getSecurityCode());
-        $xmlCreditCard->addChild('expirationDate', $creditCard->getExpirationDate());
-        $xmlCreditCard->addChild('name', $creditCard->getName());
+        $creditCard = $transaction->getCreditCard();
+        if (!$creditCard->isEmpty()) {
+            $xmlCreditCard = $xmlTransaction->addChild('creditCard');
+            $xmlCreditCard->addChild('number', $creditCard->getNumber());
+            $xmlCreditCard->addChild('securityCode', $creditCard->getSecurityCode());
+            $xmlCreditCard->addChild('expirationDate', $creditCard->getExpirationDate());
+            $xmlCreditCard->addChild('name', $creditCard->getName());
+        }
 
-        $payer    = $transaction->getPayer();
-        $xmlPayer = $xmlTransaction->addChild('payer');
-        $xmlPayer->addChild('fullName', $payer->getFullName());
-        $xmlPayer->addChild('emailAddress', $payer->getEmailAddress());
+        $payer = $transaction->getPayer();
+        if (!$payer->isEmpty()) {
+            $xmlPayer = $xmlTransaction->addChild('payer');
+            $xmlPayer->addChild('fullName', $payer->getFullName());
+            $xmlPayer->addChild('emailAddress', $payer->getEmailAddress());
+        }
 
-        $order    = $transaction->getOrder();
-        $xmlOrder = $xmlTransaction->addChild('order');
-        $xmlOrder->addChild('accountId', $request->getMerchant()->getAccountId());
-        $xmlOrder->addChild('referenceCode', $order->getReferenceCode());
-        $xmlOrder->addChild('description', $order->getDescription());
-        $xmlOrder->addChild('language', $order->getLanguage());
-        $xmlOrder->addChild('notifyUrl', $order->getNotifyUrl());
+        $order = $transaction->getOrder();
+        if (!$order->isEmpty()) {
+            $xmlOrder = $xmlTransaction->addChild('order');
+            $xmlOrder->addChild('accountId', $request->getMerchant()->getAccountId());
+            $xmlOrder->addChild('referenceCode', $order->getReferenceCode());
+            $xmlOrder->addChild('description', $order->getDescription());
+            $xmlOrder->addChild('language', $order->getLanguage());
+            $xmlOrder->addChild('notifyUrl', $order->getNotifyUrl());
+        }
 
         //Order signature.
         $additionalValues = $order->getAdditionalValues()->toArray();
@@ -192,10 +200,12 @@ class PaymentApi extends ApiAbstract
         $xmlOrder->addChild('signature', $signature);
         //Order signature.
 
-        $buyer    = $order->getBuyer();
-        $xmlBuyer = $xmlOrder->addChild('buyer');
-        $xmlBuyer->addChild('fullName', $buyer->getFullName());
-        $xmlBuyer->addChild('emailAddress', $buyer->getEmailAddress());
+        $buyer = $order->getBuyer();
+        if (!$buyer->isEmpty()) {
+            $xmlBuyer = $xmlOrder->addChild('buyer');
+            $xmlBuyer->addChild('fullName', $buyer->getFullName());
+            $xmlBuyer->addChild('emailAddress', $buyer->getEmailAddress());
+        }
 
         if (!is_null($buyer->getDniNumber())) {
             $xmlBuyer->addChild('dniNumber', $buyer->getDniNumber());
@@ -246,11 +256,9 @@ class PaymentApi extends ApiAbstract
         }
 
         $this->setLastXmlRequest($this->xmlRequest);
-
         $response = $this->curlRequestXml(
             $this->xmlRequest->asXML()
         );
-
         $this->resetRequest();
 
         return $response;
@@ -270,6 +278,14 @@ class PaymentApi extends ApiAbstract
     }
 
     /**
+     * Capture an payment.
+     */
+    public function capture($orderId, $transactionId)
+    {
+        return $this->buildChildRequest($orderId, $transactionId, PaymentTypes::CAPTURE);
+    }
+
+    /**
      * Authorize and capture a payment order.
      *
      * @param  TransactionEntity $transaction
@@ -282,17 +298,22 @@ class PaymentApi extends ApiAbstract
     }
 
     /**
-     * Capture an payment.
+     * Make a cash collection request for payment order.
+     *
+     * @param  TransactionEntity $transaction
+     * @return stdClass
      */
-    public function capture($orderId, $transactionId)
+    public function cashCollection(TransactionEntity $transaction)
     {
-        return $this->buildChildRequest($orderId, $transactionId, PaymentTypes::CAPTURE);
+        $transaction->setType(PaymentTypes::AUTHORIZATION_AND_CAPTURE);
+        $this->xmlRequest->addChild('isTest', 'false');
+        return $this->authorizeRequest($transaction);
     }
 
     /**
      * Cancel the transaction and no money is charged from the buyer.
      *
-     * @param int    $orderId     Order ideentification of payU
+     * @param int    $orderId       Order identification of payU.
      * @param string $transactionId PayU transaction identification.
      *
      * @return stdClass
@@ -303,8 +324,11 @@ class PaymentApi extends ApiAbstract
     }
 
     /**
+     * Void transaction.
+     *
      * @param $orderId
      * @param $transactionId
+     *
      * @return stdClass
      */
     public function void($orderId, $transactionId)
@@ -316,10 +340,11 @@ class PaymentApi extends ApiAbstract
      * @param $orderId
      * @param $transactionId
      * @param $transactionType
+     *
      * @return stdClass
      * @throws \PayU\PayUException
      */
-    public function buildChildRequest($orderId, $transactionId, $transactionType)
+    protected function buildChildRequest($orderId, $transactionId, $transactionType)
     {
         $this->xmlRequest->addChild('language', $this->language);
         $this->xmlRequest->addChild('command', 'SUBMIT_TRANSACTION');
