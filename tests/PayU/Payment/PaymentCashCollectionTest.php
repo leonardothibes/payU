@@ -53,7 +53,7 @@ class PaymentCashCollectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->credentials = MerchantCredentials::getInstance();
+        $this->credentials = new MerchantCredentials();
         $this->credentials->setAccountId($this->payuCredentials['accountId'])
                           ->setMerchantId($this->payuCredentials['merchantId'])
                           ->setApiLogin($this->payuCredentials['apiLogin'])
@@ -101,7 +101,7 @@ class PaymentCashCollectionTest extends \PHPUnit_Framework_TestCase
             PaymentMethods::RAPIPAGO,
             PaymentMethods::RIPSA,
         );
-        $paymentMethod = $paymentMethods[rand(0, count($paymentMethods))];
+        $paymentMethod = $paymentMethods[rand(0, count($paymentMethods)-1)];
 
         $transaction->setPaymentMethod($paymentMethod)
                     ->setPaymentCountry(PaymentCountries::ARGENTINA)

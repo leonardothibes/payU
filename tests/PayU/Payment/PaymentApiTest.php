@@ -41,7 +41,7 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-    	$this->credentials = MerchantCredentials::getInstance();
+    	$this->credentials = new MerchantCredentials();
     	$this->credentials->setAccountId(PAYU_ACCOUNT_ID)
     	                  ->setMerchantId(PAYU_MERCHANT_ID)
     	                  ->setApiLogin(PAYU_API_LOGIN)
