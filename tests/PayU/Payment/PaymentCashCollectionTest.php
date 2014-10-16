@@ -152,39 +152,59 @@ class PaymentCashCollectionTest extends \PHPUnit_Framework_TestCase
     public function testCashCollection($transaction)
     {
         $rs = $this->object->cashCollection($transaction);
-        $this->_testTransactionResponse($rs);
-    }
 
-    /**
-     * Verify transaction response.
-     * @param stdClass $response
-     */
-    private function _testTransactionResponse($response)
-    {
-        $this->assertInstanceOf('\stdClass', $response);
-        $this->assertTrue(isset($response->code));
-        $this->assertEquals(0, strlen($response->error));
+        $this->assertInstanceOf('\stdClass', $rs);
+        $this->assertEquals('SUCCESS', $rs->code);
+        $this->assertEquals(0, strlen($rs->error));
 
-        $this->assertTrue(isset($response->transactionResponse));
-        $this->assertInstanceOf('\stdClass', $response->transactionResponse);
+        $this->assertTrue(isset($rs->transactionResponse));
+        $this->assertInstanceOf('\stdClass', $rs->transactionResponse);
 
-        $transaction = $response->transactionResponse;
+        $transaction = $rs->transactionResponse;
 
-        $this->assertTrue(isset($response->transactionResponse->orderId));
-        $this->assertTrue(isset($response->transactionResponse->transactionId));
-        $this->assertTrue(isset($response->transactionResponse->state));
-        $this->assertTrue(isset($response->transactionResponse->responseCode));
+        $this->assertTrue(isset($transaction->orderId));
+        $this->assertGreaterThan(0, strlen($transaction->orderId));
+
+        $this->assertTrue(isset($transaction->transactionId));
+        $this->assertGreaterThan(0, strlen($transaction->transactionId));
+
+        $this->assertTrue(isset($transaction->state));
+        $this->assertEquals('PENDING', $transaction->state);
 
         $this->assertEquals(0, strlen($transaction->paymentNetworkResponseCode));
         $this->assertEquals(0, strlen($transaction->paymentNetworkResponseErrorMessage));
-        $this->assertEquals(0, strlen($transaction->trazabilityCode));
-        $this->assertEquals(0, strlen($transaction->authorizationCode));
-        $this->assertEquals(0, strlen($transaction->pendingReason));
+
+        $this->assertTrue(isset($transaction->trazabilityCode));
+        $this->assertGreaterThan(0, strlen($transaction->trazabilityCode));
+
+        $this->assertTrue(isset($transaction->authorizationCode));
+        $this->assertGreaterThan(0, strlen($transaction->authorizationCode));
+
+        $this->assertTrue(isset($transaction->pendingReason));
+        $this->assertEquals('AWAITING_NOTIFICATION', $transaction->pendingReason);
+
+        $this->assertTrue(isset($transaction->responseCode));
+        $this->assertEquals('PENDING_TRANSACTION_CONFIRMATION', $transaction->responseCode);
+
         $this->assertEquals(0, strlen($transaction->errorCode));
         $this->assertEquals(0, strlen($transaction->responseMessage));
         $this->assertEquals(0, strlen($transaction->transactionDate));
         $this->assertEquals(0, strlen($transaction->transactionTime));
         $this->assertEquals(0, strlen($transaction->operationDate));
-        $this->assertEquals(0, strlen($transaction->extraParameters));
+
+        $this->assertTrue(isset($transaction->extraParameters));
+        $this->assertInstanceOf('\stdClass', $transaction->extraParameters);
+
+        $extraParameters = $transaction->extraParameters;
+
+        $this->assertTrue(isset($extraParameters->URL_PAYMENT_RECEIPT_HTML));
+        $regex = '/https:\/\/stg.gateway.payulatam.com\/ppp-web-gateway\/voucher.zul\?vid=[a-z0-9]{39}/i';
+        $this->assertRegExp($regex, $extraParameters->URL_PAYMENT_RECEIPT_HTML);
+
+        $this->assertTrue(isset($extraParameters->BAR_CODE));
+        $this->assertGreaterThan(0, strlen($extraParameters->BAR_CODE));
+
+        $this->assertTrue(isset($extraParameters->REFERENCE));
+        $this->assertEquals($transaction->orderId, $extraParameters->REFERENCE);
     }
 }
