@@ -10,8 +10,6 @@ use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 use \PayU\Entity\Transaction\ShippingAddressEntity;
 
-use \Tbs\Helper\Email;
-
 /**
  * Order buyer entity class.
  *
@@ -67,14 +65,9 @@ class BuyerEntity extends EntityAbstract
      *
      * @param  string $emailAddress
      * @return BuyerEntity
-     * @throws EntityException
      */
     public function setEmailAddress($emailAddress)
     {
-        if (!Email::isValid($emailAddress)) {
-            $message = sprintf('Invalid e-mail address: %s', $emailAddress);
-            throw new EntityException($message);
-        }
         $this->emailAddress = (string)$emailAddress;
         return $this;
     }

@@ -9,8 +9,6 @@ namespace PayU\Entity\Transaction;
 use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 
-use \Tbs\Helper\Email;
-
 /**
  * Payer entity class.
  *
@@ -62,10 +60,6 @@ class PayerEntity extends EntityAbstract
      */
     public function setEmailAddress($emailAddress)
     {
-        if (!Email::isValid($emailAddress)) {
-            $message = sprintf('Invalid e-mail address: %s', $emailAddress);
-            throw new EntityException($message);
-        }
         $this->emailAddress = (string)$emailAddress;
         return $this;
     }
