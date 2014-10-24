@@ -132,8 +132,6 @@ class PayerEntityTest extends \PHPUnit_Framework_TestCase
 				     ->setContactPhone($entity['contactPhone'])
 					 ->setBillingAddress($entity['buyerAddress']);
 
-    	$rs = $this->object->toArray();
-
 		$this->assertEquals($entity['fullName']    , $this->object->getFullName());
 		$this->assertEquals($entity['emailAddress'], $this->object->getEmailAddress());
 		$this->assertEquals($entity['contactPhone'], $this->object->getContactPhone());
