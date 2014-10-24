@@ -6,6 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 use \PayU\Entity\Transaction\PayerEntity;
+use \PayU\Entity\Transaction\BillingAddressEntity;
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 /**
@@ -122,12 +123,20 @@ class PayerEntityTest extends \PHPUnit_Framework_TestCase
     	$entity = array(
    			'fullName'     => 'person name ' . rand(1,9) . rand(1,9) . rand(1,9),
    			'emailAddress' => 'email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com',
+			'contactPhone' => rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9),
+			'buyerAddress' => new BillingAddressEntity(),
     	);
 
     	$this->object->setFullName($entity['fullName'])
-    	             ->setEmailAddress($entity['emailAddress']);
+    	             ->setEmailAddress($entity['emailAddress'])
+				     ->setContactPhone($entity['contactPhone'])
+					 ->setBillingAddress($entity['buyerAddress']);
 
     	$rs = $this->object->toArray();
-    	$this->assertSame($entity, $rs);
+
+		$this->assertEquals($entity['fullName']    , $this->object->getFullName());
+		$this->assertEquals($entity['emailAddress'], $this->object->getEmailAddress());
+		$this->assertEquals($entity['contactPhone'], $this->object->getContactPhone());
+		$this->assertEquals($entity['buyerAddress'], $this->object->getBillingAddress());
     }
 }

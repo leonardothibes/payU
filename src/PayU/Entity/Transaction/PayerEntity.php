@@ -28,6 +28,25 @@ class PayerEntity extends EntityAbstract
     }
 
     /**
+     * Returns if object is empty
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        foreach (get_object_vars($this) as $property => $value) {
+            if (
+                $value    !== null  and
+                $value    !== false and
+                $value    !== 1     and
+                $property != 'billingAddress'
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Payer full name.
      * @var string
      */
@@ -169,10 +188,10 @@ class PayerEntity extends EntityAbstract
     public function toArray()
     {
         return array(
-            'fullName'     => $this->fullName,
-            'emailAddress' => $this->emailAddress,
-            'contactPhone' => $this->contactPhone,
-            'BuyerAddress' => $this->billingAddress,
+            'fullName'       => $this->fullName,
+            'emailAddress'   => $this->emailAddress,
+            'contactPhone'   => $this->contactPhone,
+            'billingAddress' => $this->billingAddress,
         );
     }
 }
