@@ -7,7 +7,7 @@
 
 # General Configuration
 NAME       = "leonardothibes/PayU"
-VERSION    = "0.5-beta3"
+VERSION    = "0.6"
 AUTHOR     = "Leonardo Thibes"
 STANDARD   = "PSR2"
 BASEDIR    = `pwd`
