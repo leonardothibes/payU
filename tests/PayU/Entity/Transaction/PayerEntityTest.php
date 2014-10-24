@@ -121,20 +121,20 @@ class PayerEntityTest extends \PHPUnit_Framework_TestCase
     public function testToArray()
     {
     	$entity = array(
-   			'fullName'     => 'person name ' . rand(1,9) . rand(1,9) . rand(1,9),
-   			'emailAddress' => 'email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com',
-			'contactPhone' => rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9),
-			'buyerAddress' => new BillingAddressEntity(),
+   			'fullName'       => 'person name ' . rand(1,9) . rand(1,9) . rand(1,9),
+   			'emailAddress'   => 'email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com',
+			'contactPhone'   => rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9),
+			'billingAddress' => new BillingAddressEntity(),
     	);
 
     	$this->object->setFullName($entity['fullName'])
     	             ->setEmailAddress($entity['emailAddress'])
 				     ->setContactPhone($entity['contactPhone'])
-					 ->setBillingAddress($entity['buyerAddress']);
+					 ->setBillingAddress($entity['billingAddress']);
 
-		$this->assertEquals($entity['fullName']    , $this->object->getFullName());
-		$this->assertEquals($entity['emailAddress'], $this->object->getEmailAddress());
-		$this->assertEquals($entity['contactPhone'], $this->object->getContactPhone());
-		$this->assertEquals($entity['buyerAddress'], $this->object->getBillingAddress());
+		$this->assertEquals($entity['fullName']      , $this->object->getFullName());
+		$this->assertEquals($entity['emailAddress']  , $this->object->getEmailAddress());
+		$this->assertEquals($entity['contactPhone']  , $this->object->getContactPhone());
+		$this->assertEquals($entity['billingAddress'], $this->object->getBillingAddress());
     }
 }

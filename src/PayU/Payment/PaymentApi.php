@@ -180,6 +180,17 @@ class PaymentApi extends ApiAbstract
             $xmlPayer = $xmlTransaction->addChild('payer');
             $xmlPayer->addChild('fullName', $payer->getFullName());
             $xmlPayer->addChild('emailAddress', $payer->getEmailAddress());
+            $xmlPayer->addChild('contactPhone', $payer->getContactPhone());
+
+            $billingAddress    = $payer->getBillingAddress();
+            $xmlBillingAddress = $xmlPayer->addChild('billingAddress');
+            $xmlBillingAddress->addChild('street1', $billingAddress->getStreet1());
+            $xmlBillingAddress->addChild('street2', $billingAddress->getStreet2());
+            $xmlBillingAddress->addChild('city', $billingAddress->getCity());
+            $xmlBillingAddress->addChild('state', $billingAddress->getState());
+            $xmlBillingAddress->addChild('country', $billingAddress->getCountry());
+            $xmlBillingAddress->addChild('postalCode', $billingAddress->getPostalCode());
+            $xmlBillingAddress->addChild('phone', $billingAddress->getPhone());
         }
 
         $order = $transaction->getOrder();

@@ -13,6 +13,7 @@ use \PayU\Payment\PaymentCountries;
 
 use \PayU\Entity\Transaction\TransactionEntity;
 use \PayU\Entity\Transaction\ShippingAddressEntity;
+use \PayU\Entity\Transaction\BillingAddressEntity;
 use \PayU\Merchant\MerchantCredentials;
 
 use \Tbs\Helper\Cpf;
@@ -242,9 +243,19 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
     	//Credit card.
 
     	//Payer.
+		$billingAddress = new BillingAddressEntity();
+		$billingAddress->setStreet1('street1_' . rand(1,1000))
+					   ->setStreet2('street2_' . rand(1,1000))
+					   ->setCity('city_' . rand(1,1000))
+					   ->setState('state_' . rand(1,1000))
+					   ->setCountry(PaymentCountries::PANAMA)
+					   ->setPostalCode('postalCode_' . rand(1,1000))
+					   ->setPhone('phone_' . rand(1,1000));
     	$payer = $transaction->getPayer();
     	$payer->setFullName('person name ' . rand(1,9) . rand(1,9) . rand(1,9))
-    	      ->setEmailAddress('email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com');
+    	      ->setEmailAddress('email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com')
+			  ->setContactPhone(rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9))
+			  ->setBillingAddress($billingAddress);
     	//Payer.
 
     	return array(
@@ -293,8 +304,8 @@ class PaymentApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthorize($transaction)
     {
-    	$rs = $this->object->authorize($transaction);
-    	$this->_testTransactionResponse($rs);
+		$rs = $this->object->authorize($transaction);
+		$this->_testTransactionResponse($rs);
     }
 
     /**
