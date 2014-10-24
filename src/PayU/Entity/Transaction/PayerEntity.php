@@ -6,6 +6,7 @@
 
 namespace PayU\Entity\Transaction;
 
+use \PayU\Entity\Transaction\BillingAddressEntity;
 use \PayU\Entity\EntityAbstract;
 use \PayU\Entity\EntityException;
 
@@ -18,6 +19,14 @@ use \PayU\Entity\EntityException;
  */
 class PayerEntity extends EntityAbstract
 {
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->billingAddress = new BillingAddressEntity();
+    }
+
     /**
      * Payer full name.
      * @var string
@@ -56,7 +65,6 @@ class PayerEntity extends EntityAbstract
      *
      * @param  string $emailAddress
      * @return PayerEntity
-     * @throws EntityException
      */
     public function setEmailAddress($emailAddress)
     {
@@ -74,6 +82,87 @@ class PayerEntity extends EntityAbstract
     }
 
     /**
+     * DNI number
+     * @var string
+     */
+    protected $dniNumber = null;
+
+    /**
+     * Set DNI number
+     *
+     * @param  string $dniNumber
+     * @return PayerEntity
+     */
+    public function setDniNumber($dniNumber)
+    {
+        $this->dniNumber = (string)$dniNumber;
+        return $this;
+    }
+
+    /**
+     * Get DNI number
+     * @return string
+     */
+    public function getDniNumber()
+    {
+        return (string)$this->dniNumber;
+    }
+
+    /**
+     * Contact number.
+     * @var string
+     */
+    protected $contactPhone = null;
+
+    /**
+     * Set the contact phone.
+     *
+     * @param  string $contactPhone
+     * @return PayerEntity
+     */
+    public function setContactPhone($contactPhone)
+    {
+        $this->contactPhone = (string)$contactPhone;
+        return $this;
+    }
+
+    /**
+     * Get the contact phone.
+     * @return string
+     */
+    public function getContactPhone()
+    {
+        return (string)$this->contactPhone;
+    }
+
+    /**
+     * Billing address.
+     * @var BillingAddressEntity
+     */
+    protected $billingAddress = null;
+
+    /**
+     * Set the billing address.
+     *
+     * @param  BillingAddressEntity $billingAddress
+     * @return PayerEntity
+     */
+    public function setBillingAddress(BillingAddressEntity $billingAddress)
+    {
+        $this->billingAddress = $billingAddress;
+        return $this;
+    }
+
+    /**
+     * Get the billing address.
+     * @return BillingAddressEntity
+     */
+    public function getBillingAddress()
+    {
+        return $this->billingAddress;
+    }
+
+    /**
      * Generate array order.
      * @return array
      */
@@ -82,6 +171,8 @@ class PayerEntity extends EntityAbstract
         return array(
             'fullName'     => $this->fullName,
             'emailAddress' => $this->emailAddress,
+            'contactPhone' => $this->contactPhone,
+            'BuyerAddress' => $this->billingAddress,
         );
     }
 }
