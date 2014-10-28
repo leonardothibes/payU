@@ -181,6 +181,7 @@ class PaymentApi extends ApiAbstract
             $xmlPayer->addChild('fullName', $payer->getFullName());
             $xmlPayer->addChild('emailAddress', $payer->getEmailAddress());
             $xmlPayer->addChild('contactPhone', $payer->getContactPhone());
+            $xmlPayer->addChild('dniNumber', $payer->getDniNumber());
 
             $billingAddress    = $payer->getBillingAddress();
             $xmlBillingAddress = $xmlPayer->addChild('billingAddress');
