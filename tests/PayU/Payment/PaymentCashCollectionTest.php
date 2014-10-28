@@ -146,6 +146,7 @@ class PaymentCashCollectionTest extends \PHPUnit_Framework_TestCase
         $payer->setFullName('person name ' . rand(1,9) . rand(1,9) . rand(1,9))
               ->setEmailAddress('email' . rand(1,9) . rand(1,9) . rand(1,9) . '@foo-bar.com')
               ->setContactPhone(rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9))
+              ->setDniNumber(Cpf::random())
               ->setBillingAddress($billingAddress);
         //Payer.
 
