@@ -251,11 +251,14 @@ class PaymentApi extends ApiAbstract
 
         $additionalValues    = $order->getAdditionalValues()->toArray();
         $xmlAdditionalValues = $xmlOrder->addChild('additionalValues');
-        $entry = $xmlAdditionalValues->addChild('entry');
-        $entry->addChild('string', $additionalValues[0]['string']);
-        $additionalValue = $entry->addChild('additionalValue');
-        $additionalValue->addChild('currency', $additionalValues[0]['additionalValue']['currency']);
-        $additionalValue->addChild('value', $additionalValues[0]['additionalValue']['value']);
+
+        foreach ($additionalValues as $value) {
+            $entry = $xmlAdditionalValues->addChild('entry');
+            $entry->addChild('string', $value['string']);
+            $additionalValue = $entry->addChild('additionalValue');
+            $additionalValue->addChild('currency', $value['additionalValue']['currency']);
+            $additionalValue->addChild('value', $value['additionalValue']['value']);
+        }
 
         $extraParameters    = $transaction->getExtraParameters()->toArray();
         $xmlExtraParameters = $xmlTransaction->addChild('extraParameters');
