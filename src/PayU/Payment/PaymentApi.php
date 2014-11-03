@@ -134,7 +134,7 @@ class PaymentApi extends ApiAbstract
     }
 
     /**
-     * Make a request "authorize" and "authorizeAndCapture" methods.
+     * Make a request "authorize", "authorizeAndCapture" and "cashCollection" methods.
      *
      * @param  TransactionEntity $transaction
      * @return stdClass
@@ -165,6 +165,13 @@ class PaymentApi extends ApiAbstract
         $xmlTransaction->addChild('cookie', $transaction->getCookie());
         $xmlTransaction->addChild('userAgent', $transaction->getUserAgent());
         $xmlTransaction->addChild('deviceSessionId', $transaction->getDeviceSessionId());
+        $expiration = $transaction->getExpiration();
+        if ($expiration > 0) {
+            $date = new \DateTime('now');
+            $date->modify(sprintf('+%d day', $expiration));
+            $expirationDate = $date->format('Y-m-d') . 'T' . $date->format('h:i:s');
+            $xmlTransaction->addChild('expirationDate', $expirationDate);
+        }
 
         $creditCard = $transaction->getCreditCard();
         if (!$creditCard->isEmpty()) {
@@ -315,13 +322,16 @@ class PaymentApi extends ApiAbstract
     /**
      * Make a cash collection request for payment order.
      *
-     * @param  TransactionEntity $transaction
+     * @param TransactionEntity $transaction
+     * @param int               $expiration
+     *
      * @return stdClass
      */
-    public function cashCollection(TransactionEntity $transaction)
+    public function cashCollection(TransactionEntity $transaction, $expiration = 4)
     {
-        $transaction->setType(PaymentTypes::AUTHORIZATION_AND_CAPTURE);
         $this->xmlRequest->addChild('isTest', 'false');
+        $transaction->setType(PaymentTypes::AUTHORIZATION_AND_CAPTURE)
+                    ->setExpiration($expiration);
         return $this->authorizeRequest($transaction);
     }
 

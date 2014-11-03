@@ -163,7 +163,7 @@ class PaymentCashCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCashCollection($transaction)
     {
-        $rs = $this->object->cashCollection($transaction);
+        $rs = $this->object->cashCollection($transaction, rand(1, 10));
 
         $this->assertInstanceOf('\stdClass', $rs);
         $this->assertEquals('SUCCESS', $rs->code);
