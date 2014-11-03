@@ -94,7 +94,7 @@ test-analyze: rw .clear
 		--testdox-html=${BUILD}/testdox.html \
 		--coverage-html=${BUILD}/coverage    \
 		${TESTS} 1> /dev/null 2> /dev/null
-	@echo " - Test reports generated!"
+	@echo " - All tests pass"
 
 code-sniffer: .clear
 	@${BIN}/phpcs --standard=${STANDARD} ${SRC}
