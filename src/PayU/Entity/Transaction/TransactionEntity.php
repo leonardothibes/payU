@@ -42,7 +42,7 @@ class TransactionEntity extends EntityAbstract
      * Set expiration.
      * @var string
      */
-    protected $expiration = 4;
+    protected $expiration = null;
 
     /**
      * Set expiration.
@@ -50,7 +50,7 @@ class TransactionEntity extends EntityAbstract
      * @param  int $expiration
      * @return TransactionEntity
      */
-    public function setExpiration($expiration = 4)
+    public function setExpiration($expiration)
     {
         $this->expiration = (int)$expiration;
         return $this;
@@ -396,8 +396,7 @@ class TransactionEntity extends EntityAbstract
                 $property !== 'order'           and
                 $property !== 'creditCard'      and
                 $property !== 'payer'           and
-                $property !== 'extraParameters' and
-                $property !== 'expiration'
+                $property !== 'extraParameters'
             ) {
                 return false;
             }

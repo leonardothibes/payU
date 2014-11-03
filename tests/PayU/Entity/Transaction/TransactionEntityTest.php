@@ -52,23 +52,13 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
 	{
 		$rs = $this->object->getExpiration();
 		$this->assertInternalType('int', $rs);
-		$this->assertEquals(4, $rs);
+		$this->assertEquals(0, $rs);
 	}
 
 	/**
 	 * @see TransactionEntity::setExpiration()
 	 */
-	public function testSetExpiration1()
-	{
-		$rs = $this->object->setExpiration()->getExpiration();
-		$this->assertInternalType('int', $rs);
-		$this->assertEquals(4, $rs);
-	}
-
-	/**
-	 * @see TransactionEntity::setExpiration()
-	 */
-	public function testSetExpiration2()
+	public function testSetExpiration()
 	{
 		$expiration = rand(1, 10);
 		$rs         = $this->object->setExpiration($expiration);
