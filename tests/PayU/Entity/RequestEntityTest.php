@@ -92,10 +92,11 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
    			'Opera',
    			'IE'
     	);
-    	$browser = $browsers[rand(0, count($browsers)-1)];
+    	$browser    = $browsers[rand(0, count($browsers)-1)];
+		$expiration = rand(1, 10);
 
     	return array(
-			array($type, $method, $country, $ip, $cookie, $browser)
+			array($type, $method, $country, $ip, $cookie, $browser, $expiration)
     	);
     }
 
@@ -149,7 +150,7 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
      * @see RequestEntity::toArray()
      * @dataProvider providerTransactionMockData
      */
-    public function testToArray($type, $paymentMethod, $paymentCountry, $ipAddress, $cookie, $userAgent)
+    public function testToArray($type, $paymentMethod, $paymentCountry, $ipAddress, $cookie, $userAgent, $expiration)
     {
     	$transaction = $this->object->getTransaction();
     	$transaction->setType($type)
@@ -157,7 +158,8 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
 			    	->setPaymentCountry($paymentCountry)
 			    	->setIpAddress($ipAddress)
 			    	->setCookie($cookie)
-			    	->setUserAgent($userAgent);
+			    	->setUserAgent($userAgent)
+		            ->setExpiration($expiration);
     	$this->object->setTransaction($transaction);
 
     	$rs = $this->object->toArray();
@@ -168,7 +170,10 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
 
     	$transaction = $rs['transaction'];
 		$this->assertInternalType('array', $transaction);
-		$this->assertEquals(10, count($transaction));
+		$this->assertEquals(11, count($transaction));
+
+		$this->assertArrayHasKey('expiration', $transaction);
+		$this->assertEquals($expiration, $transaction['expiration']);
 
 		$this->assertArrayHasKey('type', $transaction);
 		$this->assertEquals($type, $transaction['type']);

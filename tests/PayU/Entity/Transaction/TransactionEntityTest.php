@@ -46,6 +46,30 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
     }
 
 	/**
+	 * @see TransactionEntity::getExpiration()
+	 */
+	public function testGetExpiration()
+	{
+		$rs = $this->object->getExpiration();
+		$this->assertInternalType('int', $rs);
+		$this->assertEquals(0, $rs);
+	}
+
+	/**
+	 * @see TransactionEntity::setExpiration()
+	 */
+	public function testSetExpiration()
+	{
+		$expiration = rand(1, 10);
+		$rs         = $this->object->setExpiration($expiration);
+		$this->assertInstanceOf('\PayU\Entity\Transaction\TransactionEntity', $rs);
+
+		$rs = $this->object->getExpiration();
+		$this->assertInternalType('int', $rs);
+		$this->assertEquals($expiration, $rs);
+	}
+
+	/**
 	 * @see TransactionEntity::getType()
 	 */
     public function testGetType()
@@ -438,7 +462,7 @@ class TransactionEntityTest extends \PHPUnit_Framework_TestCase
     public function testToArray()
     {
     	$rs = $this->object->toArray();
-
+		$this->assertArrayHasKey('expiration'     , $rs);
 		$this->assertArrayHasKey('type'           , $rs);
 		$this->assertArrayHasKey('paymentMethod'  , $rs);
 		$this->assertArrayHasKey('paymentCountry' , $rs);

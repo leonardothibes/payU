@@ -39,6 +39,33 @@ class TransactionEntity extends EntityAbstract
     }
 
     /**
+     * Set expiration.
+     * @var string
+     */
+    protected $expiration = null;
+
+    /**
+     * Set expiration.
+     *
+     * @param  int $expiration
+     * @return TransactionEntity
+     */
+    public function setExpiration($expiration)
+    {
+        $this->expiration = (int)$expiration;
+        return $this;
+    }
+
+    /**
+     * Set expiration.
+     * @return int
+     */
+    public function getExpiration()
+    {
+        return (int)$this->expiration;
+    }
+
+    /**
      * Type of transaction.
      *
      * @see \PayU\Payment\PaymentTypes
@@ -59,7 +86,10 @@ class TransactionEntity extends EntityAbstract
     {
         if (
             $type != PaymentTypes::AUTHORIZATION_AND_CAPTURE and
-            $type != PaymentTypes::AUTHORIZATION
+            $type != PaymentTypes::AUTHORIZATION             and
+            $type != PaymentTypes::CAPTURE                   and
+            $type != PaymentTypes::REFUND                    and
+            $type != PaymentTypes::VOID
         ) {
             throw new EntityException('Invalid transaction type');
         }
@@ -362,10 +392,10 @@ class TransactionEntity extends EntityAbstract
     {
         foreach (get_object_vars($this) as $property => $value) {
             if (
-                $value    !== null         and
-                $property !== 'order'      and
-                $property !== 'creditCard' and
-                $property !== 'payer'      and
+                $value    !== null              and
+                $property !== 'order'           and
+                $property !== 'creditCard'      and
+                $property !== 'payer'           and
                 $property !== 'extraParameters'
             ) {
                 return false;
@@ -382,6 +412,7 @@ class TransactionEntity extends EntityAbstract
     {
         return array
         (
+            'expiration'      => $this->expiration,
             'type'            => $this->type,
             'paymentMethod'   => $this->paymentMethod,
             'paymentCountry'  => $this->paymentCountry,
