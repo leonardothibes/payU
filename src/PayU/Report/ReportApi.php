@@ -176,7 +176,7 @@ class ReportApi extends ApiAbstract
             );
             $this->resetRequest();
             if ($response->code == 'SUCCESS' and $response->result == '') {
-                $message = sprintf('Entity [Order] Not Found with TransactionId [%d].', $transactionId);
+                $message = sprintf('Entity [Order] Not Found with TransactionId [%s].', $transactionId);
                 throw new ReportException($message);
             }
             return $response;
