@@ -58,7 +58,7 @@ class ExtraParametersEntity extends EntityAbstract
      * Installments type.
      * @var int
      */
-    protected $installmentsType = self::INSTALLMENT_PAYMENT_ON_SITE;
+    protected $installmentsType;
 
     /**
      * Set installments type.
@@ -86,7 +86,9 @@ class ExtraParametersEntity extends EntityAbstract
      */
     public function getInstallmentsType()
     {
-        return (int)$this->installmentsType;
+        if (!is_null($this->installmentsType)) {
+            return (int)$this->installmentsType;
+        }
     }
 
     /**
@@ -195,11 +197,16 @@ class ExtraParametersEntity extends EntityAbstract
      */
     public function toArray()
     {
-        return array(
+        $extraParameters =  array(
             self::INSTALLMENTS_NUMBER     => $this->installmentsNumber,
-            self::INSTALLMENTS_TYPE       => $this->installmentsType,
             self::SECURITY_CODE_INDICATOR => $this->securityCodeIndicator,
-            self::RESPONSE_URL            => $this->responseUrl,
+            self::RESPONSE_URL            => $this->responseUrl
         );
+
+        if (!is_null($this->installmentsType)) {
+            $extraParameters[self::INSTALLMENTS_TYPE] = $this->installmentsType;
+        }
+
+        return $extraParameters;
     }
 }

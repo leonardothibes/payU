@@ -83,8 +83,7 @@ class ExtraParametersEntityTest extends \PHPUnit_Framework_TestCase
     public function testGetInstallmentsType()
     {
     	$rs = $this->object->getInstallmentsType();
-    	$this->assertInternalType('int', $rs);
-    	$this->assertEquals(ExtraParametersEntity::INSTALLMENT_PAYMENT_ON_SITE, $rs);
+    	$this->assertNull($rs);
     }
 
     /**
